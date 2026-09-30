@@ -1089,47 +1089,6 @@ function VehicleDetailContent({ vehicleId }: { vehicleId: string }) {
                       </div>
                     </div>
 
-                    {/* Enquiry Options */}
-                    <div className="space-y-2">
-                      <label className="block text-xs font-bold text-slate-700">
-                        Request Type
-                      </label>
-                      <div className="grid grid-cols-3 gap-2">
-                        <button
-                          type="button"
-                          onClick={() => setEnquiryType("reserve")}
-                          className={`p-2.5 rounded-xl border text-xs font-bold transition-all flex flex-col items-center gap-1 cursor-pointer ${enquiryType === "reserve"
-                            ? "bg-rose-50 text-[#E11D48] border-rose-300 ring-2 ring-rose-200"
-                            : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
-                            }`}
-                        >
-                          <Clock size={15} />
-                          <span>24h Reserve</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setEnquiryType("inspection")}
-                          className={`p-2.5 rounded-xl border text-xs font-bold transition-all flex flex-col items-center gap-1 cursor-pointer ${enquiryType === "inspection"
-                            ? "bg-rose-50 text-[#E11D48] border-rose-300 ring-2 ring-rose-200"
-                            : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
-                            }`}
-                        >
-                          <ShieldCheck size={15} />
-                          <span>Inspect Sheet</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setEnquiryType("quote")}
-                          className={`p-2.5 rounded-xl border text-xs font-bold transition-all flex flex-col items-center gap-1 cursor-pointer ${enquiryType === "quote"
-                            ? "bg-rose-50 text-[#E11D48] border-rose-300 ring-2 ring-rose-200"
-                            : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
-                            }`}
-                        >
-                          <Car size={15} />
-                          <span>Freight Quote</span>
-                        </button>
-                      </div>
-                    </div>
 
                     {/* Dealership Info */}
                     <div className="grid grid-cols-2 gap-3 text-xs">
@@ -1264,34 +1223,6 @@ function VehicleDetailContent({ vehicleId }: { vehicleId: string }) {
                         className="w-full pl-8 pr-4 py-3 bg-white border border-[#CCD6DD] rounded-xl font-mono font-bold text-base text-[#111C2D] focus:outline-none focus:border-[#E11D48] focus:ring-2 focus:ring-[#E11D48]/10"
                       />
                     </div>
-                  </div>
-
-                  {/* Quick Increment Buttons */}
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => setBidAmountJpy((prev) => Math.max(100000, prev - 20000))}
-                      className="flex-1 py-1.5 bg-[#F8FAFC] hover:bg-[#F0F2F5] border border-[#E8ECF0] rounded-lg text-xs font-semibold text-[#536471] cursor-pointer"
-                    >
-                      -¥20,000
-                    </button>
-                    <button
-                      onClick={() => setBidAmountJpy(vehicle.priceFob)}
-                      className="flex-1 py-1.5 bg-[#F8FAFC] hover:bg-[#F0F2F5] border border-[#E8ECF0] rounded-lg text-xs font-semibold text-[#536471] cursor-pointer"
-                    >
-                      Reset
-                    </button>
-                    <button
-                      onClick={() => setBidAmountJpy((prev) => prev + 20000)}
-                      className="flex-1 py-1.5 bg-[#F8FAFC] hover:bg-[#F0F2F5] border border-[#E8ECF0] rounded-lg text-xs font-semibold text-[#536471] cursor-pointer"
-                    >
-                      +¥20,000
-                    </button>
-                    <button
-                      onClick={() => setBidAmountJpy((prev) => prev + 50000)}
-                      className="flex-1 py-1.5 bg-[#F8FAFC] hover:bg-[#F0F2F5] border border-[#E8ECF0] rounded-lg text-xs font-semibold text-[#536471] cursor-pointer"
-                    >
-                      +¥50,000
-                    </button>
                   </div>
 
                   <div className="flex items-center gap-3 pt-3">

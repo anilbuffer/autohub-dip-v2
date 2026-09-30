@@ -1255,48 +1255,6 @@ function BrowseVehiclesContent() {
                     </div>
                   </div>
 
-                  {/* Enquiry Options */}
-                  <div className="space-y-2">
-                    <label className="block text-xs font-bold text-slate-700">
-                      Request Type
-                    </label>
-                    <div className="grid grid-cols-3 gap-2">
-                      <button
-                        type="button"
-                        onClick={() => setEnquiryType("reserve")}
-                        className={`p-2.5 rounded-xl border text-xs font-bold transition-all flex flex-col items-center gap-1 cursor-pointer ${enquiryType === "reserve"
-                          ? "bg-rose-50 text-[#E11D48] border-rose-300 ring-2 ring-rose-200"
-                          : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
-                          }`}
-                      >
-                        <Clock size={15} />
-                        <span>24h Reserve</span>
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setEnquiryType("inspection")}
-                        className={`p-2.5 rounded-xl border text-xs font-bold transition-all flex flex-col items-center gap-1 cursor-pointer ${enquiryType === "inspection"
-                          ? "bg-rose-50 text-[#E11D48] border-rose-300 ring-2 ring-rose-200"
-                          : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
-                          }`}
-                      >
-                        <ShieldCheck size={15} />
-                        <span>Inspect Sheet</span>
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setEnquiryType("quote")}
-                        className={`p-2.5 rounded-xl border text-xs font-bold transition-all flex flex-col items-center gap-1 cursor-pointer ${enquiryType === "quote"
-                          ? "bg-rose-50 text-[#E11D48] border-rose-300 ring-2 ring-rose-200"
-                          : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
-                          }`}
-                      >
-                        <Car size={15} />
-                        <span>Freight Quote</span>
-                      </button>
-                    </div>
-                  </div>
-
                   {/* Dealer Info */}
                   <div className="grid grid-cols-2 gap-3 text-xs">
                     <div>
