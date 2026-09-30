@@ -21,7 +21,7 @@ export default function RoleSwitcher({ variant = 'light' }: RoleSwitcherProps) {
 
       {/* Dealer Role Button */}
       <Link
-        href="/"
+        href="/browse-vehicles"
         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-semibold transition-all select-none ${
           !isAdmin
             ? 'bg-white text-[#111C2D] shadow-sm border border-[#E2E8F0]'

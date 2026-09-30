@@ -326,7 +326,7 @@ function MarketContent() {
             Set up your wish list and find matching vehicles first, then come here to compare against NZ market pricing.
           </p>
           <Link
-            href="/"
+            href="/browse-vehicles"
             className="inline-flex items-center gap-2.5 px-6 py-3 bg-[#E11D48] text-white text-[14px] font-bold rounded-xl hover:bg-[#BE123C] transition-all shadow-md shadow-rose-900/20"
           >
             <Search size={16} />

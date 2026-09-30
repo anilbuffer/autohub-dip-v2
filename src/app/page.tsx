@@ -12,5 +12,5 @@ export default async function HomePage({
     )
   ).toString();
 
-  redirect(queryString ? `/browse-vehicles?${queryString}` : "/browse-vehicles");
+  redirect(queryString ? `/login?${queryString}` : "/login");
 }

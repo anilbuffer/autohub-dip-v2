@@ -52,29 +52,26 @@ export function WishlistButton({ onClick }: { onClick: () => void }) {
 
   return (
     <button
+      id="update-wishlist-header-btn"
       onClick={onClick}
-      className={`relative flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-[12px] font-semibold transition-all duration-200 border ${
+      className={`relative flex items-center gap-2 px-3 py-1.5 rounded-xl text-[12px] font-semibold transition-all duration-200 border cursor-pointer ${
         criteriaCount > 0
-          ? 'bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100 shadow-sm'
-          : 'bg-[#F7F9FA] text-[#536471] border-[#E8ECF0] hover:bg-[#F0F2F5] hover:text-[#111C2D]'
+          ? 'bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100 shadow-xs'
+          : 'bg-[#F8FAFC] text-[#475569] border-[#E2E8F0] hover:bg-[#F1F5F9] hover:text-[#0A1322] shadow-xs'
       }`}
-      title="Manage Buying Wish List Criteria"
+      title="Update Buying Wishlist Criteria"
     >
-      <div className={`w-5 h-5 rounded-md flex items-center justify-center ${
-        criteriaCount > 0 ? 'bg-[#E11D48] text-white shadow-xs' : 'text-[#8899A6]'
+      <div className={`w-5 h-5 rounded-lg flex items-center justify-center ${
+        criteriaCount > 0 ? 'bg-[#E11D48] text-white shadow-xs' : 'bg-slate-200/80 text-[#64748B]'
       }`}>
-        <Heart size={12} className={criteriaCount > 0 ? 'fill-white' : ''} />
+        <Heart size={12} className={criteriaCount > 0 ? 'fill-white text-white' : ''} />
       </div>
-      <span className="font-medium">Wish List</span>
+      <span className="font-semibold text-[12px]">Update Wishlist</span>
       
-      {criteriaCount > 0 ? (
-        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-[#E11D48] text-white">
+      {criteriaCount > 0 && (
+        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-[#E11D48] text-white ml-0.5">
           <span>{criteriaCount}</span>
-          <span className="opacity-70 font-normal">| {matchCount} cars</span>
-        </span>
-      ) : (
-        <span className="text-[10px] font-medium text-[#8899A6] bg-black/5 px-1.5 py-0.5 rounded-full">
-          Set
+          <span className="opacity-80 font-normal">| {matchCount}</span>
         </span>
       )}
     </button>
