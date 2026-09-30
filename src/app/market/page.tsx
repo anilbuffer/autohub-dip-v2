@@ -103,14 +103,14 @@ function MarketContent() {
           <div>
             <Link
               href="/matches"
-              className="inline-flex items-center gap-2 text-[13px] font-semibold text-[#536471] hover:text-[#C8102E] bg-white border border-[#E8ECF0] hover:border-[#C8102E]/20 px-4 py-2 rounded-xl transition-all hover:bg-[#FFF0F1] mb-4"
+              className="inline-flex items-center gap-2 text-[13px] font-semibold text-[#536471] hover:text-[#E11D48] bg-white border border-[#E8ECF0] hover:border-[#E11D48]/20 px-4 py-2 rounded-xl transition-all hover:bg-[#FFF1F2] mb-4"
             >
               <ArrowLeft size={14} />
               Back to Matches
             </Link>
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#C8102E]/10 to-[#C8102E]/5 flex items-center justify-center border border-[#C8102E]/10">
-                <BarChart3 size={20} className="text-[#C8102E]" />
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#E11D48]/10 to-[#E11D48]/5 flex items-center justify-center border border-[#E11D48]/10">
+                <BarChart3 size={20} className="text-[#E11D48]" />
               </div>
               <div>
                 <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111C2D] tracking-tight">
@@ -128,19 +128,19 @@ function MarketContent() {
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
           <div className="bg-white rounded-2xl border border-[#E8ECF0] p-5 shadow-card">
             <div className="text-[10px] font-bold text-[#AAB8C2] uppercase tracking-wider mb-3">Heiwa Landed Cost</div>
-            <div className="text-2xl font-extrabold text-[#111C2D]">NZ${landedParam.toLocaleString()}</div>
+            <div className="text-2xl font-extrabold text-[#111C2D]">NZ${landedParam.toLocaleString("en-US")}</div>
             <div className="text-[12px] text-[#8899A6] mt-1.5 font-medium">Inc. FOB, freight, compliance, GST</div>
           </div>
           <div className="bg-white rounded-2xl border border-[#E8ECF0] p-5 shadow-card">
             <div className="text-[10px] font-bold text-[#AAB8C2] uppercase tracking-wider mb-3">Avg NZ Retail</div>
-            <div className="text-2xl font-extrabold text-[#111C2D]">NZ${avgNzPrice.toLocaleString()}</div>
+            <div className="text-2xl font-extrabold text-[#111C2D]">NZ${avgNzPrice.toLocaleString("en-US")}</div>
             <div className="text-[12px] text-[#8899A6] mt-1.5 font-medium">Based on {comparables.length} similar listings</div>
           </div>
           <div className={`rounded-2xl border-2 p-5 shadow-card ${margin > 0 ? 'bg-emerald-50/50 border-emerald-200' : 'bg-red-50/50 border-red-200'}`}>
             <div className="text-[10px] font-bold text-[#AAB8C2] uppercase tracking-wider mb-3">Estimated Margin</div>
             <div className={`text-2xl font-extrabold flex items-center gap-2 ${margin > 0 ? 'text-emerald-700' : 'text-red-600'}`}>
               {margin > 0 ? <TrendingUp size={20} /> : <TrendingDown size={20} />}
-              NZ${Math.abs(margin).toLocaleString()}
+              NZ${Math.abs(margin).toLocaleString("en-US")}
             </div>
             <div className={`text-[12px] mt-1.5 font-semibold ${margin > 0 ? 'text-emerald-600' : 'text-red-500'}`}>
               {marginPercent}% {margin > 0 ? 'potential upside' : 'below retail'}
@@ -177,7 +177,7 @@ function MarketContent() {
                     />
                     {/* Heiwa position marker */}
                     <div
-                      className="absolute top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#C8102E] border-3 border-white shadow-lg z-10 flex items-center justify-center"
+                      className="absolute top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#E11D48] border-3 border-white shadow-lg z-10 flex items-center justify-center"
                       style={{ left: `${Math.min(Math.max(landedPos, 2), 98)}%`, transform: 'translate(-50%, -50%)' }}
                     >
                       <span className="text-[7px] font-bold text-white">H</span>
@@ -190,7 +190,7 @@ function MarketContent() {
                           key={i}
                           className="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-[#536471] border-2 border-white shadow-md"
                           style={{ left: `${Math.min(Math.max(pos, 2), 98)}%`, transform: 'translate(-50%, -50%)' }}
-                          title={`${c.source}: NZ$${c.price.toLocaleString()}`}
+                          title={`${c.source}: NZ$${c.price.toLocaleString("en-US")}`}
                         />
                       );
                     })}
@@ -200,7 +200,7 @@ function MarketContent() {
             </div>
             <div className="flex items-center justify-between mt-4 text-[12px] text-[#536471] font-medium">
               <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full bg-[#C8102E]" />
+                <span className="w-3 h-3 rounded-full bg-[#E11D48]" />
                 Heiwa Landed Cost
               </div>
               <div className="flex items-center gap-2">
@@ -243,7 +243,7 @@ function MarketContent() {
                         <span className="font-bold text-[#111C2D]">{comp.source}</span>
                       </td>
                       <td className="px-6 py-4 text-[#536471]">{comp.title}</td>
-                      <td className="px-6 py-4 text-[#536471] text-right font-mono font-medium">{comp.kms.toLocaleString()}</td>
+                      <td className="px-6 py-4 text-[#536471] text-right font-mono font-medium">{comp.kms.toLocaleString("en-US")}</td>
                       <td className="px-6 py-4 text-[#536471]">
                         <span className="flex items-center gap-1.5">
                           <MapPin size={12} className="text-[#AAB8C2]" />
@@ -251,7 +251,7 @@ function MarketContent() {
                         </span>
                       </td>
                       <td className="px-6 py-4 text-right font-extrabold text-[#111C2D]">
-                        NZ${comp.price.toLocaleString()}
+                        NZ${comp.price.toLocaleString("en-US")}
                       </td>
                       <td className="px-6 py-4 text-right text-[#8899A6] font-medium">
                         {comp.daysListed} days
@@ -260,7 +260,7 @@ function MarketContent() {
                         <span className={`text-[12px] font-bold px-3 py-1 rounded-lg ${
                           diff > 0 ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-red-50 text-red-600 border border-red-200'
                         }`}>
-                          {diff > 0 ? '+' : ''}{diff > 0 ? `NZ$${diff.toLocaleString()}` : `-NZ$${Math.abs(diff).toLocaleString()}`}
+                          {diff > 0 ? '+' : ''}{diff > 0 ? `NZ$${diff.toLocaleString("en-US")}` : `-NZ$${Math.abs(diff).toLocaleString("en-US")}`}
                         </span>
                       </td>
                     </tr>
@@ -280,13 +280,13 @@ function MarketContent() {
             <div>
               <p className={`text-[15px] font-bold ${margin > 0 ? 'text-emerald-800' : 'text-amber-800'}`}>
                 {margin > 0
-                  ? `This vehicle has an estimated NZ$${margin.toLocaleString()} margin opportunity`
+                  ? `This vehicle has an estimated NZ$${margin.toLocaleString("en-US")} margin opportunity`
                   : `This vehicle's landed cost is close to NZ retail — margin may be tight`
                 }
               </p>
               <p className="text-[13px] text-[#536471] mt-2 leading-relaxed">
-                The Heiwa landed cost of <strong className="text-[#111C2D]">NZ${landedParam.toLocaleString()}</strong> compares against an average
-                NZ retail price of <strong className="text-[#111C2D]">NZ${avgNzPrice.toLocaleString()}</strong> across {comparables.length} similar
+                The Heiwa landed cost of <strong className="text-[#111C2D]">NZ${landedParam.toLocaleString("en-US")}</strong> compares against an average
+                NZ retail price of <strong className="text-[#111C2D]">NZ${avgNzPrice.toLocaleString("en-US")}</strong> across {comparables.length} similar
                 listings. Similar vehicles are selling in an average of <strong className="text-[#111C2D]">{avgDaysListed} days</strong>.
               </p>
             </div>
@@ -302,8 +302,8 @@ function MarketContent() {
       {/* Header */}
       <div>
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#C8102E]/10 to-[#C8102E]/5 flex items-center justify-center border border-[#C8102E]/10">
-            <BarChart3 size={20} className="text-[#C8102E]" />
+          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#E11D48]/10 to-[#E11D48]/5 flex items-center justify-center border border-[#E11D48]/10">
+            <BarChart3 size={20} className="text-[#E11D48]" />
           </div>
           <div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111C2D] tracking-tight">
@@ -327,7 +327,7 @@ function MarketContent() {
           </p>
           <Link
             href="/"
-            className="inline-flex items-center gap-2.5 px-6 py-3 bg-[#C8102E] text-white text-[14px] font-bold rounded-xl hover:bg-[#A30D24] transition-all shadow-md shadow-red-900/20"
+            className="inline-flex items-center gap-2.5 px-6 py-3 bg-[#E11D48] text-white text-[14px] font-bold rounded-xl hover:bg-[#BE123C] transition-all shadow-md shadow-rose-900/20"
           >
             <Search size={16} />
             Set Up Wish List
@@ -359,7 +359,7 @@ function MarketContent() {
                       {vehicle.year} {vehicle.make} {vehicle.model}
                     </h3>
                     <div className="flex items-center gap-3.5 mt-1.5 text-[13px] text-[#536471]">
-                      <span>{vehicle.kms.toLocaleString()} km</span>
+                      <span>{vehicle.kms.toLocaleString("en-US")} km</span>
                       <span>{vehicle.colorDesc}</span>
                       <span>{vehicle.cc > 0 ? `${vehicle.cc}cc` : 'EV'}</span>
                     </div>
@@ -368,22 +368,22 @@ function MarketContent() {
                   <div className="flex items-center gap-5 shrink-0">
                     <div className="text-right">
                       <div className="text-[10px] text-[#AAB8C2] uppercase tracking-wider font-bold">Landed</div>
-                      <div className="text-[15px] font-extrabold text-[#111C2D] mt-0.5">NZ${landed.totalLanded.toLocaleString()}</div>
+                      <div className="text-[15px] font-extrabold text-[#111C2D] mt-0.5">NZ${landed.totalLanded.toLocaleString("en-US")}</div>
                     </div>
                     <div className="text-right">
                       <div className="text-[10px] text-[#AAB8C2] uppercase tracking-wider font-bold">NZ Avg</div>
-                      <div className="text-[15px] font-bold text-[#536471] mt-0.5">NZ${avgNzPrice.toLocaleString()}</div>
+                      <div className="text-[15px] font-bold text-[#536471] mt-0.5">NZ${avgNzPrice.toLocaleString("en-US")}</div>
                     </div>
                     <div className={`text-right px-3.5 py-2 rounded-xl border ${margin > 0 ? 'bg-emerald-50 border-emerald-200' : 'bg-red-50 border-red-200'}`}>
                       <div className="text-[10px] text-[#AAB8C2] uppercase tracking-wider font-bold">Margin</div>
                       <div className={`text-[15px] font-extrabold mt-0.5 ${margin > 0 ? 'text-emerald-700' : 'text-red-600'}`}>
-                        {margin > 0 ? '+' : ''}NZ${margin.toLocaleString()}
+                        {margin > 0 ? '+' : ''}NZ${margin.toLocaleString("en-US")}
                       </div>
                     </div>
                     <Link
                       href={`/market?stock=${vehicle.stockId}&make=${vehicle.make}&model=${vehicle.model}&year=${vehicle.year}&kms=${vehicle.kms}&landed=${landed.totalLanded}`}
                       onClick={(e) => e.stopPropagation()}
-                      className="text-[12px] font-bold text-[#C8102E] hover:underline flex items-center gap-1.5 bg-[#FFF0F1] px-3 py-2 rounded-lg border border-[#FFE0E3] hover:bg-[#FFE0E3] transition-all"
+                      className="text-[12px] font-bold text-[#E11D48] hover:underline flex items-center gap-1.5 bg-[#FFF1F2] px-3 py-2 rounded-lg border border-[#FFE4E6] hover:bg-[#FFE4E6] transition-all"
                     >
                       Detail <ExternalLink size={11} />
                     </Link>
@@ -403,11 +403,11 @@ function MarketContent() {
                             <span className="font-bold text-[#111C2D]">{c.source}</span>
                             <span className="text-[#D1D5DB]">·</span>
                             <span className="text-[#536471]">{c.title}</span>
-                            <span className="text-[#AAB8C2] text-[12px]">{c.kms.toLocaleString()} km</span>
+                            <span className="text-[#AAB8C2] text-[12px]">{c.kms.toLocaleString("en-US")} km</span>
                           </div>
                           <div className="flex items-center gap-4">
                             <span className="text-[#AAB8C2] text-[12px]">{c.location}</span>
-                            <span className="font-extrabold text-[#111C2D]">NZ${c.price.toLocaleString()}</span>
+                            <span className="font-extrabold text-[#111C2D]">NZ${c.price.toLocaleString("en-US")}</span>
                             <span className="text-[#AAB8C2] text-[12px] font-medium">{c.daysListed}d</span>
                           </div>
                         </div>
@@ -429,7 +429,7 @@ export default function MarketPage() {
     <AppLayout>
       <Suspense fallback={
         <div className="flex items-center justify-center h-64">
-          <div className="w-6 h-6 border-2 border-[#E8ECF0] border-t-[#C8102E] rounded-full animate-spin" />
+          <div className="w-6 h-6 border-2 border-[#E8ECF0] border-t-[#E11D48] rounded-full animate-spin" />
         </div>
       }>
         <MarketContent />

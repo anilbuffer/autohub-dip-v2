@@ -169,17 +169,29 @@ export function getNZComparables(make: string, model: string, year: number, kms:
     HEIWA_VEHICLES.find(v => v.make === make && v.model === model)?.priceFob || 500000
   ).totalLanded;
   
+  // Deterministic seeded pseudo-random number generator to prevent SSR hydration mismatches
+  const seedStr = `${make}-${model}-${year}-${kms}`;
+  let seed = 0;
+  for (let s = 0; s < seedStr.length; s++) {
+    seed = (seed << 5) - seed + seedStr.charCodeAt(s);
+    seed |= 0;
+  }
+  const prng = () => {
+    seed = (seed * 9301 + 49297) % 233280;
+    return Math.abs(seed) / 233280;
+  };
+
   // NZ retail is typically 25-45% above landed cost
-  const retailMarkup = 1.25 + Math.random() * 0.2;
+  const retailMarkup = 1.25 + prng() * 0.2;
   const baseRetail = Math.round(basePrice * retailMarkup);
   
-  const count = 3 + Math.floor(Math.random() * 3);
+  const count = 3 + Math.floor(prng() * 3);
   const comparables: NZComparable[] = [];
   
   for (let i = 0; i < count; i++) {
-    const yearVariance = Math.floor(Math.random() * 3) - 1;
-    const kmVariance = Math.floor(Math.random() * 20000) - 10000;
-    const priceVariance = Math.floor((Math.random() - 0.5) * baseRetail * 0.15);
+    const yearVariance = Math.floor(prng() * 3) - 1;
+    const kmVariance = Math.floor(prng() * 20000) - 10000;
+    const priceVariance = Math.floor((prng() - 0.5) * baseRetail * 0.15);
     
     comparables.push({
       source: sources[i % sources.length],
@@ -188,7 +200,7 @@ export function getNZComparables(make: string, model: string, year: number, kms:
       kms: Math.max(5000, kms + kmVariance),
       price: Math.round((baseRetail + priceVariance) / 100) * 100,
       location: locations[i % locations.length],
-      daysListed: 5 + Math.floor(Math.random() * 45),
+      daysListed: 5 + Math.floor(prng() * 45),
     });
   }
   

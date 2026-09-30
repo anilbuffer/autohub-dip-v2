@@ -81,10 +81,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-[14px] font-black text-white tracking-wider leading-none">AUTOHEIWA</span>
-                  <span className="text-[8px] px-1.5 py-0.5 rounded font-bold bg-[#C8102E] text-white">OPS</span>
+                  <span className="text-[14px] font-black text-white tracking-wider leading-none">AUTOHUB DIP</span>
+                  <span className="text-[8px] px-1.5 py-0.5 rounded font-bold bg-[#E11D48] text-white">OPS</span>
                 </div>
-                <span className="block text-[10px] font-semibold text-[#9AB9D5] tracking-[0.12em] mt-1">BROKER & ADMIN</span>
+                <span className="block text-[10px] font-semibold text-[#9AB9D5] tracking-[0.12em] mt-1">DEALER INTELLIGENCE</span>
               </div>
             </Link>
             <button 
@@ -134,7 +134,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   <div className="flex items-center gap-3">
                     <div className={`flex items-center justify-center w-8 h-8 rounded-lg transition-all ${
                       isActive 
-                        ? 'bg-[#C8102E] shadow-md shadow-red-950/40 text-white' 
+                        ? 'bg-[#E11D48] shadow-md shadow-rose-950/40 text-white' 
                         : 'bg-white/[0.06] group-hover:bg-white/[0.1] text-[#9AB9D5] group-hover:text-white'
                     }`}>
                       <Icon size={16} />
@@ -144,7 +144,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   {item.badge && (
                     <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold transition-all ${
                       isActive 
-                        ? 'bg-[#C8102E]/20 text-[#FF6B78]' 
+                        ? 'bg-[#E11D48]/20 text-rose-300' 
                         : 'bg-white/[0.08] text-white/60'
                     }`}>
                       {item.badge}
@@ -205,8 +205,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <div className="text-lg font-extrabold text-[#111C2D] tracking-tight flex items-center gap-2.5 mt-0.5">
                 {pathname === '/admin' ? 'Demand Intelligence' : 'Command Center'}
                 <span className="hidden sm:inline-flex items-center gap-1.5 text-[10px] font-bold text-[#475569] bg-[#F1F5F9] px-2.5 py-1 rounded-lg border border-[#E2E8F0]">
-                  <Shield size={11} className="text-[#C8102E]" /> 
-                  {pathname === '/admin' ? 'Autohub & Heiwa Sourcing' : 'Brokerage Super Admin'}
+                  <Shield size={11} className="text-[#E11D48]" /> 
+                  {pathname === '/admin' ? 'AutoHub Dealer Intelligence Platform (DIP)' : 'DIP Brokerage Super Admin'}
                 </span>
               </div>
             </div>
@@ -233,7 +233,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             {/* Notification Bell */}
             <button className="relative p-2.5 text-[#475569] hover:text-[#111C2D] transition-colors border border-[#E2E8F0] rounded-xl hover:bg-[#F1F5F9] bg-white">
               <Bell size={18} />
-              <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-[#C8102E] rounded-full border-2 border-white animate-pulse-dot"></span>
+              <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-[#E11D48] rounded-full border-2 border-white animate-pulse-dot"></span>
             </button>
 
             {/* Settings Quick Icon */}

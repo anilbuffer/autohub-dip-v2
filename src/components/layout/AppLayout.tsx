@@ -20,6 +20,7 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { getStoredBids, getStoredWatchlist, getStoredPurchases } from '@/lib/dealerStore';
+import WishlistHeaderModal, { WishlistButton } from '@/components/layout/WishlistHeaderModal';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -27,6 +28,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [headerSearchQuery, setHeaderSearchQuery] = useState('');
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const [wishlistModalOpen, setWishlistModalOpen] = useState(false);
 
   // Dynamic counts for sidebar badges
   const [bidsCount, setBidsCount] = useState<number>(0);
@@ -85,21 +87,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     },
   ];
 
-  // Secondary lower menu items matching reference image
-  const secondaryNavItems = [
-    {
-      label: 'Profile',
-      href: '/profile',
-      icon: User,
-      activeCheck: (p: string) => p.startsWith('/profile'),
-    },
-    {
-      label: 'Help',
-      href: '/help',
-      icon: HelpCircle,
-      activeCheck: (p: string) => p.startsWith('/help'),
-    },
-  ];
 
   const handleHeaderSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -120,10 +107,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         />
       )}
 
-      {/* ─── Left Sidebar Navigation — Clean White matching Reference Design ─── */}
+      {/* ─── Left Sidebar Navigation — Sleek Modern Navy Blue ─── */}
       <aside
         className={`
-        fixed md:static inset-y-0 left-0 z-50 w-[240px] bg-white border-r border-[#E5E7EB] flex flex-col justify-between shrink-0 transition-transform duration-200 ease-in-out
+        fixed md:static inset-y-0 left-0 z-50 w-[248px] bg-gradient-to-b from-[#0F1B2E] via-[#0C1728] to-[#08101E] border-r border-[#1B2A42] flex flex-col justify-between shrink-0 transition-transform duration-200 ease-in-out text-slate-300
         ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
       `}
       >
@@ -132,27 +119,32 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <div className="flex items-center justify-between px-3 mb-6">
             <Link
               href="/browse-vehicles"
-              className="flex items-center gap-2.5 text-[#111827] group"
+              className="flex items-center gap-2.5 text-white group"
               onClick={() => setMobileMenuOpen(false)}
             >
-              <div className="w-8 h-8 rounded-lg bg-[#EFF6FF] text-[#1E3A5F] flex items-center justify-center border border-[#DBEAFE] group-hover:scale-105 transition-transform">
-                <Car size={18} className="stroke-[2.2]" />
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#1E2E4A] to-[#152238] text-white flex items-center justify-center border border-[#273B5E] shadow-sm shadow-blue-950/40 group-hover:scale-105 transition-transform">
+                <Car size={18} className="stroke-[2.2] text-white" />
               </div>
-              <span className="text-[15px] font-bold tracking-tight text-[#111827]">
-                Auckland Auto Group
-              </span>
+              <div className="min-w-0">
+                <span className="text-[14px] font-bold tracking-tight text-white block leading-tight truncate">
+                  Auckland Auto Group
+                </span>
+                <span className="text-[10px] font-semibold text-slate-400 tracking-wider uppercase block">
+                  Dealer Portal
+                </span>
+              </div>
             </Link>
 
             <button
               onClick={() => setMobileMenuOpen(false)}
-              className="md:hidden text-[#9CA3AF] hover:text-[#111827] p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
+              className="md:hidden text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-white/10 transition-colors"
             >
               <X size={18} />
             </button>
           </div>
 
           {/* Primary Navigation Links */}
-          <nav className="space-y-1">
+          <nav className="space-y-1.5">
             {primaryNavItems.map((item) => {
               const Icon = item.icon;
               const isActive = item.activeCheck(pathname);
@@ -164,14 +156,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                   onClick={() => setMobileMenuOpen(false)}
                   className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[13px] font-medium transition-all ${
                     isActive
-                      ? 'bg-[#EFF6FF] text-[#1E3A5F] font-semibold'
-                      : 'text-[#4B5563] hover:text-[#111827] hover:bg-[#F9FAFB]'
+                      ? 'bg-[#E11D48] text-white font-semibold shadow-md shadow-rose-950/40'
+                      : 'text-slate-300 hover:text-white hover:bg-white/[0.08]'
                   }`}
                 >
                   <div className="flex items-center gap-3">
                     <Icon
                       size={18}
-                      className={isActive ? 'text-[#1E3A5F] stroke-[2.2]' : 'text-[#6B7280]'}
+                      className={isActive ? 'text-white stroke-[2.2]' : 'text-slate-400'}
                     />
                     <span>{item.label}</span>
                   </div>
@@ -180,8 +172,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     <span
                       className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${
                         isActive
-                          ? 'bg-[#1E3A5F] text-white'
-                          : 'bg-[#F1F5F9] text-[#64748B]'
+                          ? 'bg-white text-[#E11D48]'
+                          : 'bg-white/15 text-slate-200'
                       }`}
                     >
                       {item.badge}
@@ -191,39 +183,15 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               );
             })}
           </nav>
-
-          {/* Secondary Lower Links */}
-          <div className="mt-8 pt-4 border-t border-[#F1F5F9] space-y-1">
-            {secondaryNavItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = item.activeCheck(pathname);
-
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[13px] font-medium transition-all ${
-                    isActive
-                      ? 'bg-[#EFF6FF] text-[#1E3A5F] font-semibold'
-                      : 'text-[#4B5563] hover:text-[#111827] hover:bg-[#F9FAFB]'
-                  }`}
-                >
-                  <Icon
-                    size={18}
-                    className={isActive ? 'text-[#1E3A5F] stroke-[2.2]' : 'text-[#6B7280]'}
-                  />
-                  <span>{item.label}</span>
-                </Link>
-              );
-            })}
-          </div>
         </div>
 
         {/* Small footer info */}
-        <div className="p-4 border-t border-[#F1F5F9] text-[11px] text-[#9CA3AF] flex items-center justify-between">
-          <span>AutoHub DIP v2.4</span>
-          <span className="w-2 h-2 rounded-full bg-emerald-500" title="Connected to Heiwa Live Feed" />
+        <div className="p-4 border-t border-[#1B2A42] text-[11px] text-slate-400 flex items-center justify-between bg-black/20">
+          <span className="font-medium text-slate-400">AutoHub DIP v2.4</span>
+          <div className="flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" title="Connected to Heiwa Live Feed" />
+            <span className="text-[10px] text-slate-400 font-mono">LIVE</span>
+          </div>
         </div>
       </aside>
 
@@ -247,29 +215,32 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 value={headerSearchQuery}
                 onChange={(e) => setHeaderSearchQuery(e.target.value)}
                 placeholder="Search make, model, year or keyword..."
-                className="w-full pl-10 pr-4 py-2 bg-white border border-[#E5E7EB] rounded-xl text-xs sm:text-sm text-[#111827] placeholder:text-[#9CA3AF] outline-none focus:border-[#1E3A5F] focus:ring-1 focus:ring-[#1E3A5F] transition-all"
+                className="w-full pl-10 pr-4 py-2 bg-white border border-[#E5E7EB] rounded-xl text-xs sm:text-sm text-[#111827] placeholder:text-[#9CA3AF] outline-none focus:border-[#E11D48] focus:ring-1 focus:ring-[#E11D48] transition-all"
               />
             </form>
           </div>
 
-          {/* Right Header: Notification + Dealer Profile */}
-          <div className="flex items-center gap-3 ml-4">
+          {/* Right Header: Wishlist Button + Notification + Dealer Profile */}
+          <div className="flex items-center gap-2.5 sm:gap-3 ml-3 sm:ml-4">
+            {/* Wishlist Header Quick Access */}
+            <WishlistButton onClick={() => setWishlistModalOpen(true)} />
+
             {/* Notification Bell */}
             <button
               className="relative p-2 text-[#4B5563] hover:text-[#111827] hover:bg-slate-100 rounded-full transition-colors"
               title="Notifications"
             >
               <Bell size={19} />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#EF4444] rounded-full ring-2 ring-white"></span>
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#E11D48] rounded-full ring-2 ring-white"></span>
             </button>
 
-            {/* User Profile Pill matching reference screenshot */}
+            {/* User Profile Pill */}
             <div className="relative">
               <button
                 onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
                 className="flex items-center gap-2.5 pl-2 pr-3 py-1.5 rounded-full hover:bg-slate-100 transition-colors text-left"
               >
-                <div className="w-8 h-8 rounded-full bg-[#1E3A5F] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs">
+                <div className="w-8 h-8 rounded-full bg-[#0F1B2E] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs border border-[#1E2E4A]">
                   AA
                 </div>
                 <div className="hidden sm:flex items-center gap-1.5">
@@ -331,6 +302,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           </div>
         </main>
       </div>
+
+      {/* Wishlist Header Modal */}
+      <WishlistHeaderModal
+        isOpen={wishlistModalOpen}
+        onClose={() => setWishlistModalOpen(false)}
+      />
     </div>
   );
 }

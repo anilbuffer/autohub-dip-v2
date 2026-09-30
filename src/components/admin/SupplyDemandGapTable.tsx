@@ -98,8 +98,8 @@ export default function SupplyDemandGapTable({ onSelectModel }: SupplyDemandGapT
   const getRecBadge = (rec: SupplyGapItem['recommendation']) => {
     if (rec === 'Source more') {
       return (
-        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-black bg-[#B30D12]/10 text-[#B30D12] border border-[#B30D12]/20 shadow-2xs">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#B30D12] animate-pulse"></span>
+        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-black bg-[#E11D48]/10 text-[#E11D48] border border-[#E11D48]/20 shadow-2xs">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#E11D48] animate-pulse"></span>
           Source more
         </span>
       );
@@ -126,15 +126,15 @@ export default function SupplyDemandGapTable({ onSelectModel }: SupplyDemandGapT
       {/* Callout Banner: "5 models would sell immediately if listed at auction" */}
       <div className="p-5 sm:p-6 bg-gradient-to-r from-amber-50 via-red-50/50 to-orange-50 border-b border-amber-200/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-start sm:items-center gap-3.5">
-          <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#B30D12] to-amber-500 text-white flex items-center justify-center shadow-md shadow-red-950/20 shrink-0">
+          <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#E11D48] to-amber-500 text-white flex items-center justify-center shadow-md shadow-rose-950/20 shrink-0">
             <Zap size={22} className="animate-pulse" />
           </div>
           <div>
             <div className="flex items-center gap-2 mb-0.5">
-              <span className="px-2 py-0.5 rounded font-black text-[10px] uppercase tracking-wider bg-[#B30D12] text-white">
+              <span className="px-2 py-0.5 rounded font-black text-[10px] uppercase tracking-wider bg-[#E11D48] text-white">
                 Opportunity Alert
               </span>
-              <span className="text-xs text-slate-500 font-semibold">Immediate Sourcing Arbitrage</span>
+              <span className="text-xs text-slate-500 font-semibold">Immediate Sourcing Opportunity</span>
             </div>
             <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
               5 models would sell immediately if listed at auction
@@ -162,7 +162,7 @@ export default function SupplyDemandGapTable({ onSelectModel }: SupplyDemandGapT
             Supply vs Demand Gap Analysis
           </h4>
           <p className="text-xs text-slate-500 font-medium mt-0.5">
-            Real-time arbitrage opportunity matrix identifying where Heiwa is missing auction sales opportunities.
+            Real-time demand gap matrix identifying where dealer purchase requests exceed current auction stock.
           </p>
         </div>
 
@@ -212,7 +212,7 @@ export default function SupplyDemandGapTable({ onSelectModel }: SupplyDemandGapT
                 <div className="flex items-center gap-1.5">
                   <span>Dealer Demand</span>
                   {sortField === 'demandUnits' ? (
-                    sortDirection === 'desc' ? <ChevronDown size={14} className="text-[#B30D12]" /> : <ChevronUp size={14} className="text-[#B30D12]" />
+                    sortDirection === 'desc' ? <ChevronDown size={14} className="text-[#E11D48]" /> : <ChevronUp size={14} className="text-[#E11D48]" />
                   ) : (
                     <ArrowUpDown size={12} className="text-slate-400" />
                   )}
@@ -226,7 +226,7 @@ export default function SupplyDemandGapTable({ onSelectModel }: SupplyDemandGapT
                 <div className="flex items-center gap-1.5">
                   <span>Current Heiwa Stock</span>
                   {sortField === 'currentStockUnits' ? (
-                    sortDirection === 'desc' ? <ChevronDown size={14} className="text-[#B30D12]" /> : <ChevronUp size={14} className="text-[#B30D12]" />
+                    sortDirection === 'desc' ? <ChevronDown size={14} className="text-[#E11D48]" /> : <ChevronUp size={14} className="text-[#E11D48]" />
                   ) : (
                     <ArrowUpDown size={12} className="text-slate-400" />
                   )}
@@ -240,7 +240,7 @@ export default function SupplyDemandGapTable({ onSelectModel }: SupplyDemandGapT
                 <div className="flex items-center gap-1.5">
                   <span>Coverage %</span>
                   {sortField === 'coveragePct' ? (
-                    sortDirection === 'desc' ? <ChevronDown size={14} className="text-[#B30D12]" /> : <ChevronUp size={14} className="text-[#B30D12]" />
+                    sortDirection === 'desc' ? <ChevronDown size={14} className="text-[#E11D48]" /> : <ChevronUp size={14} className="text-[#E11D48]" />
                   ) : (
                     <ArrowUpDown size={12} className="text-slate-400" />
                   )}
@@ -254,7 +254,7 @@ export default function SupplyDemandGapTable({ onSelectModel }: SupplyDemandGapT
                 <div className="flex items-center gap-1.5">
                   <span>NZ Days to Sell</span>
                   {sortField === 'avgDaysToSell' ? (
-                    sortDirection === 'desc' ? <ChevronDown size={14} className="text-[#B30D12]" /> : <ChevronUp size={14} className="text-[#B30D12]" />
+                    sortDirection === 'desc' ? <ChevronDown size={14} className="text-[#E11D48]" /> : <ChevronUp size={14} className="text-[#E11D48]" />
                   ) : (
                     <ArrowUpDown size={12} className="text-slate-400" />
                   )}
@@ -268,14 +268,14 @@ export default function SupplyDemandGapTable({ onSelectModel }: SupplyDemandGapT
                 <div className="flex items-center gap-1.5">
                   <span>Dealer Margin Potential</span>
                   {sortField === 'avgDealerMarginNzd' ? (
-                    sortDirection === 'desc' ? <ChevronDown size={14} className="text-[#B30D12]" /> : <ChevronUp size={14} className="text-[#B30D12]" />
+                    sortDirection === 'desc' ? <ChevronDown size={14} className="text-[#E11D48]" /> : <ChevronUp size={14} className="text-[#E11D48]" />
                   ) : (
                     <ArrowUpDown size={12} className="text-slate-400" />
                   )}
                 </div>
               </th>
 
-              <th className="py-3 px-5 text-right">AI Recommendation</th>
+              <th className="py-3 px-5 text-right">Market Indicator</th>
             </tr>
           </thead>
 
@@ -288,7 +288,7 @@ export default function SupplyDemandGapTable({ onSelectModel }: SupplyDemandGapT
                   key={item.id}
                   className={`hover:bg-slate-50/90 transition-colors ${
                     item.immediateSeller 
-                      ? 'bg-amber-50/25 border-l-4 border-l-[#B30D12]' 
+                      ? 'bg-amber-50/25 border-l-4 border-l-[#E11D48]' 
                       : ''
                   }`}
                 >
@@ -308,7 +308,7 @@ export default function SupplyDemandGapTable({ onSelectModel }: SupplyDemandGapT
                             {item.model}
                           </span>
                           {item.immediateSeller && (
-                            <span className="px-1.5 py-0.5 rounded font-black text-[9px] uppercase tracking-wider bg-red-100 text-[#B30D12] border border-red-200">
+                            <span className="px-1.5 py-0.5 rounded font-black text-[9px] uppercase tracking-wider bg-rose-100 text-[#E11D48] border border-rose-200">
                               Immediate Seller
                             </span>
                           )}

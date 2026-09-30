@@ -54,7 +54,7 @@ function formatSpecsLine(v: HeiwaVehicle): string {
   const disp = v.cc > 0 ? `${(v.cc / 1000).toFixed(1)}L` : "EV";
   const fuel = v.fuelType === "H" ? "Hybrid" : v.fuelType === "D" ? "Diesel" : v.fuelType === "E" ? "Electric" : "Petrol";
   const trans = v.trans === "FAT" || v.trans === "AT" || v.trans === "DAT" ? "Automatic" : v.trans === "MT" ? "Manual" : "Automatic";
-  const kms = `${v.kms.toLocaleString()} km`;
+  const kms = `${v.kms.toLocaleString("en-US")} km`;
   return `${disp} ${fuel} | ${trans} | ${kms}`;
 }
 
@@ -244,7 +244,7 @@ function BrowseVehiclesContent() {
                   setSelectedModel("all");
                   setCurrentPage(1);
                 }}
-                className="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl px-3 py-2.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#1E3A5F] focus:ring-1 focus:ring-[#1E3A5F] appearance-none pr-8 cursor-pointer"
+                className="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl px-3 py-2.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#E11D48] focus:ring-1 focus:ring-[#E11D48] appearance-none pr-8 cursor-pointer"
               >
                 <option value="all">Any Make</option>
                 {makes.map((m) => (
@@ -270,7 +270,7 @@ function BrowseVehiclesContent() {
                   setCurrentPage(1);
                 }}
                 disabled={selectedMake === "all"}
-                className="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl px-3 py-2.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#1E3A5F] focus:ring-1 focus:ring-[#1E3A5F] appearance-none pr-8 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl px-3 py-2.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#E11D48] focus:ring-1 focus:ring-[#E11D48] appearance-none pr-8 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <option value="all">{selectedMake === "all" ? "Any Model" : `All ${selectedMake}`}</option>
                 {availableModels.map((mod) => (
@@ -295,7 +295,7 @@ function BrowseVehiclesContent() {
                   setSelectedYear(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl px-3 py-2.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#1E3A5F] focus:ring-1 focus:ring-[#1E3A5F] appearance-none pr-8 cursor-pointer"
+                className="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl px-3 py-2.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#E11D48] focus:ring-1 focus:ring-[#E11D48] appearance-none pr-8 cursor-pointer"
               >
                 <option value="all">Any Year</option>
                 <option value="2022">2022 & Newer</option>
@@ -321,7 +321,7 @@ function BrowseVehiclesContent() {
                   setSelectedFuel(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl px-3 py-2.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#1E3A5F] focus:ring-1 focus:ring-[#1E3A5F] appearance-none pr-8 cursor-pointer"
+                className="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl px-3 py-2.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#E11D48] focus:ring-1 focus:ring-[#E11D48] appearance-none pr-8 cursor-pointer"
               >
                 <option value="all">Any Fuel</option>
                 <option value="H">Hybrid</option>
@@ -345,7 +345,7 @@ function BrowseVehiclesContent() {
                   setSelectedLocation(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl px-3 py-2.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#1E3A5F] focus:ring-1 focus:ring-[#1E3A5F] appearance-none pr-8 cursor-pointer"
+                className="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl px-3 py-2.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#E11D48] focus:ring-1 focus:ring-[#E11D48] appearance-none pr-8 cursor-pointer"
               >
                 <option value="all">All Locations</option>
                 <option value="auckland">Auckland Yard</option>
@@ -362,10 +362,10 @@ function BrowseVehiclesContent() {
           <div>
             <button
               type="submit"
-              className="w-full py-2.5 px-4 bg-[#1E3A5F] hover:bg-[#162C48] text-white rounded-xl text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-2 h-[41px]"
+              className="w-full py-2.5 px-4 bg-[#E11D48] hover:bg-[#BE123C] text-white rounded-xl text-xs font-bold transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2 h-[41px]"
             >
               <Search size={15} />
-              <span>Search</span>
+              <span>Search Stock</span>
             </button>
           </div>
         </div>
@@ -380,7 +380,7 @@ function BrowseVehiclesContent() {
           {(selectedMake !== "all" || selectedModel !== "all" || selectedYear !== "all" || selectedFuel !== "all" || searchQuery) && (
             <button
               onClick={resetFilters}
-              className="ml-3 text-xs text-[#1E3A5F] hover:underline font-semibold"
+              className="ml-3 text-xs text-[#E11D48] hover:underline font-semibold"
             >
               Clear filters
             </button>
@@ -395,7 +395,7 @@ function BrowseVehiclesContent() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="bg-white border border-[#CBD5E1] rounded-xl px-3 py-1.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#1E3A5F] pr-7 cursor-pointer shadow-2xs"
+                className="bg-white border border-[#CBD5E1] rounded-xl px-3 py-1.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#E11D48] pr-7 cursor-pointer shadow-2xs"
               >
                 <option value="ending_soon">Ending Soon</option>
                 <option value="price_asc">Price: Low to High</option>
@@ -413,7 +413,7 @@ function BrowseVehiclesContent() {
               onClick={() => setViewMode("grid")}
               className={`p-1.5 rounded-lg transition-colors ${
                 viewMode === "grid"
-                  ? "bg-[#1E3A5F] text-white shadow-xs"
+                  ? "bg-[#0F1B2E] text-white shadow-xs"
                   : "text-[#64748B] hover:text-[#111C2D]"
               }`}
               title="Grid View"
@@ -424,7 +424,7 @@ function BrowseVehiclesContent() {
               onClick={() => setViewMode("list")}
               className={`p-1.5 rounded-lg transition-colors ${
                 viewMode === "list"
-                  ? "bg-[#1E3A5F] text-white shadow-xs"
+                  ? "bg-[#0F1B2E] text-white shadow-xs"
                   : "text-[#64748B] hover:text-[#111C2D]"
               }`}
               title="List View"
@@ -445,7 +445,7 @@ function BrowseVehiclesContent() {
           </p>
           <button
             onClick={resetFilters}
-            className="px-5 py-2.5 rounded-xl bg-[#1E3A5F] hover:bg-[#162C48] text-white text-xs font-bold transition-colors"
+            className="px-5 py-2.5 rounded-xl bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-bold transition-colors shadow-sm hover:shadow-md"
           >
             Reset All Filters
           </button>
@@ -509,12 +509,12 @@ function BrowseVehiclesContent() {
                   {/* Price & Action Row */}
                   <div className="flex items-center justify-between gap-3 pt-4 mt-2 border-t border-[#F1F5F9]">
                     <div className="text-lg font-extrabold text-[#111C2D] font-mono tracking-tight">
-                      NZ${landed.totalLanded.toLocaleString()}
+                      NZ${landed.totalLanded.toLocaleString("en-US")}
                     </div>
 
                     <Link
                       href={`/vehicles/${uniqueId}`}
-                      className="px-4 py-2 bg-[#1E3A5F] hover:bg-[#162C48] text-white text-xs font-semibold rounded-xl transition-all shadow-2xs hover:shadow-sm"
+                      className="px-4 py-2 bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-semibold rounded-xl transition-all shadow-xs hover:shadow-md"
                     >
                       View Details
                     </Link>
@@ -569,7 +569,7 @@ function BrowseVehiclesContent() {
                   <div className="text-left sm:text-right">
                     <div className="text-[10px] text-[#94A3B8] font-semibold uppercase">Landed NZD</div>
                     <div className="text-lg font-extrabold text-[#111C2D] font-mono">
-                      NZ${landed.totalLanded.toLocaleString()}
+                      NZ${landed.totalLanded.toLocaleString("en-US")}
                     </div>
                   </div>
 
@@ -586,7 +586,7 @@ function BrowseVehiclesContent() {
                     </button>
                     <Link
                       href={`/vehicles/${uniqueId}`}
-                      className="px-4 py-2 bg-[#1E3A5F] hover:bg-[#162C48] text-white text-xs font-semibold rounded-xl transition-all shadow-2xs"
+                      className="px-4 py-2 bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-semibold rounded-xl transition-all shadow-xs hover:shadow-md"
                     >
                       View Details
                     </Link>
@@ -627,7 +627,7 @@ function BrowseVehiclesContent() {
                   onClick={() => setCurrentPage(pageNum)}
                   className={`w-8 h-8 rounded-lg text-xs font-bold transition-all ${
                     isActive
-                      ? "bg-[#1E3A5F] text-white shadow-2xs"
+                      ? "bg-[#E11D48] text-white shadow-xs"
                       : "bg-white border border-[#CBD5E1] text-[#475569] hover:bg-slate-50 hover:text-[#111C2D]"
                   }`}
                 >
@@ -643,7 +643,7 @@ function BrowseVehiclesContent() {
                   onClick={() => setCurrentPage(totalPages)}
                   className={`w-8 h-8 rounded-lg text-xs font-bold transition-all ${
                     currentPage === totalPages
-                      ? "bg-[#1E3A5F] text-white shadow-2xs"
+                      ? "bg-[#E11D48] text-white shadow-xs"
                       : "bg-white border border-[#CBD5E1] text-[#475569] hover:bg-slate-50 hover:text-[#111C2D]"
                   }`}
                 >

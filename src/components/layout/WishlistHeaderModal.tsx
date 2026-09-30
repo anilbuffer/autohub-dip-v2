@@ -61,14 +61,14 @@ export function WishlistButton({ onClick }: { onClick: () => void }) {
       title="Manage Buying Wish List Criteria"
     >
       <div className={`w-5 h-5 rounded-md flex items-center justify-center ${
-        criteriaCount > 0 ? 'bg-[#C8102E] text-white shadow-xs' : 'text-[#8899A6]'
+        criteriaCount > 0 ? 'bg-[#E11D48] text-white shadow-xs' : 'text-[#8899A6]'
       }`}>
         <Heart size={12} className={criteriaCount > 0 ? 'fill-white' : ''} />
       </div>
       <span className="font-medium">Wish List</span>
       
       {criteriaCount > 0 ? (
-        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-[#C8102E] text-white">
+        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-[#E11D48] text-white">
           <span>{criteriaCount}</span>
           <span className="opacity-70 font-normal">| {matchCount} cars</span>
         </span>
@@ -160,7 +160,7 @@ export default function WishlistHeaderModal({ isOpen, onClose, onApply }: Wishli
         {/* Modal Header */}
         <div className="px-6 py-5 border-b border-[#E8ECF0] flex items-center justify-between bg-gradient-to-r from-rose-50/70 via-white to-white">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#C8102E] text-white flex items-center justify-center shadow-md shadow-red-900/20">
+            <div className="w-10 h-10 rounded-xl bg-[#E11D48] text-white flex items-center justify-center shadow-md shadow-rose-950/20">
               <Heart size={20} className="fill-white" />
             </div>
             <div>
@@ -211,7 +211,7 @@ export default function WishlistHeaderModal({ isOpen, onClose, onApply }: Wishli
               </p>
               <button
                 onClick={addCriteriaRow}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-[#C8102E] text-white rounded-xl text-xs font-semibold hover:bg-[#A80D26] transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-[#E11D48] text-white rounded-xl text-xs font-semibold hover:bg-[#BE123C] transition-colors shadow-sm"
               >
                 <Plus size={14} /> Add First Criteria
               </button>
@@ -233,7 +233,7 @@ export default function WishlistHeaderModal({ isOpen, onClose, onApply }: Wishli
                     </span>
                     <button
                       onClick={() => removeCriteriaRow(item.id)}
-                      className="text-[#8899A6] hover:text-[#C8102E] p-1 rounded-lg hover:bg-rose-50 transition-colors"
+                      className="text-[#8899A6] hover:text-[#E11D48] p-1 rounded-lg hover:bg-rose-50 transition-colors"
                       title="Remove criteria"
                     >
                       <Trash2 size={14} />
@@ -247,7 +247,7 @@ export default function WishlistHeaderModal({ isOpen, onClose, onApply }: Wishli
                       <select
                         value={item.make}
                         onChange={e => updateCriteriaRow(item.id, 'make', e.target.value)}
-                        className="w-full bg-white border border-[#E8ECF0] rounded-lg px-2.5 py-2 text-xs font-medium text-[#111C2D] focus:outline-none focus:border-[#C8102E] focus:ring-1 focus:ring-[#C8102E]"
+                        className="w-full bg-white border border-[#E8ECF0] rounded-lg px-2.5 py-2 text-xs font-medium text-[#111C2D] focus:outline-none focus:border-[#E11D48] focus:ring-1 focus:ring-[#E11D48]"
                       >
                         <option value="">Any Make</option>
                         {makes.map(m => (
@@ -262,7 +262,7 @@ export default function WishlistHeaderModal({ isOpen, onClose, onApply }: Wishli
                       <select
                         value={item.model}
                         onChange={e => updateCriteriaRow(item.id, 'model', e.target.value)}
-                        className="w-full bg-white border border-[#E8ECF0] rounded-lg px-2.5 py-2 text-xs font-medium text-[#111C2D] focus:outline-none focus:border-[#C8102E] focus:ring-1 focus:ring-[#C8102E]"
+                        className="w-full bg-white border border-[#E8ECF0] rounded-lg px-2.5 py-2 text-xs font-medium text-[#111C2D] focus:outline-none focus:border-[#E11D48] focus:ring-1 focus:ring-[#E11D48]"
                         disabled={!item.make}
                       >
                         <option value="">All Models ({item.make || 'Select Make'})</option>
@@ -282,7 +282,7 @@ export default function WishlistHeaderModal({ isOpen, onClose, onApply }: Wishli
                           max={2026}
                           value={item.yearFrom}
                           onChange={e => updateCriteriaRow(item.id, 'yearFrom', parseInt(e.target.value) || 2014)}
-                          className="w-full bg-white border border-[#E8ECF0] rounded-lg px-2 py-2 text-xs font-medium text-center focus:outline-none focus:border-[#C8102E]"
+                          className="w-full bg-white border border-[#E8ECF0] rounded-lg px-2 py-2 text-xs font-medium text-center focus:outline-none focus:border-[#E11D48]"
                         />
                         <span className="text-xs text-[#8899A6]">-</span>
                         <input
@@ -291,7 +291,7 @@ export default function WishlistHeaderModal({ isOpen, onClose, onApply }: Wishli
                           max={2026}
                           value={item.yearTo}
                           onChange={e => updateCriteriaRow(item.id, 'yearTo', parseInt(e.target.value) || 2024)}
-                          className="w-full bg-white border border-[#E8ECF0] rounded-lg px-2 py-2 text-xs font-medium text-center focus:outline-none focus:border-[#C8102E]"
+                          className="w-full bg-white border border-[#E8ECF0] rounded-lg px-2 py-2 text-xs font-medium text-center focus:outline-none focus:border-[#E11D48]"
                         />
                       </div>
                     </div>
@@ -302,7 +302,7 @@ export default function WishlistHeaderModal({ isOpen, onClose, onApply }: Wishli
                       <select
                         value={item.maxKms}
                         onChange={e => updateCriteriaRow(item.id, 'maxKms', parseInt(e.target.value))}
-                        className="w-full bg-white border border-[#E8ECF0] rounded-lg px-2.5 py-2 text-xs font-medium text-[#111C2D] focus:outline-none focus:border-[#C8102E]"
+                        className="w-full bg-white border border-[#E8ECF0] rounded-lg px-2.5 py-2 text-xs font-medium text-[#111C2D] focus:outline-none focus:border-[#E11D48]"
                       >
                         <option value={40000}>Under 40,000 km</option>
                         <option value={60000}>Under 60,000 km</option>
@@ -320,7 +320,7 @@ export default function WishlistHeaderModal({ isOpen, onClose, onApply }: Wishli
                           Max Landed Budget (NZD)
                         </label>
                         <span className="text-xs font-bold text-[#111C2D] font-mono">
-                          ${item.maxBudget.toLocaleString()} NZD
+                          ${item.maxBudget.toLocaleString("en-US")} NZD
                         </span>
                       </div>
                       <input
@@ -330,7 +330,7 @@ export default function WishlistHeaderModal({ isOpen, onClose, onApply }: Wishli
                         step={1000}
                         value={item.maxBudget}
                         onChange={e => updateCriteriaRow(item.id, 'maxBudget', parseInt(e.target.value))}
-                        className="w-full h-1.5 bg-[#E8ECF0] rounded-lg appearance-none cursor-pointer accent-[#C8102E]"
+                        className="w-full h-1.5 bg-[#E8ECF0] rounded-lg appearance-none cursor-pointer accent-[#E11D48]"
                       />
                       <div className="flex justify-between text-[10px] text-[#8899A6] mt-1 font-mono">
                         <span>$8,000</span>
@@ -362,7 +362,7 @@ export default function WishlistHeaderModal({ isOpen, onClose, onApply }: Wishli
                 setCriteria([]);
                 saveStoredWishlistCriteria([]);
               }}
-              className="text-[12px] font-medium text-[#8899A6] hover:text-[#C8102E] transition-colors"
+              className="text-[12px] font-medium text-[#8899A6] hover:text-[#E11D48] transition-colors"
             >
               Clear All
             </button>
@@ -382,7 +382,7 @@ export default function WishlistHeaderModal({ isOpen, onClose, onApply }: Wishli
             </button>
             <button
               onClick={handleApplyToBrowse}
-              className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-[#C8102E] hover:bg-[#A80D26] transition-colors flex items-center gap-1.5 shadow-md shadow-red-900/20"
+              className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-[#E11D48] hover:bg-[#BE123C] transition-colors flex items-center gap-1.5 shadow-md shadow-rose-950/20"
             >
               <span>Apply & View Matches</span>
               <ArrowRight size={13} />

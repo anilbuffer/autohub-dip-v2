@@ -97,7 +97,7 @@ export default function VehicleDetailPage() {
           </p>
           <Link
             href="/"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-[#C8102E] text-white rounded-xl text-xs font-semibold hover:bg-[#A80D26] transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-[#E11D48] text-white rounded-xl text-xs font-semibold hover:bg-[#BE123C] transition-colors shadow-xs"
           >
             <ArrowLeft size={14} /> Return to Browse Vehicles
           </Link>
@@ -161,7 +161,7 @@ export default function VehicleDetailPage() {
 
             <button
               onClick={() => setBidModalOpen(true)}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-[#C8102E] hover:bg-[#A80D26] text-white shadow-md shadow-red-900/25 transition-all"
+              className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-[#E11D48] hover:bg-[#BE123C] text-white shadow-md shadow-rose-900/20 transition-all"
             >
               <Gavel size={14} />
               <span>Place Auction Bid</span>
@@ -215,7 +215,7 @@ export default function VehicleDetailPage() {
                 <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[#8899A6] mb-1">
                   <span>HEIWA AUTO JAPAN AUCTION</span>
                   <span>·</span>
-                  <span className="text-[#C8102E]">AUCTION LOT ACTIVE</span>
+                  <span className="text-[#E11D48]">AUCTION LOT ACTIVE</span>
                 </div>
 
                 <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111C2D] tracking-tight">
@@ -226,7 +226,7 @@ export default function VehicleDetailPage() {
                 <div className="flex flex-wrap items-center gap-2.5 mt-3">
                   <div className="px-3 py-1.5 rounded-lg bg-[#F7F9FA] border border-[#E8ECF0] text-xs font-semibold text-[#111C2D] flex items-center gap-1.5">
                     <Gauge size={13} className="text-[#8899A6]" />
-                    <span className="font-mono">{vehicle.kms.toLocaleString()} km</span>
+                    <span className="font-mono">{vehicle.kms.toLocaleString("en-US")} km</span>
                   </div>
                   <div className="px-3 py-1.5 rounded-lg bg-[#F7F9FA] border border-[#E8ECF0] text-xs font-semibold text-[#111C2D] flex items-center gap-1.5">
                     <Fuel size={13} className="text-emerald-600" />
@@ -248,11 +248,11 @@ export default function VehicleDetailPage() {
                   <div className="text-[10px] font-bold text-[#8899A6] uppercase tracking-wider">
                     AutoHub Landed Cost
                   </div>
-                  <div className="text-xl font-extrabold text-[#C8102E] font-mono mt-0.5">
-                    ${landed.totalLanded.toLocaleString()} NZD
+                  <div className="text-xl font-extrabold text-[#E11D48] font-mono mt-0.5">
+                    ${landed.totalLanded.toLocaleString("en-US")} NZD
                   </div>
                   <div className="text-[11px] text-[#536471] mt-0.5 font-mono">
-                    FOB ¥{vehicle.priceFob.toLocaleString()}
+                    FOB ¥{vehicle.priceFob.toLocaleString("en-US")}
                   </div>
                 </div>
 
@@ -262,7 +262,7 @@ export default function VehicleDetailPage() {
                     Avg NZ Market Retail
                   </div>
                   <div className="text-xl font-extrabold text-[#111C2D] font-mono mt-0.5">
-                    ${avgNzPrice.toLocaleString()} NZD
+                    ${avgNzPrice.toLocaleString("en-US")} NZD
                   </div>
                   <div className="text-[11px] text-[#536471] mt-0.5">
                     Based on {comparables.length} NZ listings
@@ -275,7 +275,7 @@ export default function VehicleDetailPage() {
                     Gross Margin Spread
                   </div>
                   <div className="text-xl font-extrabold text-emerald-700 font-mono mt-0.5">
-                    +${grossMargin.toLocaleString()} NZD
+                    +${grossMargin.toLocaleString("en-US")} NZD
                   </div>
                   <div className="text-[11px] font-bold text-emerald-600 mt-0.5">
                     {marginPercent}% Target Return
@@ -287,10 +287,10 @@ export default function VehicleDetailPage() {
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <button
                   onClick={() => setBidModalOpen(true)}
-                  className="flex-1 py-3 px-4 bg-[#C8102E] hover:bg-[#A80D26] text-white rounded-xl text-xs sm:text-sm font-bold shadow-md shadow-red-900/20 transition-all flex items-center justify-center gap-2"
+                  className="flex-1 py-3 px-4 bg-[#E11D48] hover:bg-[#BE123C] text-white rounded-xl text-xs sm:text-sm font-bold shadow-md shadow-rose-900/20 transition-all flex items-center justify-center gap-2"
                 >
                   <Gavel size={16} />
-                  <span>Place Bid for Auction (JPY ¥{vehicle.priceFob.toLocaleString()})</span>
+                  <span>Place Bid for Auction (JPY ¥{vehicle.priceFob.toLocaleString("en-US")})</span>
                 </button>
 
                 <button
@@ -311,7 +311,7 @@ export default function VehicleDetailPage() {
             onClick={() => setActiveTab("nz_market")}
             className={`flex items-center gap-2 px-5 py-3 text-xs sm:text-sm font-bold border-b-2 transition-all ${
               activeTab === "nz_market"
-                ? "border-[#C8102E] text-[#C8102E]"
+                ? "border-[#E11D48] text-[#E11D48]"
                 : "border-transparent text-[#536471] hover:text-[#111C2D]"
             }`}
           >
@@ -323,7 +323,7 @@ export default function VehicleDetailPage() {
             onClick={() => setActiveTab("landed_cost")}
             className={`flex items-center gap-2 px-5 py-3 text-xs sm:text-sm font-bold border-b-2 transition-all ${
               activeTab === "landed_cost"
-                ? "border-[#C8102E] text-[#C8102E]"
+                ? "border-[#E11D48] text-[#E11D48]"
                 : "border-transparent text-[#536471] hover:text-[#111C2D]"
             }`}
           >
@@ -335,7 +335,7 @@ export default function VehicleDetailPage() {
             onClick={() => setActiveTab("specs")}
             className={`flex items-center gap-2 px-5 py-3 text-xs sm:text-sm font-bold border-b-2 transition-all ${
               activeTab === "specs"
-                ? "border-[#C8102E] text-[#C8102E]"
+                ? "border-[#E11D48] text-[#E11D48]"
                 : "border-transparent text-[#536471] hover:text-[#111C2D]"
             }`}
           >
@@ -354,7 +354,7 @@ export default function VehicleDetailPage() {
                   NZ Market Range
                 </div>
                 <div className="text-lg font-extrabold text-[#111C2D] font-mono mt-1">
-                  ${lowestNzPrice.toLocaleString()} - ${highestNzPrice.toLocaleString()}
+                  ${lowestNzPrice.toLocaleString("en-US")} - ${highestNzPrice.toLocaleString("en-US")}
                 </div>
                 <div className="text-xs text-[#536471] mt-1">
                   Lowest to highest asking price in NZ
@@ -366,7 +366,7 @@ export default function VehicleDetailPage() {
                   Gross Profit Margin
                 </div>
                 <div className="text-lg font-extrabold text-emerald-600 font-mono mt-1">
-                  +${grossMargin.toLocaleString()} ({marginPercent}%)
+                  +${grossMargin.toLocaleString("en-US")} ({marginPercent}%)
                 </div>
                 <div className="text-xs text-[#536471] mt-1">
                   Vs average NZ dealer retail asking
@@ -442,7 +442,7 @@ export default function VehicleDetailPage() {
                             {comp.title}
                           </td>
                           <td className="py-3.5 px-4 font-mono text-[#536471]">
-                            {comp.kms.toLocaleString()} km
+                            {comp.kms.toLocaleString("en-US")} km
                           </td>
                           <td className="py-3.5 px-4 text-[#536471] flex items-center gap-1">
                             <MapPin size={11} className="text-[#8899A6]" />
@@ -455,7 +455,7 @@ export default function VehicleDetailPage() {
                             </span>
                           </td>
                           <td className="py-3.5 px-5 text-right font-mono font-bold text-[#111C2D]">
-                            ${comp.price.toLocaleString()} NZD
+                            ${comp.price.toLocaleString("en-US")} NZD
                           </td>
                           <td className="py-3.5 px-5 text-right">
                             <span className={`inline-block font-mono font-bold text-xs px-2 py-0.5 rounded ${
@@ -463,7 +463,7 @@ export default function VehicleDetailPage() {
                                 ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
                                 : "bg-rose-50 text-rose-700 border border-rose-200"
                             }`}>
-                              {isPositive ? `+$${compMargin.toLocaleString()}` : `-$${Math.abs(compMargin).toLocaleString()}`}
+                              {isPositive ? `+$${compMargin.toLocaleString("en-US")}` : `-$${Math.abs(compMargin).toLocaleString("en-US")}`}
                             </span>
                           </td>
                         </tr>
@@ -490,15 +490,15 @@ export default function VehicleDetailPage() {
                 <div className="flex items-center justify-between text-xs font-mono pt-3">
                   <div className="text-left">
                     <span className="block text-[10px] text-[#8899A6] font-sans">AutoHub Landed Cost</span>
-                    <span className="font-bold text-[#C8102E]">${landed.totalLanded.toLocaleString()} NZD</span>
+                    <span className="font-bold text-[#E11D48]">${landed.totalLanded.toLocaleString("en-US")} NZD</span>
                   </div>
                   <div className="text-center">
                     <span className="block text-[10px] text-[#8899A6] font-sans">Lowest NZ Listing</span>
-                    <span className="font-semibold text-[#536471]">${lowestNzPrice.toLocaleString()} NZD</span>
+                    <span className="font-semibold text-[#536471]">${lowestNzPrice.toLocaleString("en-US")} NZD</span>
                   </div>
                   <div className="text-right">
                     <span className="block text-[10px] text-[#8899A6] font-sans">Avg NZ Dealer Price</span>
-                    <span className="font-bold text-[#111C2D]">${avgNzPrice.toLocaleString()} NZD</span>
+                    <span className="font-bold text-[#111C2D]">${avgNzPrice.toLocaleString("en-US")} NZD</span>
                   </div>
                 </div>
               </div>
@@ -537,10 +537,10 @@ export default function VehicleDetailPage() {
                       Converted at benchmark rate ¥91.24
                     </td>
                     <td className="py-3 px-4 text-right font-mono text-[#536471]">
-                      ¥{vehicle.priceFob.toLocaleString()}
+                      ¥{vehicle.priceFob.toLocaleString("en-US")}
                     </td>
                     <td className="py-3 px-4 text-right font-mono font-bold text-[#111C2D]">
-                      ${landed.fobNzd.toLocaleString()} NZD
+                      ${landed.fobNzd.toLocaleString("en-US")} NZD
                     </td>
                   </tr>
 
@@ -553,7 +553,7 @@ export default function VehicleDetailPage() {
                     </td>
                     <td className="py-3 px-4 text-right font-mono text-[#8899A6]">-</td>
                     <td className="py-3 px-4 text-right font-mono text-[#111C2D]">
-                      ${landed.freight.toLocaleString()} NZD
+                      ${landed.freight.toLocaleString("en-US")} NZD
                     </td>
                   </tr>
 
@@ -566,7 +566,7 @@ export default function VehicleDetailPage() {
                     </td>
                     <td className="py-3 px-4 text-right font-mono text-[#8899A6]">-</td>
                     <td className="py-3 px-4 text-right font-mono text-[#111C2D]">
-                      ${landed.compliance.toLocaleString()} NZD
+                      ${landed.compliance.toLocaleString("en-US")} NZD
                     </td>
                   </tr>
 
@@ -579,7 +579,7 @@ export default function VehicleDetailPage() {
                     </td>
                     <td className="py-3 px-4 text-right font-mono text-[#8899A6]">-</td>
                     <td className="py-3 px-4 text-right font-mono text-[#111C2D]">
-                      ${landed.portFees.toLocaleString()} NZD
+                      ${landed.portFees.toLocaleString("en-US")} NZD
                     </td>
                   </tr>
 
@@ -592,22 +592,22 @@ export default function VehicleDetailPage() {
                     </td>
                     <td className="py-3 px-4 text-right font-mono text-[#8899A6]">-</td>
                     <td className="py-3 px-4 text-right font-mono font-bold text-[#111C2D]">
-                      ${landed.gst.toLocaleString()} NZD
+                      ${landed.gst.toLocaleString("en-US")} NZD
                     </td>
                   </tr>
 
-                  <tr className="bg-rose-50/70 border-t-2 border-[#C8102E]">
-                    <td className="py-3.5 px-4 font-extrabold text-[#C8102E] text-sm">
+                  <tr className="bg-rose-50/70 border-t-2 border-[#E11D48]">
+                    <td className="py-3.5 px-4 font-extrabold text-[#E11D48] text-sm">
                       Total Estimated Landed Cost (Yard Ready)
                     </td>
                     <td className="py-3.5 px-4 font-medium text-rose-900 text-xs">
                       All-inclusive guaranteed landed benchmark
                     </td>
                     <td className="py-3.5 px-4 text-right font-mono font-bold text-[#536471]">
-                      ¥{vehicle.priceFob.toLocaleString()}
+                      ¥{vehicle.priceFob.toLocaleString("en-US")}
                     </td>
-                    <td className="py-3.5 px-4 text-right font-mono font-extrabold text-[#C8102E] text-base">
-                      ${landed.totalLanded.toLocaleString()} NZD
+                    <td className="py-3.5 px-4 text-right font-mono font-extrabold text-[#E11D48] text-base">
+                      ${landed.totalLanded.toLocaleString("en-US")} NZD
                     </td>
                   </tr>
                 </tbody>
@@ -668,7 +668,7 @@ export default function VehicleDetailPage() {
                 </div>
                 <div className="flex justify-between text-xs py-1 border-b border-[#E8ECF0]">
                   <span className="text-[#536471]">Verified Odometer:</span>
-                  <span className="font-bold font-mono text-[#111C2D]">{vehicle.kms.toLocaleString()} km</span>
+                  <span className="font-bold font-mono text-[#111C2D]">{vehicle.kms.toLocaleString("en-US")} km</span>
                 </div>
               </div>
             </div>
@@ -706,7 +706,7 @@ export default function VehicleDetailPage() {
                   </div>
                   <h4 className="text-base font-bold text-emerald-900">Auction Bid Dispatched!</h4>
                   <p className="text-xs text-emerald-700 max-w-xs mx-auto">
-                    Your bid of ¥{bidAmountJpy.toLocaleString()} has been queued with Heiwa Japan. You can monitor its status under &quot;My Bids&quot;.
+                    Your bid of ¥{bidAmountJpy.toLocaleString("en-US")} has been queued with Heiwa Japan. You can monitor its status under &quot;My Bids&quot;.
                   </p>
                 </div>
               ) : (
@@ -714,19 +714,19 @@ export default function VehicleDetailPage() {
                   {/* Real-time Bid Impact */}
                   <div className="p-4 bg-[#F7F9FA] rounded-xl border border-[#E8ECF0] space-y-2 text-xs">
                     <div className="flex justify-between">
-                      <span className="text-[#536471]">Recommended FOB:</span>
-                      <span className="font-bold font-mono">¥{vehicle.priceFob.toLocaleString()}</span>
+                      <span className="text-[#536471]">Auction Guide FOB:</span>
+                      <span className="font-bold font-mono">¥{vehicle.priceFob.toLocaleString("en-US")}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-[#536471]">Calculated Landed Cost (at this bid):</span>
-                      <span className="font-bold text-[#C8102E] font-mono">
-                        ${customLanded.totalLanded.toLocaleString()} NZD
+                      <span className="font-bold text-[#E11D48] font-mono">
+                        ${customLanded.totalLanded.toLocaleString("en-US")} NZD
                       </span>
                     </div>
                     <div className="flex justify-between pt-1 border-t border-[#E8ECF0]">
                       <span className="text-[#536471]">Projected Margin vs NZ Market:</span>
                       <span className="font-bold text-emerald-600 font-mono">
-                        +${customMargin.toLocaleString()} NZD ({customMarginPercent}%)
+                        +${customMargin.toLocaleString("en-US")} NZD ({customMarginPercent}%)
                       </span>
                     </div>
                   </div>
@@ -742,7 +742,7 @@ export default function VehicleDetailPage() {
                         step={10000}
                         value={bidAmountJpy}
                         onChange={(e) => setBidAmountJpy(parseInt(e.target.value) || 0)}
-                        className="w-full pl-8 pr-4 py-3 bg-white border border-[#CCD6DD] rounded-xl font-mono font-bold text-base text-[#111C2D] focus:outline-none focus:border-[#C8102E] focus:ring-2 focus:ring-[#C8102E]/10"
+                        className="w-full pl-8 pr-4 py-3 bg-white border border-[#CCD6DD] rounded-xl font-mono font-bold text-base text-[#111C2D] focus:outline-none focus:border-[#E11D48] focus:ring-2 focus:ring-[#E11D48]/10"
                       />
                     </div>
                   </div>
@@ -784,7 +784,7 @@ export default function VehicleDetailPage() {
                     </button>
                     <button
                       onClick={handlePlaceBid}
-                      className="flex-1 py-2.5 bg-[#C8102E] hover:bg-[#A80D26] text-white rounded-xl text-xs font-bold shadow-md shadow-red-900/25 transition-all"
+                      className="flex-1 py-2.5 bg-[#E11D48] hover:bg-[#BE123C] text-white rounded-xl text-xs font-bold shadow-md shadow-rose-900/20 transition-all"
                     >
                       Submit Official Bid
                     </button>

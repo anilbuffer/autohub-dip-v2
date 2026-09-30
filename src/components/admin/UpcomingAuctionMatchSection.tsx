@@ -55,7 +55,7 @@ export default function UpcomingAuctionMatchSection({ onNotifyToast }: UpcomingA
 
         <div className="flex items-center gap-2 self-start sm:self-center">
           <span className="inline-flex items-center gap-1.5 text-xs text-slate-600 font-bold bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
-            <Clock size={13} className="text-[#B30D12]" /> Next Auction in 02h 45m
+            <Clock size={13} className="text-[#E11D48]" /> Next Auction in 02h 45m
           </span>
         </div>
       </div>

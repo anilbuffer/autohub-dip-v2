@@ -56,7 +56,7 @@ export default function PurchasesPage() {
 
           <Link
             href="/browse-vehicles"
-            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#1E3A5F] hover:bg-[#162C48] text-white text-xs font-bold shadow-sm transition-all self-start sm:self-auto"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-bold shadow-sm transition-all self-start sm:self-auto"
           >
             <Plus size={15} />
             <span>Browse More Vehicles</span>
@@ -118,7 +118,7 @@ export default function PurchasesPage() {
                         </span>
                       </div>
                       <div className="text-xs text-[#64748B] font-mono mt-0.5">
-                        Chassis: {purchase.vehicleChassis} · {purchase.kms.toLocaleString()} km
+                        Chassis: {purchase.vehicleChassis} · {purchase.kms.toLocaleString("en-US")} km
                       </div>
                     </div>
                   </div>
@@ -129,7 +129,7 @@ export default function PurchasesPage() {
                         Total Landed Cost
                       </div>
                       <div className="text-lg font-extrabold text-[#111827] font-mono">
-                        NZ${purchase.totalLandedNzd.toLocaleString()}
+                        NZ${purchase.totalLandedNzd.toLocaleString("en-US")}
                       </div>
                     </div>
                     <div className="border-l border-[#E5E7EB] pl-6 text-left">
@@ -158,7 +158,7 @@ export default function PurchasesPage() {
                               isComplete
                                 ? "bg-emerald-600 text-white"
                                 : isCurrent
-                                ? "bg-[#1E3A5F] text-white ring-4 ring-[#1E3A5F]/15"
+                                ? "bg-[#E11D48] text-white ring-4 ring-[#E11D48]/15"
                                 : "bg-slate-100 text-[#94A3B8] border border-slate-200"
                             }`}
                           >
@@ -167,7 +167,7 @@ export default function PurchasesPage() {
                           <span
                             className={`text-xs font-bold mt-2 ${
                               isCurrent
-                                ? "text-[#1E3A5F]"
+                                ? "text-[#E11D48]"
                                 : isComplete
                                 ? "text-[#111827]"
                                 : "text-[#94A3B8]"
@@ -198,7 +198,7 @@ export default function PurchasesPage() {
 
                   <Link
                     href={`/vehicles/${encodeURIComponent(purchase.vehicleChassis)}`}
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3A5F] hover:underline"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#E11D48] hover:underline"
                   >
                     View Vehicle Record <ArrowRight size={13} />
                   </Link>

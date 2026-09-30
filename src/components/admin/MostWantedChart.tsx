@@ -25,7 +25,7 @@ export default function MostWantedChart({ segmentFilter = 'All' }: MostWantedCha
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 border-b border-slate-100">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-[11px] font-black uppercase tracking-wider text-[#B30D12] bg-red-50 px-2 py-0.5 rounded-full border border-red-100">
+            <span className="text-[11px] font-black uppercase tracking-wider text-[#E11D48] bg-rose-50 px-2 py-0.5 rounded-full border border-rose-100">
               Demand Leaderboard
             </span>
             <span className="text-xs text-slate-400 font-medium">Top 10 NZ Dealer Preferences</span>

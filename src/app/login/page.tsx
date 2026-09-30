@@ -2,11 +2,11 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { 
-  Lock, 
-  Mail, 
-  ArrowRight, 
-  Building2, 
+import {
+  Lock,
+  Mail,
+  ArrowRight,
+  Building2,
   Heart,
   Search,
   BarChart3,
@@ -34,22 +34,22 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex font-sans">
-      
+
       {/* ─── Left — Brand panel (Light Navy Theme) ─── */}
       <div className="hidden lg:flex lg:w-[500px] xl:w-[540px] flex-col justify-between bg-gradient-to-b from-[#182C48] via-[#14243B] to-[#101C2E] border-r border-[#1E3A5F]/40 text-white p-12 relative overflow-hidden">
-        
+
         {/* Subtle decorative elements */}
         <div className="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-[#1E3A5F]/40 blur-3xl" />
-        <div className="absolute -left-16 -bottom-16 w-72 h-72 rounded-full bg-[#C8102E]/[0.08] blur-3xl" />
+        <div className="absolute -left-16 -bottom-16 w-72 h-72 rounded-full bg-[#E11D48]/[0.08] blur-3xl" />
         <div className="absolute top-1/2 right-1/3 w-32 h-32 rounded-full bg-[#2B5885]/20 blur-2xl" />
 
         {/* Logo & brand */}
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-[#C8102E] flex items-center justify-center shadow-lg shadow-red-950/40">
-              <img 
-                src="/autohub-logo.jpg" 
-                alt="AutoHub" 
+            <div className="w-10 h-10 rounded-xl bg-[#E11D48] flex items-center justify-center shadow-lg shadow-rose-950/40">
+              <img
+                src="/autohub-logo.jpg"
+                alt="AutoHub"
                 className="w-8 h-8 rounded-lg object-cover"
               />
             </div>
@@ -70,29 +70,9 @@ export default function LoginPage() {
               <span className="text-[#9AB9D5]">Japan to New Zealand.</span>
             </h1>
             <p className="text-[15px] text-[#BACDD8] leading-relaxed max-w-sm mt-4">
-              Create your wish list, match against live Heiwa auction inventory, 
+              Create your wish list, match against live Heiwa auction inventory,
               and compare landed costs with NZ retail pricing — all in one place.
             </p>
-          </div>
-
-          {/* 3-step journey preview */}
-          <div className="space-y-3">
-            {[
-              { icon: Heart, step: "1", label: "Set your wish list criteria" },
-              { icon: Search, step: "2", label: "View matched Heiwa vehicles" },
-              { icon: BarChart3, step: "3", label: "Compare against NZ market" },
-            ].map((item, i) => (
-              <div key={i} className="flex items-center gap-3.5 group">
-                <div className="w-10 h-10 rounded-xl bg-white/[0.08] flex items-center justify-center flex-shrink-0 group-hover:bg-white/[0.12] transition-colors border border-white/10">
-                  <item.icon size={18} className="text-[#C8102E]" />
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <span className="text-[10px] font-bold bg-[#C8102E]/20 text-[#FF6B78] px-2 py-0.5 rounded-md border border-[#C8102E]/30">{item.step}</span>
-                  <span className="text-[14px] text-white/80 font-medium">{item.label}</span>
-                </div>
-                <ChevronRight size={14} className="text-white/20 ml-auto" />
-              </div>
-            ))}
           </div>
         </div>
 
@@ -108,10 +88,10 @@ export default function LoginPage() {
 
           {/* Mobile logo */}
           <div className="flex items-center gap-3 lg:hidden mb-10">
-            <div className="w-9 h-9 rounded-xl bg-[#C8102E] flex items-center justify-center shadow-md shadow-red-900/20">
-              <img 
-                src="/autohub-logo.jpg" 
-                alt="AutoHub" 
+            <div className="w-9 h-9 rounded-xl bg-[#E11D48] flex items-center justify-center shadow-md shadow-rose-950/20">
+              <img
+                src="/autohub-logo.jpg"
+                alt="AutoHub"
                 className="w-7 h-7 rounded-lg object-cover"
               />
             </div>
@@ -176,14 +156,14 @@ export default function LoginPage() {
               </label>
               <div className="relative">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#AAB8C2]" size={16} />
-                <input 
+                <input
                   id="email-input"
-                  type="email" 
+                  type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@dealership.co.nz"
-                  className="w-full pl-11 pr-4 py-3 bg-white border border-[#E8ECF0] rounded-xl text-[14px] outline-none focus:bg-white focus:border-[#C8102E]/40 focus:ring-2 focus:ring-[#C8102E]/10 transition-all placeholder:text-[#AAB8C2] font-medium hover:border-[#D1D5DB]"
+                  className="w-full pl-11 pr-4 py-3 bg-white border border-[#E8ECF0] rounded-xl text-[14px] outline-none focus:bg-white focus:border-[#E11D48]/40 focus:ring-2 focus:ring-[#E11D48]/10 transition-all placeholder:text-[#AAB8C2] font-medium hover:border-[#D1D5DB]"
                 />
               </div>
             </div>
@@ -193,20 +173,20 @@ export default function LoginPage() {
                 <label htmlFor="password-input" className="text-[12px] font-semibold text-[#536471]">
                   Password
                 </label>
-                <a href="#" className="text-[12px] font-semibold text-[#C8102E] hover:text-[#A30D24] transition-colors">
+                <a href="#" className="text-[12px] font-semibold text-[#E11D48] hover:text-[#BE123C] transition-colors">
                   Forgot password?
                 </a>
               </div>
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-[#AAB8C2]" size={16} />
-                <input 
+                <input
                   id="password-input"
-                  type="password" 
+                  type="password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-11 pr-4 py-3 bg-white border border-[#E8ECF0] rounded-xl text-[14px] outline-none focus:bg-white focus:border-[#C8102E]/40 focus:ring-2 focus:ring-[#C8102E]/10 transition-all placeholder:text-[#AAB8C2] font-medium hover:border-[#D1D5DB]"
+                  className="w-full pl-11 pr-4 py-3 bg-white border border-[#E8ECF0] rounded-xl text-[14px] outline-none focus:bg-white focus:border-[#E11D48]/40 focus:ring-2 focus:ring-[#E11D48]/10 transition-all placeholder:text-[#AAB8C2] font-medium hover:border-[#D1D5DB]"
                 />
               </div>
             </div>
@@ -215,7 +195,7 @@ export default function LoginPage() {
               id="sign-in-button"
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 bg-[#C8102E] hover:bg-[#A30D24] text-white font-bold text-[15px] rounded-xl transition-all flex items-center justify-center gap-2.5 mt-3 disabled:opacity-60 shadow-md shadow-red-900/20 hover:shadow-lg hover:shadow-red-900/30"
+              className="w-full py-3.5 bg-[#E11D48] hover:bg-[#BE123C] text-white font-bold text-[15px] rounded-xl transition-all flex items-center justify-center gap-2.5 mt-3 disabled:opacity-60 shadow-md shadow-rose-950/20 hover:shadow-lg hover:shadow-rose-950/30"
             >
               {loading ? (
                 <>

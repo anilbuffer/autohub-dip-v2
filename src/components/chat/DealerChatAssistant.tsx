@@ -126,7 +126,7 @@ export default function DealerChatAssistant({
       text: `**Konnichiwa David!** 👋\n\nI am your **Heiwa Japanese Auction Copilot**. I monitor **140+ Japanese auction houses** (USS Tokyo, USS Yokohama, CAA, TAA) and calculate real-time NZ landed costs with live **¥${syncState.fxRateJpyNzd} / NZD** foreign exchange.\n\nHow can I help Auckland Auto Group optimize your bidding strategy today?`,
       timestamp: "Just now",
       suggestedPrompts: [
-        "💎 Top Arbitrage Picks Today",
+        "💎 Top Margin Opportunities Today",
         "🧮 Calculate Landed Cost",
         "📋 Explain Sheet Codes (W2, A1, U2)",
         "🎯 Auckland Demand & TradeMe Comps",
@@ -220,12 +220,12 @@ export default function DealerChatAssistant({
       return {
         id: `bot-${Date.now()}`,
         sender: "bot",
-        text: `### 🚗 2019 Toyota Aqua S Hybrid (Lot #${aqua.lotNumber})\n**Auction House:** ${aqua.auctionHouse} | **Grade:** ${aqua.grade} (Interior ${aqua.interiorGrade})\n\n**Current Live Landed Breakdown (¥${fx} FX):**\n- **FOB Bid:** ¥${aqua.fobJpy.toLocaleString()} (≈ NZ$${fobNzd.toLocaleString()})\n- **RoRo Sea Freight:** NZ$${syncState.freightPerUnitNzd.toLocaleString()}\n- **NZ Compliance & Bio-Security:** NZ$${syncState.compliancePerUnitNzd.toLocaleString()}\n- **GST (15%) & Port Doc:** NZ$${Math.round(landed - fobNzd - syncState.freightPerUnitNzd - syncState.compliancePerUnitNzd).toLocaleString()}\n- **Total Landed Cost:** **NZ$${landed.toLocaleString()}**\n- **Auckland Est. Retail:** NZ$${aqua.estRetailNzd.toLocaleString()}\n- **Projected Net Margin:** <span class="text-emerald-700 font-extrabold">+NZ$${margin.toLocaleString()} (${Math.round((margin/landed)*100)}% ROI)</span>\n\n**Auction Sheet Intelligence:**\nInspection sheet shows pristine hybrid battery health (SOH > 92%), 0 structural remarks, and minor A1 scratch on rear quarter. Highly liquid Auckland turn time (avg 14 days).`,
+        text: `### 🚗 2019 Toyota Aqua S Hybrid (Lot #${aqua.lotNumber})\n**Auction House:** ${aqua.auctionHouse} | **Grade:** ${aqua.grade} (Interior ${aqua.interiorGrade})\n\n**Current Live Landed Breakdown (¥${fx} FX):**\n- **FOB Bid:** ¥${aqua.fobJpy.toLocaleString("en-US")} (≈ NZ$${fobNzd.toLocaleString("en-US")})\n- **RoRo Sea Freight:** NZ$${syncState.freightPerUnitNzd.toLocaleString("en-US")}\n- **NZ Compliance & Bio-Security:** NZ$${syncState.compliancePerUnitNzd.toLocaleString("en-US")}\n- **GST (15%) & Port Doc:** NZ$${Math.round(landed - fobNzd - syncState.freightPerUnitNzd - syncState.compliancePerUnitNzd).toLocaleString("en-US")}\n- **Total Landed Cost:** **NZ$${landed.toLocaleString("en-US")}**\n- **Auckland Est. Retail:** NZ$${aqua.estRetailNzd.toLocaleString("en-US")}\n- **Projected Net Margin:** <span class="text-emerald-700 font-extrabold">+NZ$${margin.toLocaleString("en-US")} (${Math.round((margin/landed)*100)}% ROI)</span>\n\n**Auction Sheet Intelligence:**\nInspection sheet shows pristine hybrid battery health (SOH > 92%), 0 structural remarks, and minor A1 scratch on rear quarter. Highly liquid Auckland turn time (avg 14 days).`,
         timestamp: "Just now",
         type: "vehicles",
         vehiclesData: [aqua],
         suggestedPrompts: [
-          "Recommended Max Bid for Aqua",
+          "NZ Market Pricing for Aqua",
           "Explain Grade 4.5 USS Sheet",
           "Compare Aqua vs Honda Fit"
         ]
@@ -237,14 +237,14 @@ export default function DealerChatAssistant({
       return {
         id: `bot-${Date.now()}`,
         sender: "bot",
-        text: `### 🚗 2020 Honda Fit e:HEV Home (Lot #${fit.lotNumber})\n**Auction House:** ${fit.auctionHouse} | **Grade:** ${fit.grade} (Interior ${fit.interiorGrade})\n\n**Key Highlights for NZ Market:**\n- **Dual-motor e:HEV powertrain:** High fuel efficiency (85g/km CO2, neutral Clean Car).\n- **FOB JPY:** ¥${fit.fobJpy.toLocaleString()} (≈ NZ$${Math.round(fit.fobJpy/fx).toLocaleString()})\n- **Total Landed:** **NZ$${fit.landedNzd.toLocaleString()}**\n- **Projected Margin:** **+NZ$${fit.targetMarginNzd.toLocaleString()}**\n- Low mileage: 45,100 km with full Japanese dealer service booklet.`,
+        text: `### 🚗 2020 Honda Fit e:HEV Home (Lot #${fit.lotNumber})\n**Auction House:** ${fit.auctionHouse} | **Grade:** ${fit.grade} (Interior ${fit.interiorGrade})\n\n**Key Highlights for NZ Market:**\n- **Dual-motor e:HEV powertrain:** High fuel efficiency (85g/km CO2, neutral Clean Car).\n- **FOB JPY:** ¥${fit.fobJpy.toLocaleString("en-US")} (≈ NZ$${Math.round(fit.fobJpy/fx).toLocaleString("en-US")})\n- **Total Landed:** **NZ$${fit.landedNzd.toLocaleString("en-US")}**\n- **Projected Margin:** **+NZ$${fit.targetMarginNzd.toLocaleString("en-US")}**\n- Low mileage: 45,100 km with full Japanese dealer service booklet.`,
         timestamp: "Just now",
         type: "vehicles",
         vehiclesData: [fit],
         suggestedPrompts: [
           "Calculate Landed Cost at ¥1.25M",
           "Next Shipping Vessel from Yokohama",
-          "Top Arbitrage Picks Today"
+          "Top Margin Opportunities Today"
         ]
       };
     }
@@ -254,32 +254,32 @@ export default function DealerChatAssistant({
       return {
         id: `bot-${Date.now()}`,
         sender: "bot",
-        text: `### 🚗 2019 Toyota C-HR G LED Hybrid (Lot #${chr.lotNumber})\n**Auction House:** ${chr.auctionHouse} | **Grade:** ${chr.grade}\n\n- **FOB:** ¥${chr.fobJpy.toLocaleString()} | **Landed NZD:** **NZ$${chr.landedNzd.toLocaleString()}**\n- **Est. Retail:** NZ$${chr.estRetailNzd.toLocaleString()} | **Margin:** <span class="text-emerald-700 font-extrabold">+NZ$${chr.targetMarginNzd.toLocaleString()}</span>\n- **Market Analysis:** Compact crossovers command premium retail velocity in Auckland & Hamilton. 2-tone black/pearl roof is the highest-spec variant.`,
+        text: `### 🚗 2019 Toyota C-HR G LED Hybrid (Lot #${chr.lotNumber})\n**Auction House:** ${chr.auctionHouse} | **Grade:** ${chr.grade}\n\n- **FOB:** ¥${chr.fobJpy.toLocaleString("en-US")} | **Landed NZD:** **NZ$${chr.landedNzd.toLocaleString("en-US")}**\n- **Est. Retail:** NZ$${chr.estRetailNzd.toLocaleString("en-US")} | **Margin:** <span class="text-emerald-700 font-extrabold">+NZ$${chr.targetMarginNzd.toLocaleString("en-US")}</span>\n- **Market Analysis:** Compact crossovers command premium retail velocity in Auckland & Hamilton. 2-tone black/pearl roof is the highest-spec variant.`,
         timestamp: "Just now",
         type: "vehicles",
         vehiclesData: [chr],
         suggestedPrompts: [
-          "Recommended Max Bid for C-HR",
+          "NZ Market Pricing for C-HR",
           "Calculate Landed Cost",
           "Shipping Schedule to Auckland"
         ]
       };
     }
 
-    // Top arbitrage / recommendations / deals
-    if (q.includes("arbitrage") || q.includes("top") || q.includes("recommend") || q.includes("best") || q.includes("deal") || q.includes("picks") || q.includes("priority")) {
+    // Top sourcing opportunities & deals
+    if (q.includes("margin") || q.includes("top") || q.includes("sourcing") || q.includes("best") || q.includes("deal") || q.includes("picks") || q.includes("priority")) {
       const topVehicles = VEHICLES.filter((v) => v.status === "Priority").slice(0, 3);
       return {
         id: `bot-${Date.now()}`,
         sender: "bot",
-        text: `### 🏆 Top High-Arbitrage Auction Picks Today\nHere are the **top 3 vehicles** in tomorrow's Tokyo and Nagoya sessions matching Auckland Auto Group's criteria with over **NZ$3,500 gross margin spread**:`,
+        text: `### 🏆 Top Sourcing Opportunities Today\nHere are the **top 3 vehicles** in tomorrow's Tokyo and Nagoya sessions matching Auckland Auto Group's criteria with an estimated **NZ$3,500+ gross margin spread** based on NZ market comparables:`,
         timestamp: "Just now",
         type: "vehicles",
         vehiclesData: topVehicles,
         suggestedPrompts: [
           "🧮 Interactive Landed Cost Calculator",
           "📋 Japanese Auction Sheet Codes",
-          "⚡ Maximum Bid Recommendations"
+          "⚡ NZ Market Pricing Benchmarks"
         ]
       };
     }
@@ -363,7 +363,7 @@ export default function DealerChatAssistant({
         timestamp: "Just now",
         suggestedPrompts: [
           "Calculate Landed Cost for Aqua",
-          "Top Arbitrage Picks Today",
+          "Top Margin Opportunities Today",
           "Japanese Sheet Inspection Codes"
         ]
       };
@@ -374,27 +374,27 @@ export default function DealerChatAssistant({
       return {
         id: `bot-${Date.now()}`,
         sender: "bot",
-        text: `### 📈 Auckland Metro Demand & Trade Me Comps\n\n**Market Velocity Highlights:**\n- **Sub-NZ$25k Hybrids:** 78% of Trade Me Motors listings sell within **18 calendar days** in the Auckland region.\n- **Toyota Aqua 2018–2020:** Active Trade Me listings: 142 units. Median listed price: **NZ$24,200**. Inventory turnover: **14 days**.\n- **Honda Fit e:HEV 2020+:** Active Trade Me listings: 48 units. Median listed price: **NZ$22,900**. High buyer interest due to modern Apple CarPlay interior.\n- **Recommended Strategy:** Target auction bids yielding at least **NZ$3,500 gross margin** to absorb 60 days of floor plan financing and dealer preparation.`,
+        text: `### 📈 Auckland Metro Demand & Trade Me Comps\n\n**Market Velocity Highlights:**\n- **Sub-NZ$25k Hybrids:** 78% of Trade Me Motors listings sell within **18 calendar days** in the Auckland region.\n- **Toyota Aqua 2018–2020:** Active Trade Me listings: 142 units. Median listed price: **NZ$24,200**. Inventory turnover: **14 days**.\n- **Honda Fit e:HEV 2020+:** Active Trade Me listings: 48 units. Median listed price: **NZ$22,900**. High buyer interest due to modern Apple CarPlay interior.\n- **Market Indicator:** Historical listings indicate a median gross margin spread of **NZ$3,500** between landed cost and retail asking.`,
         timestamp: "Just now",
         suggestedPrompts: [
-          "Show Top Arbitrage Picks",
+          "Show Top Margin Opportunities",
           "🧮 Calculate Landed Cost",
-          "Recommend Max Bid for Aqua"
+          "Calculate Landed Cost for Aqua"
         ]
       };
     }
 
-    // Max Bid Strategy
+    // Landed Cost & Retail Margin Formula
     if (q.includes("max bid") || q.includes("strategy") || q.includes("how much to bid") || q.includes("target")) {
       return {
         id: `bot-${Date.now()}`,
         sender: "bot",
-        text: `### 🎯 Heiwa Max Auction Bid Recommendation Formula\n\nTo lock in your required **NZ$3,500 dealer gross margin**, calculate backward from expected retail:\n\n$$\\text{Max Landed} = \\text{Est. Retail} - \\text{Target Margin}$$\n$$\\text{Max FOB NZD} = \\frac{\\text{Max Landed}}{1.15} - (\\text{Freight} + \\text{Compliance} + \\text{Port})$$\n$$\\text{Max Auction JPY} = \\text{Max FOB NZD} \\times ${fx}$$\n\n**Example for 2019 Toyota Aqua (Est. Retail NZ$24,500):**\n- Target Landed Ceiling: **NZ$20,500**\n- Max FOB JPY Ceiling: **¥1,510,000 JPY**\n- Current Auction Guide: **¥1,420,000 JPY**\n- Status: ✅ **Favorable spread. Recommend placing bid up to ¥1,480,000.**`,
+        text: `### 🎯 Landed Cost & Margin Indicator Formula\n\nTo evaluate target dealer gross margin against expected retail:\n\n$$\\text{Target Landed} = \\text{Est. Retail} - \\text{Target Margin}$$\n$$\\text{Target FOB NZD} = \\frac{\\text{Target Landed}}{1.15} - (\\text{Freight} + \\text{Compliance} + \\text{Port})$$\n$$\\text{Target Auction JPY} = \\text{Target FOB NZD} \\times ${fx}$$\n\n**Example for 2019 Toyota Aqua (Trade Me Market Average NZ$24,500):**\n- Target Landed Ceiling: **NZ$20,500**\n- Target FOB JPY Ceiling: **¥1,510,000 JPY**\n- Current Auction Guide: **¥1,420,000 JPY**\n- Market Indicator: ✅ **Positive margin potential based on NZ retail comparables.**`,
         timestamp: "Just now",
         suggestedPrompts: [
           "Open Landed Cost Calculator",
           "Inspect Toyota Aqua Sheet",
-          "Top Arbitrage Picks Today"
+          "Top Margin Opportunities Today"
         ]
       };
     }
@@ -403,10 +403,10 @@ export default function DealerChatAssistant({
     return {
       id: `bot-${Date.now()}`,
       sender: "bot",
-      text: `### 🤖 Japanese Auction Intelligence Analysis\n\nRegarding your inquiry: *"**${query}**"*\n\nBased on live data across **USS Tokyo, Yokohama & CAA Chubu** at current FX benchmark **¥${fx} / NZD**:\n\n- **Inventory Status:** 32 priority lots match Auckland Auto Group's criteria (Toyota, Honda, Mazda, Lexus).\n- **Landed Cost Index:** Freight benchmark is steady at NZ$${syncState.freightPerUnitNzd}, Compliance at NZ$${syncState.compliancePerUnitNzd}.\n- **Arbitrage Opportunity:** Median spread between Japan FOB + landed costs and NZ Trade Me retail is **+NZ$3,850**.\n\nWould you like me to calculate a specific landed cost, decode auction sheet markings, or pull up top vehicle matches?`,
+      text: `### 🤖 Japanese Auction Intelligence Analysis\n\nRegarding your inquiry: *"**${query}**"*\n\nBased on live data across **USS Tokyo, Yokohama & CAA Chubu** at current FX benchmark **¥${fx} / NZD**:\n\n- **Inventory Status:** 32 priority lots match Auckland Auto Group's criteria (Toyota, Honda, Mazda, Lexus).\n- **Landed Cost Index:** Freight benchmark is steady at NZ$${syncState.freightPerUnitNzd}, Compliance at NZ$${syncState.compliancePerUnitNzd}.\n- **Market Margin Potential:** Median spread between Japan FOB + landed costs and NZ Trade Me retail is **+NZ$3,850**.\n\nWould you like me to calculate a specific landed cost, decode auction sheet markings, or pull up vehicle matches?`,
       timestamp: "Just now",
       suggestedPrompts: [
-        "💎 Top Arbitrage Picks Today",
+        "💎 Top Margin Opportunities",
         "🧮 Interactive Landed Cost Calculator",
         "📋 Japanese Sheet Defect Codes",
         "🚢 Yokohama Shipping Schedule"
@@ -469,12 +469,12 @@ export default function DealerChatAssistant({
         <div className="p-4 bg-gradient-to-r from-[#182C48] via-[#14243B] to-[#101C2E] text-white shrink-0 border-b border-[#1E3A5F]/60 shadow-sm">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-[#B30D12] flex items-center justify-center font-bold text-white shadow-md shadow-[#B30D12]/30 shrink-0">
+              <div className="w-8 h-8 rounded-xl bg-[#E11D48] flex items-center justify-center font-bold text-white shadow-md shadow-[#E11D48]/30 shrink-0">
                 <span className="text-base font-black">和</span>
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-sm font-black tracking-wide text-white">Heiwa AI Copilot</span>
+                  <span className="text-sm font-black tracking-wide text-white">AutoHub DIP Copilot</span>
                   <span className="px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                     Live
@@ -555,8 +555,8 @@ export default function DealerChatAssistant({
             <div className="flex items-center gap-1.5 mb-1 px-1 text-[11px] text-slate-400 font-medium">
               {msg.sender === "bot" ? (
                 <>
-                  <span className="w-4 h-4 rounded bg-[#B30D12] text-white flex items-center justify-center text-[9px] font-bold">和</span>
-                  <span className="font-bold text-slate-700">Heiwa Copilot</span>
+                  <span className="w-4 h-4 rounded bg-[#E11D48] text-white flex items-center justify-center text-[9px] font-bold">和</span>
+                  <span className="font-bold text-slate-700">AutoHub DIP</span>
                 </>
               ) : (
                 <>
@@ -643,7 +643,7 @@ export default function DealerChatAssistant({
                     <button
                       key={pIdx}
                       onClick={() => handleSendMessage(prompt)}
-                      className="px-2.5 py-1 rounded-lg bg-slate-50 hover:bg-red-50 hover:text-[#B30D12] hover:border-[#B30D12]/30 border border-slate-200 text-[11px] font-semibold text-slate-600 transition-colors flex items-center gap-1"
+                      className="px-2.5 py-1 rounded-lg bg-slate-50 hover:bg-rose-50 hover:text-[#E11D48] hover:border-[#E11D48]/30 border border-slate-200 text-[11px] font-semibold text-slate-600 transition-colors flex items-center gap-1"
                     >
                       <span>{prompt}</span>
                       <ChevronRight size={10} className="text-slate-400" />
@@ -658,13 +658,13 @@ export default function DealerChatAssistant({
         {/* Typing indicator */}
         {isTyping && (
           <div className="flex items-center gap-2 text-slate-500 text-xs py-2 px-1">
-            <div className="w-5 h-5 rounded-lg bg-[#B30D12] text-white flex items-center justify-center text-[10px] font-bold">
+            <div className="w-5 h-5 rounded-lg bg-[#E11D48] text-white flex items-center justify-center text-[10px] font-bold">
               和
             </div>
             <div className="flex items-center gap-1.5 bg-white border border-slate-200 px-3 py-1.5 rounded-full shadow-2xs">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#B30D12] animate-bounce"></span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#B30D12] animate-bounce [animation-delay:0.2s]"></span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#B30D12] animate-bounce [animation-delay:0.4s]"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#E11D48] animate-bounce"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#E11D48] animate-bounce [animation-delay:0.2s]"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#E11D48] animate-bounce [animation-delay:0.4s]"></span>
               <span className="text-[11px] font-medium text-slate-500 ml-1">Analyzing Japanese auction data...</span>
             </div>
           </div>
@@ -676,10 +676,10 @@ export default function DealerChatAssistant({
       {/* Quick Action Suggestion Bar */}
       <div className="px-3 py-2 bg-white border-t border-slate-100 flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0 text-xs">
         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider shrink-0 flex items-center gap-1">
-          <Sparkles size={11} className="text-[#B30D12]" /> Prompts:
+          <Sparkles size={11} className="text-[#E11D48]" /> Prompts:
         </span>
         <button
-          onClick={() => handleSendMessage("Top Arbitrage Picks Today")}
+          onClick={() => handleSendMessage("Top Margin Opportunities Today")}
           className="shrink-0 px-2 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-semibold transition-colors"
         >
           💎 Top Deals
@@ -714,12 +714,12 @@ export default function DealerChatAssistant({
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Ask about lots, margins, sheet marks, shipping..."
-            className="w-full pl-3.5 pr-11 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-[#B30D12] focus:ring-2 focus:ring-[#B30D12]/20 outline-none transition-all text-xs text-slate-900 placeholder:text-slate-400 font-medium"
+            className="w-full pl-3.5 pr-11 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-[#E11D48] focus:ring-2 focus:ring-[#E11D48]/20 outline-none transition-all text-xs text-slate-900 placeholder:text-slate-400 font-medium"
           />
           <button
             onClick={() => handleSendMessage()}
             disabled={!inputMessage.trim()}
-            className="absolute right-1.5 p-2 rounded-lg bg-[#B30D12] text-white hover:bg-[#940B0F] disabled:opacity-30 disabled:hover:bg-[#B30D12] transition-colors shadow-xs"
+            className="absolute right-1.5 p-2 rounded-lg bg-[#E11D48] text-white hover:bg-[#BE123C] disabled:opacity-30 disabled:hover:bg-[#E11D48] transition-colors shadow-xs"
             title="Send Message"
           >
             <Send size={14} />
@@ -727,7 +727,7 @@ export default function DealerChatAssistant({
         </div>
         <div className="flex items-center justify-between mt-2 px-1 text-[10px] text-slate-400">
           <span>Press Enter to send · Press ⌘J to focus</span>
-          <span className="font-semibold text-slate-500">AutoHeiwa Intelligence v2.4</span>
+          <span className="font-semibold text-slate-500">AutoHub DIP v2.4</span>
         </div>
       </div>
     </aside>
@@ -764,7 +764,7 @@ function InteractiveCalcWidget({
     <div className="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
       <div className="flex items-center justify-between pb-2 border-b border-slate-200">
         <span className="font-bold text-slate-800 text-[11px] flex items-center gap-1.5">
-          <Calculator size={13} className="text-[#B30D12]" /> Landed Cost Calculator (Live)
+          <Calculator size={13} className="text-[#E11D48]" /> Landed Cost Calculator (Live)
         </span>
         <span className="text-[10px] font-mono text-slate-500 bg-white px-1.5 py-0.5 rounded border border-slate-200">
           1 NZD = {fxRate} JPY
@@ -783,7 +783,7 @@ function InteractiveCalcWidget({
               onClick={() => setFobJpy(preset)}
               className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold transition-colors ${
                 fobJpy === preset
-                  ? "bg-[#B30D12] text-white"
+                  ? "bg-[#E11D48] text-white"
                   : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-100"
               }`}
             >
@@ -798,11 +798,11 @@ function InteractiveCalcWidget({
           step="20000"
           value={fobJpy}
           onChange={(e) => setFobJpy(parseInt(e.target.value))}
-          className="w-full accent-[#B30D12] cursor-pointer"
+          className="w-full accent-[#E11D48] cursor-pointer"
         />
         <div className="flex justify-between text-[11px] font-mono font-bold text-slate-800 mt-1">
-          <span>¥{fobJpy.toLocaleString()}</span>
-          <span>≈ NZ${fobNzd.toLocaleString()}</span>
+          <span>¥{fobJpy.toLocaleString("en-US")}</span>
+          <span>≈ NZ${fobNzd.toLocaleString("en-US")}</span>
         </div>
       </div>
 
@@ -810,23 +810,23 @@ function InteractiveCalcWidget({
       <div className="text-[11px] space-y-1 bg-white p-2.5 rounded-lg border border-slate-200 font-mono">
         <div className="flex justify-between text-slate-600">
           <span>FOB Converted:</span>
-          <span>NZ${fobNzd.toLocaleString()}</span>
+          <span>NZ${fobNzd.toLocaleString("en-US")}</span>
         </div>
         <div className="flex justify-between text-slate-600">
           <span>RoRo Sea Freight:</span>
-          <span>NZ${freight.toLocaleString()}</span>
+          <span>NZ${freight.toLocaleString("en-US")}</span>
         </div>
         <div className="flex justify-between text-slate-600">
           <span>NZ Compliance & MAF:</span>
-          <span>NZ${compliance.toLocaleString()}</span>
+          <span>NZ${compliance.toLocaleString("en-US")}</span>
         </div>
         <div className="flex justify-between text-slate-600">
           <span>NZ GST (15%):</span>
-          <span>NZ${gst.toLocaleString()}</span>
+          <span>NZ${gst.toLocaleString("en-US")}</span>
         </div>
         <div className="pt-1.5 border-t border-slate-200 flex justify-between font-bold text-slate-900 text-xs">
           <span>Total Landed (NZD):</span>
-          <span className="text-[#B30D12]">NZ${totalLandedCost.toLocaleString()}</span>
+          <span className="text-[#E11D48]">NZ${totalLandedCost.toLocaleString("en-US")}</span>
         </div>
       </div>
 
@@ -835,13 +835,13 @@ function InteractiveCalcWidget({
         <div>
           <span className="text-[10px] font-bold text-emerald-800 uppercase block">At NZ$25k Retail:</span>
           <span className="font-bold text-emerald-900 text-sm">
-            +NZ${estMargin.toLocaleString()} Margin
+            +NZ${estMargin.toLocaleString("en-US")} Margin
           </span>
         </div>
         <div className="text-right">
-          <span className="text-[10px] font-semibold text-emerald-700 block">Max Recommended Bid</span>
+          <span className="text-[10px] font-semibold text-emerald-700 block">NZ Market Indicator Ceiling</span>
           <span className="font-mono font-bold text-emerald-800">
-            NZ${maxRecommendedBid.toLocaleString()}
+            NZ${(targetRetail - 3500).toLocaleString("en-US")}
           </span>
         </div>
       </div>
@@ -865,25 +865,25 @@ function VehicleChatCard({ vehicle }: { vehicle: Vehicle }) {
           <h5 className="font-bold text-slate-900 text-xs truncate">
             {vehicle.year} {vehicle.make} {vehicle.model}
           </h5>
-          <span className="px-1.5 py-0.5 rounded text-[9px] font-black bg-[#B30D12]/10 text-[#B30D12] shrink-0">
+          <span className="px-1.5 py-0.5 rounded text-[9px] font-black bg-[#E11D48]/10 text-[#E11D48] shrink-0">
             Grade {vehicle.grade}
           </span>
         </div>
         <p className="text-[10px] text-slate-500 truncate">
-          {vehicle.auctionHouse} · Lot #{vehicle.lotNumber} · {vehicle.km.toLocaleString()} km
+          {vehicle.auctionHouse} · Lot #{vehicle.lotNumber} · {vehicle.km.toLocaleString("en-US")} km
         </p>
         <div className="flex items-center justify-between mt-1 text-[11px]">
           <span className="font-bold text-slate-900">
-            Landed: NZ${vehicle.landedNzd.toLocaleString()}
+            Landed: NZ${vehicle.landedNzd.toLocaleString("en-US")}
           </span>
           <span className="text-emerald-700 font-extrabold text-[10px] bg-emerald-100 px-1.5 py-0.2 rounded">
-            +NZ${vehicle.targetMarginNzd.toLocaleString()} Margin
+            +NZ${vehicle.targetMarginNzd.toLocaleString("en-US")} Margin
           </span>
         </div>
       </div>
       <Link
         href={`/vehicles/${vehicle.id}`}
-        className="p-2 rounded-lg bg-white border border-slate-200 hover:border-[#B30D12] hover:text-[#B30D12] text-slate-600 transition-colors shrink-0 shadow-2xs"
+        className="p-2 rounded-lg bg-white border border-slate-200 hover:border-[#E11D48] hover:text-[#E11D48] text-slate-600 transition-colors shrink-0 shadow-2xs"
         title="View Full Vehicle Intelligence"
       >
         <ArrowRight size={14} />
@@ -940,7 +940,7 @@ function SheetGlossaryWidget() {
         {activeTab === "marks" ? (
           marks.map((m, idx) => (
             <div key={idx} className="p-1.5 bg-white rounded border border-slate-200 flex items-start gap-2">
-              <span className="font-mono font-bold text-[#B30D12] text-[11px] shrink-0 bg-red-50 px-1 rounded">
+              <span className="font-mono font-bold text-[#E11D48] text-[11px] shrink-0 bg-rose-50 px-1 rounded">
                 {m.code}
               </span>
               <span className="text-[11px] text-slate-700">{m.desc}</span>

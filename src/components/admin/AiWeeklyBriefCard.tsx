@@ -42,13 +42,13 @@ export default function AiWeeklyBriefCard({ onNotifyToast }: AiWeeklyBriefCardPr
   return (
     <div className="relative rounded-3xl bg-gradient-to-br from-[#182C48] via-[#14243B] to-[#101C2E] text-white p-6 sm:p-8 border border-[#1E3A5F]/60 shadow-xl overflow-hidden group">
       {/* Subtle background glow effect */}
-      <div className="absolute -right-24 -top-24 w-80 h-80 rounded-full bg-gradient-to-bl from-[#B30D12]/20 via-blue-500/10 to-transparent blur-3xl pointer-events-none"></div>
+      <div className="absolute -right-24 -top-24 w-80 h-80 rounded-full bg-gradient-to-bl from-[#E11D48]/20 via-blue-500/10 to-transparent blur-3xl pointer-events-none"></div>
       <div className="absolute -left-20 -bottom-20 w-60 h-60 rounded-full bg-blue-600/10 blur-3xl pointer-events-none"></div>
 
       {/* Top Header Bar */}
       <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-[#1E3259]">
         <div className="flex items-start gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#B30D12] to-red-600 text-white flex items-center justify-center shadow-lg shadow-[#B30D12]/40 shrink-0 border border-white/20">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#E11D48] to-rose-600 text-white flex items-center justify-center shadow-lg shadow-[#E11D48]/40 shrink-0 border border-white/20">
             <Sparkles size={24} className="animate-pulse" />
           </div>
           <div>
@@ -88,7 +88,7 @@ export default function AiWeeklyBriefCard({ onNotifyToast }: AiWeeklyBriefCardPr
               onClick={() => setLang('jp')}
               className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
                 lang === 'jp'
-                  ? 'bg-[#B30D12] text-white shadow-sm'
+                  ? 'bg-[#E11D48] text-white shadow-sm'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -115,7 +115,7 @@ export default function AiWeeklyBriefCard({ onNotifyToast }: AiWeeklyBriefCardPr
           <button
             onClick={handleShare}
             disabled={isSharing}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#B30D12] hover:bg-[#8B090E] text-white text-xs font-bold shadow-lg shadow-[#B30D12]/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-bold shadow-lg shadow-rose-950/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
             title="Send real-time alert to Heiwa Auto Japan procurement team"
           >
             <Share2 size={14} className={isSharing ? 'animate-spin' : ''} />
@@ -129,8 +129,8 @@ export default function AiWeeklyBriefCard({ onNotifyToast }: AiWeeklyBriefCardPr
       {/* Main AI Body Text */}
       <div className="relative z-10 py-5">
         <div className="p-4 sm:p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs">
-          <div className="flex items-center gap-2 mb-2 text-xs font-bold text-red-300">
-            <span className="w-2 h-2 rounded-full bg-[#B30D12] animate-ping"></span>
+          <div className="flex items-center gap-2 mb-2 text-xs font-bold text-rose-300">
+            <span className="w-2 h-2 rounded-full bg-[#E11D48] animate-ping"></span>
             <span>{lang === 'en' ? 'AUTONOMOUS SOURCING RECOMMENDATION' : 'AI自律仕入れ推奨'}</span>
           </div>
           <p className="text-base sm:text-lg text-slate-100 font-medium leading-relaxed">
@@ -151,7 +151,7 @@ export default function AiWeeklyBriefCard({ onNotifyToast }: AiWeeklyBriefCardPr
               className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#111C30] border border-[#233863] text-slate-200"
             >
               <span className="font-bold text-white">{target.model}</span>
-              <span className="px-1.5 py-0.5 rounded font-black text-[11px] bg-[#B30D12]/30 text-red-300 border border-[#B30D12]/50">
+              <span className="px-1.5 py-0.5 rounded font-black text-[11px] bg-[#E11D48]/30 text-rose-200 border border-[#E11D48]/50">
                 {target.recommendation}
               </span>
               <span className="text-[10px] text-slate-400 hidden md:inline">

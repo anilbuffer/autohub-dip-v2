@@ -21,7 +21,7 @@ function formatSpecsLine(v: HeiwaVehicle): string {
   const disp = v.cc > 0 ? `${(v.cc / 1000).toFixed(1)}L` : "EV";
   const fuel = v.fuelType === "H" ? "Hybrid" : v.fuelType === "D" ? "Diesel" : v.fuelType === "E" ? "Electric" : "Petrol";
   const trans = v.trans === "FAT" || v.trans === "AT" || v.trans === "DAT" ? "Automatic" : v.trans === "MT" ? "Manual" : "Automatic";
-  const kms = `${v.kms.toLocaleString()} km`;
+  const kms = `${v.kms.toLocaleString("en-US")} km`;
   return `${disp} ${fuel} | ${trans} | ${kms}`;
 }
 
@@ -70,7 +70,7 @@ export default function WatchlistPage() {
 
           <Link
             href="/browse-vehicles"
-            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#1E3A5F] hover:bg-[#162C48] text-white text-xs font-bold shadow-sm transition-all self-start sm:self-auto"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-bold shadow-sm transition-all self-start sm:self-auto"
           >
             <Plus size={15} />
             <span>Find More Vehicles</span>
@@ -94,7 +94,7 @@ export default function WatchlistPage() {
             </p>
             <Link
               href="/browse-vehicles"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#1E3A5F] hover:bg-[#162C48] text-white text-xs font-bold transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-bold transition-colors shadow-xs"
             >
               <Car size={15} />
               <span>Browse Auction Stock</span>
@@ -145,12 +145,12 @@ export default function WatchlistPage() {
                     {/* Price & Action Row */}
                     <div className="flex items-center justify-between gap-3 pt-4 mt-2 border-t border-[#F1F5F9]">
                       <div className="text-lg font-extrabold text-[#111827] font-mono tracking-tight">
-                        NZ${landed.totalLanded.toLocaleString()}
+                        NZ${landed.totalLanded.toLocaleString("en-US")}
                       </div>
 
                       <Link
                         href={`/vehicles/${uniqueId}`}
-                        className="px-4 py-2 bg-[#1E3A5F] hover:bg-[#162C48] text-white text-xs font-semibold rounded-xl transition-all shadow-2xs hover:shadow-sm"
+                        className="px-4 py-2 bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-semibold rounded-xl transition-all shadow-xs hover:shadow-md"
                       >
                         View Details
                       </Link>

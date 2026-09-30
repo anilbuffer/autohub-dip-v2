@@ -56,20 +56,11 @@ export const DEFAULT_WISHLIST: WishListCriteria[] = [
   {
     id: 'crit-1',
     make: 'Toyota',
-    model: 'Aqua',
+    model: 'Aqua / C-HR',
     yearFrom: 2014,
-    yearTo: 2022,
+    yearTo: 2024,
     maxKms: 90000,
-    maxBudget: 16000,
-  },
-  {
-    id: 'crit-2',
-    make: 'Toyota',
-    model: 'C-hr',
-    yearFrom: 2017,
-    yearTo: 2022,
-    maxKms: 80000,
-    maxBudget: 24000,
+    maxBudget: 25000,
   },
 ];
 
@@ -340,7 +331,12 @@ export function matchVehiclesAgainstWishlist(
 
     for (const c of activeCriteria) {
       const makeMatch = v.make.toLowerCase() === c.make.toLowerCase();
-      const modelMatch = !c.model || v.model.toLowerCase().includes(c.model.toLowerCase());
+      let modelMatch = !c.model || c.model.trim() === '';
+      if (c.model && c.model.trim() !== '') {
+        const terms = c.model.split('/').map(t => t.trim().toLowerCase().replace(/[-\s]/g, ''));
+        const vModel = v.model.toLowerCase().replace(/[-\s]/g, '');
+        modelMatch = terms.some(t => t === '' || vModel.includes(t) || t.includes(vModel));
+      }
       const yearMatch = v.year >= c.yearFrom && v.year <= c.yearTo;
       const kmsMatch = v.kms <= c.maxKms;
       const landed = calculateLandedCost(v.priceFob).totalLanded;

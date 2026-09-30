@@ -7,17 +7,17 @@
 :root {
   --background: #F8FAFC;
   --foreground: #111C2D;
-  --primary: #C8102E;
-  --primary-hover: #A30D24;
-  --primary-light: #FFF0F1;
-  --primary-subtle: rgba(200, 16, 46, 0.06);
-  --secondary: #1E3A5F;
-  --secondary-hover: #162C48;
+  --primary: #E11D48;
+  --primary-hover: #BE123C;
+  --primary-light: #FFF1F2;
+  --primary-subtle: rgba(225, 29, 72, 0.06);
+  --secondary: #0F1B2E;
+  --secondary-hover: #182C48;
   --secondary-light: #F0F4F9;
-  --secondary-subtle: rgba(30, 58, 95, 0.08);
-  --navy-base: #1E3A5F;
-  --navy-deep: #162C48;
-  --navy-sidebar: #132238;
+  --secondary-subtle: rgba(15, 27, 46, 0.08);
+  --navy-base: #0F1B2E;
+  --navy-deep: #0A1322;
+  --navy-sidebar: #0C1728;
   --surface: #FFFFFF;
   --surface-elevated: #FFFFFF;
   --border: #E2E8F0;
@@ -82,7 +82,7 @@ body {
 
 /* Focus ring override */
 *:focus-visible {
-  outline: 2px solid rgba(200, 16, 46, 0.4);
+  outline: 2px solid rgba(225, 29, 72, 0.4);
   outline-offset: 2px;
 }
 
@@ -120,7 +120,7 @@ body {
 
 /* Gradient text utility */
 .text-gradient {
-  background: linear-gradient(135deg, var(--primary), #E8384F);
+  background: linear-gradient(135deg, var(--primary), #FB7185);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

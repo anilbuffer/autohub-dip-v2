@@ -92,7 +92,7 @@ export default function MyBidsPage() {
 
           <Link
             href="/browse-vehicles"
-            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#1E3A5F] hover:bg-[#162C48] text-white text-xs font-bold shadow-sm transition-all self-start sm:self-auto"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-bold shadow-sm transition-all self-start sm:self-auto"
           >
             <Plus size={15} />
             <span>Browse More Vehicles</span>
@@ -127,7 +127,7 @@ export default function MyBidsPage() {
             onClick={() => setActiveFilter("all")}
             className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
               activeFilter === "all"
-                ? "bg-[#1E3A5F] text-white shadow-2xs"
+                ? "bg-[#0F1B2E] text-white shadow-2xs"
                 : "text-[#64748B] hover:text-[#111827]"
             }`}
           >
@@ -137,7 +137,7 @@ export default function MyBidsPage() {
             onClick={() => setActiveFilter("active")}
             className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
               activeFilter === "active"
-                ? "bg-[#1E3A5F] text-white shadow-2xs"
+                ? "bg-[#0F1B2E] text-white shadow-2xs"
                 : "text-[#64748B] hover:text-[#111827]"
             }`}
           >
@@ -147,7 +147,7 @@ export default function MyBidsPage() {
             onClick={() => setActiveFilter("won")}
             className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
               activeFilter === "won"
-                ? "bg-[#1E3A5F] text-white shadow-2xs"
+                ? "bg-[#0F1B2E] text-white shadow-2xs"
                 : "text-[#64748B] hover:text-[#111827]"
             }`}
           >
@@ -165,7 +165,7 @@ export default function MyBidsPage() {
             </p>
             <Link
               href="/browse-vehicles"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#1E3A5F] hover:bg-[#162C48] text-white text-xs font-bold transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-bold transition-colors shadow-xs"
             >
               <Car size={15} />
               <span>Browse Auction Stock</span>
@@ -235,13 +235,13 @@ export default function MyBidsPage() {
                         <div>
                           <span className="text-[#94A3B8] font-medium block">Proxy Max (JPY)</span>
                           <span className="font-bold text-[#111827] font-mono">
-                            ¥{bid.bidFobJpy.toLocaleString()}
+                            ¥{bid.bidFobJpy.toLocaleString("en-US")}
                           </span>
                         </div>
                         <div>
                           <span className="text-[#94A3B8] font-medium block">Est. Landed (NZD)</span>
                           <span className="font-extrabold text-[#111827] font-mono text-sm">
-                            NZ${bid.landedCostNzd.toLocaleString()}
+                            NZ${bid.landedCostNzd.toLocaleString("en-US")}
                           </span>
                         </div>
                       </div>
@@ -252,7 +252,7 @@ export default function MyBidsPage() {
                   <div className="p-4 bg-[#F8FAFC] border-t border-[#E5E7EB] flex items-center justify-between gap-2">
                     <Link
                       href={`/vehicles/${encodeURIComponent(bid.vehicleChassis)}`}
-                      className="text-xs font-semibold text-[#1E3A5F] hover:underline"
+                      className="text-xs font-semibold text-[#E11D48] hover:underline"
                     >
                       View Lot Specs
                     </Link>
@@ -304,7 +304,7 @@ export default function MyBidsPage() {
                     step="10000"
                     value={newBidAmount}
                     onChange={(e) => setNewBidAmount(Number(e.target.value))}
-                    className="w-full px-3 py-2 border border-[#CBD5E1] rounded-xl text-sm font-mono font-bold text-[#111827] outline-none focus:border-[#1E3A5F]"
+                    className="w-full px-3 py-2 border border-[#CBD5E1] rounded-xl text-sm font-mono font-bold text-[#111827] outline-none focus:border-[#E11D48]"
                   />
                 </div>
 
@@ -312,7 +312,7 @@ export default function MyBidsPage() {
                   <div className="flex justify-between text-[#64748B]">
                     <span>Calculated Landed NZD:</span>
                     <span className="font-bold text-[#111827] font-mono">
-                      NZ${calculateLandedCost(newBidAmount).totalLanded.toLocaleString()}
+                      NZ${calculateLandedCost(newBidAmount).totalLanded.toLocaleString("en-US")}
                     </span>
                   </div>
                 </div>
@@ -327,7 +327,7 @@ export default function MyBidsPage() {
                 </button>
                 <button
                   onClick={handleUpdateBid}
-                  className="px-4 py-2 rounded-xl text-xs font-bold bg-[#1E3A5F] hover:bg-[#162C48] text-white"
+                  className="px-4 py-2 rounded-xl text-xs font-bold bg-[#E11D48] hover:bg-[#BE123C] text-white shadow-xs"
                 >
                   Confirm Update
                 </button>

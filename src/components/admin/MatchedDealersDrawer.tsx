@@ -58,7 +58,7 @@ export default function MatchedDealersDrawer({
           <div className="p-6 bg-slate-900 text-white flex items-start justify-between gap-4 border-b border-slate-800">
             <div>
               <div className="flex items-center gap-2 mb-1.5">
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#B30D12] text-white">
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#E11D48] text-white">
                   Buyer Matching Engine
                 </span>
                 <span className="text-xs text-slate-300 font-medium">
@@ -91,7 +91,7 @@ export default function MatchedDealersDrawer({
                 <span className="font-bold text-slate-900">
                   {vehicle.km.toLocaleString('en-US')} km · Grade {vehicle.grade}/{vehicle.interiorGrade}
                 </span>
-                <span className="font-black text-[#B30D12]">
+                <span className="font-black text-[#E11D48]">
                   NZ${vehicle.fobPriceNzd.toLocaleString('en-US')} FOB
                 </span>
               </div>
@@ -200,7 +200,7 @@ export default function MatchedDealersDrawer({
             <button
               onClick={handleNotifyAll}
               disabled={isNotifyingAll}
-              className="px-5 py-2.5 bg-[#B30D12] hover:bg-[#8B090E] text-white rounded-xl text-xs font-bold shadow-lg shadow-[#B30D12]/20 transition-all flex items-center gap-2"
+              className="px-5 py-2.5 bg-[#E11D48] hover:bg-[#BE123C] text-white rounded-xl text-xs font-bold shadow-lg shadow-rose-950/20 transition-all flex items-center gap-2"
             >
               <Send size={14} className={isNotifyingAll ? 'animate-bounce' : ''} />
               <span>Notify All {vehicle.matchedDealersCount} Dealers</span>

@@ -115,7 +115,7 @@ export const TOP_WANTED_MODELS: TopModelDemand[] = [
     dealersCount: 61,
     turnDays: 14,
     avgMarginNzd: 4100,
-    color: '#B30D12'
+    color: '#E11D48'
   },
   {
     id: 'prius',
@@ -236,7 +236,7 @@ export const TREND_TOP_5 = [
   {
     id: 'chr',
     name: 'Toyota C-HR',
-    color: '#B30D12',
+    color: '#E11D48',
     values: [88, 94, 102, 110, 118, 125, 134, 140, 148, 153, 158, 162]
   },
   {
