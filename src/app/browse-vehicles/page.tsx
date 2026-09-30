@@ -30,6 +30,8 @@ import {
   HeiwaVehicle,
   calculateLandedCost,
   getVehicleConditionScore,
+  ListingType,
+  getVehicleListingType,
 } from "@/lib/heiwaData";
 import {
   getAllVehicles,
@@ -40,6 +42,7 @@ import {
   getStoredWishlistCriteria,
   matchVehiclesAgainstWishlist,
   getEstimatedNZRetailPrice,
+  placeDealerBid,
   WishListCriteria,
   DEFAULT_WISHLIST,
 } from "@/lib/dealerStore";
@@ -70,6 +73,7 @@ function BrowseVehiclesContent() {
   const [wishlistCriteria, setWishlistCriteria] = useState<WishListCriteria[]>(DEFAULT_WISHLIST);
 
   // Filter States
+  const [selectedListingType, setSelectedListingType] = useState<"all" | "reserve" | "auction">("all");
   const [selectedMake, setSelectedMake] = useState<string>("all");
   const [selectedModel, setSelectedModel] = useState<string>("all");
   const [selectedYear, setSelectedYear] = useState<string>("all");
@@ -86,6 +90,11 @@ function BrowseVehiclesContent() {
   const [enquirySuccess, setEnquirySuccess] = useState<boolean>(false);
   const [enquiryType, setEnquiryType] = useState<"reserve" | "inspection" | "quote">("reserve");
   const [enquiryNotes, setEnquiryNotes] = useState<string>("");
+
+  // Auction Quick Bid Modal State
+  const [bidVehicle, setBidVehicle] = useState<HeiwaVehicle | null>(null);
+  const [bidAmountJpy, setBidAmountJpy] = useState<number>(0);
+  const [bidSuccess, setBidSuccess] = useState<boolean>(false);
 
   // Pagination (18 items for wishlist to view all 14 matching vehicles at once, 12 for all auction stock)
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -209,6 +218,10 @@ function BrowseVehiclesContent() {
   const filteredVehicles = useMemo(() => {
     const pool = activeScope === "wishlist" ? matchedWishlistVehicles : allCars;
     return pool.filter((v) => {
+      if (selectedListingType !== "all") {
+        const type = getVehicleListingType(v);
+        if (type !== selectedListingType) return false;
+      }
       if (selectedMake !== "all" && v.make.toLowerCase() !== selectedMake.toLowerCase()) {
         return false;
       }
@@ -242,7 +255,19 @@ function BrowseVehiclesContent() {
       }
       return true;
     });
-  }, [allCars, matchedWishlistVehicles, activeScope, selectedMake, selectedModel, selectedYear, selectedFuel, selectedCondition, searchQuery]);
+  }, [allCars, matchedWishlistVehicles, activeScope, selectedListingType, selectedMake, selectedModel, selectedYear, selectedFuel, selectedCondition, searchQuery]);
+
+  // Count of Reserve vs Auction stock in current scope
+  const { reserveCount, auctionCount } = useMemo(() => {
+    const pool = activeScope === "wishlist" ? matchedWishlistVehicles : allCars;
+    let r = 0;
+    let a = 0;
+    pool.forEach((v) => {
+      if (getVehicleListingType(v) === "reserve") r++;
+      else a++;
+    });
+    return { reserveCount: r, auctionCount: a };
+  }, [activeScope, matchedWishlistVehicles, allCars]);
 
   // Sorting
   const sortedVehicles = useMemo(() => {
@@ -298,6 +323,7 @@ function BrowseVehiclesContent() {
   };
 
   const resetFilters = () => {
+    setSelectedListingType("all");
     setSelectedMake("all");
     setSelectedModel("all");
     setSelectedYear("all");
@@ -578,21 +604,71 @@ function BrowseVehiclesContent() {
       </form>
 
       {/* ─── Results Header & Sorter Bar ─── */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2">
-        <div>
-          <span className="text-[15px] font-bold text-[#111C2D]">
-            {activeScope === "wishlist"
-              ? `${totalItems} Matching Vehicles`
-              : `${totalItems} Vehicles Available`}
-          </span>
-          {(selectedMake !== "all" || selectedModel !== "all" || selectedYear !== "all" || selectedFuel !== "all" || selectedCondition !== "all" || searchQuery) && (
+      <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3.5 pt-2">
+        <div className="flex flex-wrap items-center gap-3">
+          <div>
+            <span className="text-[15px] font-bold text-[#111C2D]">
+              {activeScope === "wishlist"
+                ? `${totalItems} Matching Vehicles`
+                : `${totalItems} Vehicles Available`}
+            </span>
+            {(selectedListingType !== "all" || selectedMake !== "all" || selectedModel !== "all" || selectedYear !== "all" || selectedFuel !== "all" || selectedCondition !== "all" || searchQuery) && (
+              <button
+                onClick={resetFilters}
+                className="ml-3 text-xs text-[#E11D48] hover:underline font-semibold cursor-pointer"
+              >
+                Clear filters
+              </button>
+            )}
+          </div>
+
+          {/* Quick Listing Type Filter Pills */}
+          <div className="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl border border-slate-200">
             <button
-              onClick={resetFilters}
-              className="ml-3 text-xs text-[#E11D48] hover:underline font-semibold"
+              type="button"
+              onClick={() => {
+                setSelectedListingType("all");
+                setCurrentPage(1);
+              }}
+              className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                selectedListingType === "all"
+                  ? "bg-white text-[#111C2D] shadow-xs"
+                  : "text-[#64748B] hover:text-[#111C2D]"
+              }`}
             >
-              Clear filters
+              All ({activeScope === "wishlist" ? matchedWishlistVehicles.length : allCars.length})
             </button>
-          )}
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedListingType("reserve");
+                setCurrentPage(1);
+              }}
+              className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                selectedListingType === "reserve"
+                  ? "bg-emerald-600 text-white shadow-xs"
+                  : "text-emerald-700 hover:text-emerald-900"
+              }`}
+            >
+              <Clock size={12} />
+              <span>Enquire / Reserve ({reserveCount})</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedListingType("auction");
+                setCurrentPage(1);
+              }}
+              className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                selectedListingType === "auction"
+                  ? "bg-blue-600 text-white shadow-xs"
+                  : "text-blue-700 hover:text-blue-900"
+              }`}
+            >
+              <Gavel size={12} />
+              <span>Auction / Bid ({auctionCount})</span>
+            </button>
+          </div>
         </div>
 
         <div className="flex items-center gap-3 self-end sm:self-auto">
@@ -671,6 +747,8 @@ function BrowseVehiclesContent() {
             const isWatchlisted = watchlistIds.includes(vehicle.chassis);
             const isSelected = selectedChassis.includes(vehicle.chassis);
             const uniqueId = encodeURIComponent(vehicle.chassis);
+            const listingType = getVehicleListingType(vehicle);
+            const isReserve = listingType === "reserve";
 
             return (
               <div
@@ -682,7 +760,7 @@ function BrowseVehiclesContent() {
               >
                 {/* ─── Clean Image Container ─── */}
                 <div className="relative aspect-[16/10] w-full bg-[#F1F5F9] overflow-hidden">
-                  <Link href={`/vehicles/${uniqueId}`} className="block w-full h-full">
+                  <Link href={`/vehicles/${uniqueId}?type=${listingType}`} className="block w-full h-full">
                     <img
                       src={photoUrl}
                       alt={`${vehicle.year} ${vehicle.make} ${vehicle.model}`}
@@ -718,6 +796,21 @@ function BrowseVehiclesContent() {
                     </span>
                   </button>
 
+                  {/* Differentiated Type Pill on Image */}
+                  <div className="absolute top-3 right-12 z-10">
+                    {isReserve ? (
+                      <span className="px-2.5 py-1 rounded-xl text-[10.5px] font-extrabold bg-emerald-600/95 text-white backdrop-blur-md shadow-sm border border-emerald-400/40 flex items-center gap-1">
+                        <Clock size={11} />
+                        <span>Reserve</span>
+                      </span>
+                    ) : (
+                      <span className="px-2.5 py-1 rounded-xl text-[10.5px] font-extrabold bg-blue-600/95 text-white backdrop-blur-md shadow-sm border border-blue-400/40 flex items-center gap-1">
+                        <Gavel size={11} />
+                        <span>Auction</span>
+                      </span>
+                    )}
+                  </div>
+
                   {/* Minimal Watchlist Button (Top Right) */}
                   <button
                     onClick={(e) => handleToggleWatchlist(e, vehicle)}
@@ -734,17 +827,31 @@ function BrowseVehiclesContent() {
                 {/* ─── Simplified Details ─── */}
                 <div className="p-5 flex-1 flex flex-col justify-between">
                   <div>
-                    <div className="flex items-center justify-between gap-2 mb-1">
-                      <span className="text-[11px] text-[#94A3B8] font-mono font-semibold">
-                        Stockid #{vehicle.stockId}
-                      </span>
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                    <div className="flex items-center justify-between gap-2 mb-1.5">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[11px] text-[#94A3B8] font-mono font-semibold">
+                          Stockid #{vehicle.stockId}
+                        </span>
+                        {/* Differentiated Card Type Badge */}
+                        {isReserve ? (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                            <Clock size={10} className="text-emerald-600" />
+                            Enquire / Reserve
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-blue-50 text-blue-800 border border-blue-200">
+                            <Gavel size={10} className="text-blue-600" />
+                            Auction / Bid
+                          </span>
+                        )}
+                      </div>
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200 shrink-0">
                         Condition {getVehicleConditionScore(vehicle)}/10
                       </span>
                     </div>
 
                     {/* Title */}
-                    <Link href={`/vehicles/${uniqueId}`} className="hover:text-[#E11D48] transition-colors block">
+                    <Link href={`/vehicles/${uniqueId}?type=${listingType}`} className="hover:text-[#E11D48] transition-colors block">
                       <h3 className="text-[16px] font-bold text-[#111C2D] truncate hover:text-[#E11D48]">
                         {vehicle.year} {vehicle.make} {vehicle.model}
                       </h3>
@@ -759,8 +866,9 @@ function BrowseVehiclesContent() {
                   {/* Neutral Pricing: Landed Cost & NZ Market Indicator */}
                   <div className="pt-4 mt-3 border-t border-[#F1F5F9] flex items-center justify-between gap-3">
                     <div>
-                      <div className="text-[10px] text-[#8899A6] font-semibold uppercase tracking-wider">
-                        Landed Cost
+                      <div className="text-[10px] text-[#8899A6] font-semibold uppercase tracking-wider flex items-center gap-1">
+                        <span>Landed Cost</span>
+                        <span className="text-[10px] font-mono text-slate-400">({isReserve ? "Fixed" : "Guide"})</span>
                       </div>
                       <div className="text-lg font-extrabold text-[#111C2D] font-mono tracking-tight">
                         NZ${landed.totalLanded.toLocaleString("en-US")}
@@ -777,29 +885,15 @@ function BrowseVehiclesContent() {
                     </div>
                   </div>
 
-                  {/* Action Button: Single CTA per card (Alternating between "Enquire / Reserve" and "View Details") */}
+                  {/* Action Button: Single CTA [ View Details ] in brand color */}
                   <div className="mt-3.5">
-                    {index % 2 === 0 ? (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setEnquiryVehicle(vehicle);
-                          setEnquirySuccess(false);
-                        }}
-                        className="w-full py-2.5 px-4 rounded-xl text-xs font-bold bg-[#E11D48] hover:bg-[#BE123C] text-white transition-all shadow-xs hover:shadow-md flex items-center justify-center gap-2 cursor-pointer"
-                      >
-                        <Clock size={14} />
-                        <span>Enquire / Reserve</span>
-                      </button>
-                    ) : (
-                      <Link
-                        href={`/vehicles/${uniqueId}`}
-                        className="w-full py-2.5 px-4 bg-[#0F1B2E] hover:bg-[#1E3A5F] text-white text-xs font-bold rounded-xl transition-all shadow-xs hover:shadow-md flex items-center justify-center gap-2 text-center"
-                      >
-                        <span>View Details</span>
-                        <ArrowRight size={14} />
-                      </Link>
-                    )}
+                    <Link
+                      href={`/vehicles/${uniqueId}?type=${listingType}`}
+                      className="w-full py-2.5 px-4 bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-bold rounded-xl transition-all shadow-xs hover:shadow-md flex items-center justify-center gap-2 text-center cursor-pointer"
+                    >
+                      <span>View Details</span>
+                      <ArrowRight size={14} />
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -816,6 +910,8 @@ function BrowseVehiclesContent() {
             const isWatchlisted = watchlistIds.includes(vehicle.chassis);
             const isSelected = selectedChassis.includes(vehicle.chassis);
             const uniqueId = encodeURIComponent(vehicle.chassis);
+            const listingType = getVehicleListingType(vehicle);
+            const isReserve = listingType === "reserve";
 
             return (
               <div
@@ -849,12 +945,38 @@ function BrowseVehiclesContent() {
                       alt={vehicle.model}
                       className="w-full h-full object-cover"
                     />
+                    <div className="absolute top-1 left-1">
+                      {isReserve ? (
+                        <span className="px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-emerald-600/90 text-white backdrop-blur-xs flex items-center gap-0.5">
+                          <Clock size={8} /> Reserve
+                        </span>
+                      ) : (
+                        <span className="px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-blue-600/90 text-white backdrop-blur-xs flex items-center gap-0.5">
+                          <Gavel size={8} /> Auction
+                        </span>
+                      )}
+                    </div>
                   </div>
 
                   <div className="min-w-0">
-                    <h3 className="text-base font-bold text-[#111C2D] truncate">
-                      {vehicle.year} {vehicle.make} {vehicle.model}
-                    </h3>
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <Link href={`/vehicles/${uniqueId}?type=${listingType}`} className="hover:text-[#E11D48]">
+                        <h3 className="text-base font-bold text-[#111C2D] truncate hover:text-[#E11D48]">
+                          {vehicle.year} {vehicle.make} {vehicle.model}
+                        </h3>
+                      </Link>
+                      {isReserve ? (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 shrink-0">
+                          <Clock size={10} className="text-emerald-600" />
+                          Enquire / Reserve
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-800 border border-blue-200 shrink-0">
+                          <Gavel size={10} className="text-blue-600" />
+                          Auction / Bid
+                        </span>
+                      )}
+                    </div>
                     <p className="text-xs text-[#64748B] mt-1 font-medium">
                       {formatSpecsLine(vehicle)}
                     </p>
@@ -871,7 +993,7 @@ function BrowseVehiclesContent() {
 
                 <div className="flex items-center gap-5 justify-between sm:justify-end shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-[#F1F5F9]">
                   <div className="text-left sm:text-right">
-                    <div className="text-[10px] text-[#8899A6] font-semibold uppercase">Landed Cost</div>
+                    <div className="text-[10px] text-[#8899A6] font-semibold uppercase">Landed Cost ({isReserve ? "Fixed" : "Guide"})</div>
                     <div className="text-base font-extrabold text-[#111C2D] font-mono">
                       NZ${landed.totalLanded.toLocaleString("en-US")}
                     </div>
@@ -887,7 +1009,7 @@ function BrowseVehiclesContent() {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={(e) => handleToggleWatchlist(e, vehicle)}
-                      className="p-2 border border-[#CBD5E1] rounded-xl hover:bg-slate-50 text-[#64748B] transition-colors"
+                      className="p-2 border border-[#CBD5E1] rounded-xl hover:bg-slate-50 text-[#64748B] transition-colors cursor-pointer"
                       title="Watchlist"
                     >
                       <Heart
@@ -895,27 +1017,13 @@ function BrowseVehiclesContent() {
                         className={isWatchlisted ? "fill-[#E11D48] text-[#E11D48]" : ""}
                       />
                     </button>
-                    {index % 2 === 0 ? (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setEnquiryVehicle(vehicle);
-                          setEnquirySuccess(false);
-                        }}
-                        className="px-4 py-2 bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-bold rounded-xl transition-all shadow-xs hover:shadow-md flex items-center gap-1.5 cursor-pointer shrink-0"
-                      >
-                        <Clock size={13} />
-                        <span>Enquire / Reserve</span>
-                      </button>
-                    ) : (
-                      <Link
-                        href={`/vehicles/${uniqueId}`}
-                        className="px-4 py-2 bg-[#0F1B2E] hover:bg-[#1E3A5F] text-white text-xs font-bold rounded-xl transition-all shadow-xs hover:shadow-md flex items-center gap-1.5 shrink-0"
-                      >
-                        <span>View Details</span>
-                        <ArrowRight size={13} />
-                      </Link>
-                    )}
+                    <Link
+                      href={`/vehicles/${uniqueId}?type=${listingType}`}
+                      className="px-4 py-2 bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-bold rounded-xl transition-all shadow-xs hover:shadow-md flex items-center gap-1.5 shrink-0"
+                    >
+                      <span>View Details</span>
+                      <ArrowRight size={13} />
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -1242,6 +1350,188 @@ function BrowseVehiclesContent() {
                       className="flex-1 py-2.5 rounded-xl bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-bold transition-all shadow-sm hover:shadow-md cursor-pointer"
                     >
                       Confirm Reservation
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── Single Vehicle Auction Quick Bid Modal ─── */}
+      {bidVehicle && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-xs animate-fadeIn">
+          <div className="bg-white rounded-3xl w-full max-w-lg shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh]">
+            {/* Modal Header */}
+            <div className="flex items-start justify-between p-5 sm:p-6 border-b border-slate-100 shrink-0 bg-blue-50/60">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
+                  <span className="text-[10px] font-extrabold uppercase text-blue-700 tracking-widest">
+                    Live Japan Auction Proxy Bidding
+                  </span>
+                </div>
+                <h3 className="text-lg font-extrabold text-[#111827] mt-0.5">
+                  Submit Auction Proxy Bid
+                </h3>
+                <p className="text-xs text-[#64748B] mt-0.5">
+                  USS Tokyo Japan · Enter your maximum target FOB bid.
+                </p>
+              </div>
+              <button
+                onClick={() => setBidVehicle(null)}
+                className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-200/60 transition-colors cursor-pointer"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="p-5 sm:p-6 overflow-y-auto space-y-4">
+              {bidSuccess ? (
+                <div className="p-6 text-center space-y-3 bg-emerald-50 rounded-2xl border border-emerald-200">
+                  <div className="w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center mx-auto shadow-md">
+                    <CheckCircle2 size={26} />
+                  </div>
+                  <h4 className="text-base font-extrabold text-emerald-900">
+                    Auction Proxy Bid Submitted!
+                  </h4>
+                  <p className="text-xs text-emerald-800 leading-relaxed max-w-sm mx-auto">
+                    Your proxy bid of <strong>¥{bidAmountJpy.toLocaleString("en-US")}</strong> for <strong>{bidVehicle.year} {bidVehicle.make} {bidVehicle.model}</strong> (Stockid #{bidVehicle.stockId}) has been registered for USS Tokyo. You can monitor it under &quot;My Bids&quot;.
+                  </p>
+                  <div className="pt-2 flex justify-center gap-2">
+                    <button
+                      onClick={() => setBidVehicle(null)}
+                      className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-xs cursor-pointer"
+                    >
+                      Done
+                    </button>
+                    <Link
+                      href={`/vehicles/${encodeURIComponent(bidVehicle.chassis)}?type=auction`}
+                      className="px-4 py-2 rounded-xl bg-white border border-emerald-300 text-emerald-800 hover:bg-emerald-50 text-xs font-bold transition-all"
+                    >
+                      View Vehicle Details
+                    </Link>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  {/* Vehicle Mini Card */}
+                  <div className="flex items-center gap-3.5 p-3.5 bg-slate-50 rounded-2xl border border-slate-200/80">
+                    <img
+                      src={getVehiclePhoto(bidVehicle)}
+                      alt={bidVehicle.model}
+                      className="w-16 h-12 object-cover rounded-xl border border-slate-200 shrink-0"
+                    />
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className="font-extrabold text-sm text-[#111827] truncate">
+                          {bidVehicle.year} {bidVehicle.make} {bidVehicle.model}
+                        </span>
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 shrink-0">
+                          Grade {bidVehicle.grade || "4.0"}
+                        </span>
+                      </div>
+                      <div className="text-[11px] text-[#64748B] font-mono mt-0.5 flex items-center gap-2">
+                        <span>Stockid #{bidVehicle.stockId}</span>
+                        <span>·</span>
+                        <span>{bidVehicle.chassis}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Calculations */}
+                  {(() => {
+                    const currentLanded = calculateLandedCost(bidAmountJpy);
+                    const est = getEstimatedNZRetailPrice(bidVehicle);
+                    const margin = est.retailPrice - currentLanded.totalLanded;
+                    const marginPct = Math.round((margin / est.retailPrice) * 100);
+                    return (
+                      <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2 text-xs">
+                        <div className="flex justify-between">
+                          <span className="text-slate-500">Auction Guide FOB:</span>
+                          <span className="font-bold font-mono text-slate-800">¥{bidVehicle.priceFob.toLocaleString()}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-slate-500">Calculated Landed Cost (at this bid):</span>
+                          <span className="font-bold text-[#E11D48] font-mono">NZ${currentLanded.totalLanded.toLocaleString()}</span>
+                        </div>
+                        <div className="flex justify-between pt-1 border-t border-slate-200">
+                          <span className="text-slate-500">Projected Margin vs NZ Market:</span>
+                          <span className="font-bold text-emerald-700 font-mono">+NZ${margin.toLocaleString()} ({marginPct}%)</span>
+                        </div>
+                      </div>
+                    );
+                  })()}
+
+                  {/* Bid Input */}
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                      Maximum Target Proxy Bid (JPY)
+                    </label>
+                    <div className="relative">
+                      <span className="absolute left-3.5 top-1/2 -translate-y-1/2 font-bold text-sm text-slate-400">¥</span>
+                      <input
+                        type="number"
+                        step={10000}
+                        value={bidAmountJpy}
+                        onChange={(e) => setBidAmountJpy(parseInt(e.target.value) || 0)}
+                        className="w-full pl-8 pr-4 py-2.5 bg-white border border-slate-300 rounded-xl font-mono font-bold text-base text-[#111827] focus:outline-none focus:border-[#E11D48]"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Increment quick buttons */}
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setBidAmountJpy((p) => Math.max(100000, p - 20000))}
+                      className="flex-1 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-xs font-bold text-slate-700 cursor-pointer"
+                    >
+                      -¥20,000
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setBidAmountJpy(bidVehicle.priceFob)}
+                      className="flex-1 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-xs font-bold text-slate-700 cursor-pointer"
+                    >
+                      Reset
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setBidAmountJpy((p) => p + 20000)}
+                      className="flex-1 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-xs font-bold text-slate-700 cursor-pointer"
+                    >
+                      +¥20,000
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setBidAmountJpy((p) => p + 50000)}
+                      className="flex-1 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-xs font-bold text-slate-700 cursor-pointer"
+                    >
+                      +¥50,000
+                    </button>
+                  </div>
+
+                  {/* Submit */}
+                  <div className="pt-2 flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setBidVehicle(null)}
+                      className="flex-1 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        placeDealerBid(bidVehicle, bidAmountJpy);
+                        setBidSuccess(true);
+                      }}
+                      className="flex-1 py-2.5 rounded-xl bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-bold transition-all shadow-sm hover:shadow-md cursor-pointer flex items-center justify-center gap-2"
+                    >
+                      <Gavel size={14} />
+                      <span>Submit Proxy Bid</span>
                     </button>
                   </div>
                 </>

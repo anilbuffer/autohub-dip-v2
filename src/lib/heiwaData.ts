@@ -1,6 +1,8 @@
 // Real Heiwa Auction Data — extracted from CSV screenshots
 // Each record represents a vehicle lot from Heiwa Auto Japan
 
+export type ListingType = "reserve" | "auction";
+
 export interface HeiwaVehicle {
   stockId: string;
   make: string;
@@ -21,7 +23,23 @@ export interface HeiwaVehicle {
   priceFob: number; // JPY FOB price
   photoUrl?: string;
   auctionDate?: string;
+  listingType?: ListingType;
+  auctionHouse?: string;
+  auctionTimeLeft?: string;
 }
+
+// Helper: Determine if vehicle is Direct Enquire/Reserve or Japan Auction/Bid
+export function getVehicleListingType(v: { chassis?: string; stockId?: string; listingType?: ListingType }): ListingType {
+  if (v.listingType) return v.listingType;
+  if (v.stockId && v.stockId.toUpperCase().startsWith("R")) return "reserve";
+  const idStr = v.stockId || v.chassis || "";
+  let hash = 0;
+  for (let i = 0; i < idStr.length; i++) {
+    hash = (hash * 31 + idStr.charCodeAt(i)) & 0xffffffff;
+  }
+  return Math.abs(hash) % 2 === 0 ? "auction" : "reserve";
+}
+
 
 export const HEIWA_VEHICLES: HeiwaVehicle[] = [
   { stockId: "R45735", make: "Toyota", model: "Prius 5d", grade: "L", chassis: "ZVW30-1812701", year: 2015, march: null, kms: 43000, color: "black", colorDesc: "black", cc: 1800, trans: "AT", fuelType: "H", condition: "", ac: "4 AAC", equip: "ps, pw, nav", priceFob: 685000 },

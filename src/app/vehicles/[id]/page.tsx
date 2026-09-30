@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, Suspense } from "react";
 import AppLayout from "@/components/layout/AppLayout";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import {
   ArrowLeft,
   Heart,
@@ -30,6 +30,7 @@ import {
   Layers,
   FileCheck,
   Wind,
+  X,
 } from "lucide-react";
 import {
   HeiwaVehicle,
@@ -38,6 +39,8 @@ import {
   NZComparable,
   LANDED_COST_CONSTANTS,
   getVehicleConditionScore,
+  ListingType,
+  getVehicleListingType,
 } from "@/lib/heiwaData";
 import {
   findHeiwaVehicle,
@@ -48,22 +51,33 @@ import {
   placeDealerBid,
 } from "@/lib/dealerStore";
 
-export default function VehicleDetailPage({ params }: { params?: { id?: string } }) {
-  const routeParams = useParams();
+function VehicleDetailContent({ vehicleId }: { vehicleId: string }) {
   const router = useRouter();
-  const rawId = params?.id || (Array.isArray(routeParams?.id) ? routeParams.id[0] : (routeParams?.id as string)) || "";
-  const id = rawId;
+  const searchParams = useSearchParams();
+  const id = vehicleId;
+  const urlType = searchParams?.get("type") as ListingType | null;
 
   const [vehicle, setVehicle] = useState<HeiwaVehicle | null>(() => {
     if (!id) return null;
     return findHeiwaVehicle(id) || null;
   });
+
+  const listingType: ListingType = useMemo(() => {
+    if (urlType === "reserve" || urlType === "auction") return urlType;
+    if (vehicle) return getVehicleListingType(vehicle);
+    return "auction";
+  }, [urlType, vehicle]);
+
+  const isReserve = listingType === "reserve";
+
   const [comparables, setComparables] = useState<NZComparable[]>(() => {
     if (!id) return [];
     const found = findHeiwaVehicle(id);
     return found ? getNZComparables(found.make, found.model, found.year, found.kms) : [];
   });
   const [isWatchlisted, setIsWatchlisted] = useState(false);
+
+  // Auction Bid Modal State
   const [bidModalOpen, setBidModalOpen] = useState(false);
   const [bidAmountJpy, setBidAmountJpy] = useState<number>(() => {
     if (!id) return 0;
@@ -71,6 +85,12 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
     return found ? found.priceFob : 0;
   });
   const [bidSuccess, setBidSuccess] = useState(false);
+
+  // Enquire / Reserve Modal State
+  const [enquiryModalOpen, setEnquiryModalOpen] = useState(false);
+  const [enquiryType, setEnquiryType] = useState<"reserve" | "inspection" | "quote">("reserve");
+  const [enquiryNotes, setEnquiryNotes] = useState<string>("");
+  const [enquirySuccess, setEnquirySuccess] = useState(false);
 
   // Intelligence Layer Accordion State (first open by default, rest closed)
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
@@ -210,13 +230,29 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
               <span>{isWatchlisted ? "Watchlisted" : "Add to Watchlist"}</span>
             </button>
 
-            <button
-              onClick={() => setBidModalOpen(true)}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-[#E11D48] hover:bg-[#BE123C] text-white shadow-sm shadow-rose-950/20 transition-all hover:shadow-md cursor-pointer"
-            >
-              <Clock size={14} />
-              <span>Enquire / Reserve</span>
-            </button>
+            {isReserve ? (
+              <button
+                onClick={() => {
+                  setEnquiryModalOpen(true);
+                  setEnquirySuccess(false);
+                }}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-[#E11D48] hover:bg-[#BE123C] text-white shadow-sm shadow-rose-950/20 transition-all hover:shadow-md cursor-pointer"
+              >
+                <Clock size={14} />
+                <span>Enquire / Reserve</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  setBidModalOpen(true);
+                  setBidSuccess(false);
+                }}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-[#E11D48] hover:bg-[#BE123C] text-white shadow-sm shadow-rose-950/20 transition-all hover:shadow-md cursor-pointer"
+              >
+                <Gavel size={14} />
+                <span>Place Proxy Bid</span>
+              </button>
+            )}
           </div>
         </div>
 
@@ -235,6 +271,17 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
                   <span className="bg-[#0F1B2E]/90 backdrop-blur-xs text-white px-2.5 py-1 rounded-md text-xs font-bold font-mono">
                     Stockid #{vehicle.stockId}
                   </span>
+                  {isReserve ? (
+                    <span className="bg-emerald-600/95 backdrop-blur-xs text-white px-2.5 py-1 rounded-md text-xs font-bold shadow-xs flex items-center gap-1">
+                      <Clock size={12} />
+                      Reserve Stock
+                    </span>
+                  ) : (
+                    <span className="bg-blue-600/95 backdrop-blur-xs text-white px-2.5 py-1 rounded-md text-xs font-bold shadow-xs flex items-center gap-1">
+                      <Gavel size={12} />
+                      Auction Lot
+                    </span>
+                  )}
                   <span className="bg-white/95 backdrop-blur-xs text-[#111C2D] border border-slate-200 px-2.5 py-1 rounded-md text-xs font-bold shadow-xs flex items-center gap-1">
                     <ShieldCheck size={12} className="text-emerald-600" />
                     Condition {conditionScore}/10
@@ -267,15 +314,42 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
             <div className="lg:col-span-7 flex flex-col justify-between space-y-5">
               <div>
                 <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[#8899A6] mb-1">
-                  <span>HEIWA AUTO JAPAN AUCTION</span>
-                  <span>·</span>
-                  <span className="text-[#E11D48] font-bold">AUCTION STOCKID ACTIVE</span>
+                  {isReserve ? (
+                    <>
+                      <span className="text-emerald-700 font-extrabold flex items-center gap-1.5">
+                        <Clock size={13} className="text-emerald-600" />
+                        DIRECT HEIWA JAPAN ALLOCATION
+                      </span>
+                      <span>·</span>
+                      <span className="text-[#E11D48] font-bold">24H FIXED PRICE RESERVATION</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-blue-700 font-extrabold flex items-center gap-1.5">
+                        <Gavel size={13} className="text-blue-600" />
+                        HEIWA AUTO JAPAN AUCTION
+                      </span>
+                      <span>·</span>
+                      <span className="text-[#E11D48] font-bold">USS TOKYO LOT · PROXY BIDDING</span>
+                    </>
+                  )}
                 </div>
 
                 <div className="flex flex-wrap items-center gap-3">
                   <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111C2D] tracking-tight">
                     {vehicle.year} {vehicle.make} {vehicle.model} {vehicle.grade}
                   </h1>
+                  {isReserve ? (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-200 shadow-2xs">
+                      <Clock size={12} className="text-emerald-600" />
+                      Enquire / Reserve
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-extrabold bg-blue-50 text-blue-800 border border-blue-200 shadow-2xs">
+                      <Gavel size={12} className="text-blue-600" />
+                      Auction / Bid
+                    </span>
+                  )}
                 </div>
 
                 {/* Key Spec Badges: kms, fuel, cc, trans, ac, equip as in CSV file */}
@@ -374,13 +448,13 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
                 {/* AutoHub Landed Cost */}
                 <div className="p-3 bg-white rounded-lg border border-[#E8ECF0] shadow-2xs">
                   <div className="text-[10px] font-bold text-[#8899A6] uppercase tracking-wider">
-                    AutoHub Landed Cost
+                    {isReserve ? "Direct Landed Cost (Fixed)" : "AutoHub Landed Cost (Guide)"}
                   </div>
                   <div className="text-xl font-extrabold text-[#E11D48] font-mono mt-0.5">
                     NZ${landed.totalLanded.toLocaleString("en-US")}
                   </div>
                   <div className="text-[11px] text-[#536471] mt-0.5 font-mono">
-                    FOB ¥{vehicle.priceFob.toLocaleString("en-US")}
+                    {isReserve ? `Fixed Buy FOB ¥${vehicle.priceFob.toLocaleString("en-US")}` : `Guide FOB ¥${vehicle.priceFob.toLocaleString("en-US")}`}
                   </div>
                 </div>
 
@@ -413,15 +487,33 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
 
               {/* Fast Action Bar */}
               <div className="flex flex-wrap items-center gap-3 pt-2">
-                <button
-                  onClick={() => setBidModalOpen(true)}
-                  className="flex-1 py-3 px-4 bg-[#E11D48] hover:bg-[#BE123C] text-white rounded-xl text-xs sm:text-sm font-bold shadow-sm shadow-rose-900/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <Clock size={16} />
-                  <span>
-                    Enquire / Reserve (FOB ¥{vehicle.priceFob.toLocaleString("en-US")})
-                  </span>
-                </button>
+                {isReserve ? (
+                  <button
+                    onClick={() => {
+                      setEnquiryModalOpen(true);
+                      setEnquirySuccess(false);
+                    }}
+                    className="flex-1 py-3 px-4 bg-[#E11D48] hover:bg-[#BE123C] text-white rounded-xl text-xs sm:text-sm font-bold shadow-sm shadow-rose-900/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <Clock size={16} />
+                    <span>
+                      Enquire / Reserve (Fixed FOB ¥{vehicle.priceFob.toLocaleString("en-US")})
+                    </span>
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setBidModalOpen(true);
+                      setBidSuccess(false);
+                    }}
+                    className="flex-1 py-3 px-4 bg-[#E11D48] hover:bg-[#BE123C] text-white rounded-xl text-xs sm:text-sm font-bold shadow-sm shadow-rose-900/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <Gavel size={16} />
+                    <span>
+                      Place Proxy Bid (Guide FOB ¥{vehicle.priceFob.toLocaleString("en-US")})
+                    </span>
+                  </button>
+                )}
 
                 <button
                   onClick={handleToggleWatchlist}
@@ -919,13 +1011,194 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
         </div>
 
         {/* ─── ENQUIRE / RESERVE MODAL ─── */}
+        {enquiryModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-sm animate-fadeIn">
+            <div className="bg-white rounded-3xl w-full max-w-lg shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh]">
+              {/* Header */}
+              <div className="flex items-start justify-between p-5 sm:p-6 border-b border-slate-100 shrink-0 bg-emerald-50/70">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
+                    <span className="text-[10px] font-extrabold uppercase text-emerald-800 tracking-widest">
+                      Direct Heiwa Japan Allocation
+                    </span>
+                  </div>
+                  <h3 className="text-lg font-extrabold text-[#111827] mt-0.5">
+                    Enquire / Reserve Vehicle
+                  </h3>
+                  <p className="text-xs text-[#64748B] mt-0.5">
+                    Lock in a 24-hour fixed price reservation or request inspector verification.
+                  </p>
+                </div>
+                <button
+                  onClick={() => setEnquiryModalOpen(false)}
+                  className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-200/60 transition-colors cursor-pointer"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              {/* Body */}
+              <div className="p-5 sm:p-6 overflow-y-auto space-y-4">
+                {enquirySuccess ? (
+                  <div className="p-6 text-center space-y-3 bg-emerald-50 rounded-2xl border border-emerald-200">
+                    <div className="w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center mx-auto shadow-md">
+                      <CheckCircle2 size={26} />
+                    </div>
+                    <h4 className="text-base font-extrabold text-emerald-900">
+                      Reservation & Enquiry Confirmed!
+                    </h4>
+                    <p className="text-xs text-emerald-800 leading-relaxed max-w-sm mx-auto">
+                      Your request for <strong>{vehicle.year} {vehicle.make} {vehicle.model}</strong> (Stockid #{vehicle.stockId}) has been logged. An AutoHub Japanese export specialist will contact Auckland Auto Group within 15 minutes.
+                    </p>
+                    <div className="pt-2 flex justify-center gap-2">
+                      <button
+                        onClick={() => {
+                          setEnquiryModalOpen(false);
+                          setEnquirySuccess(false);
+                        }}
+                        className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-xs cursor-pointer"
+                      >
+                        Done
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    {/* Vehicle Mini Card */}
+                    <div className="flex items-center gap-3.5 p-3.5 bg-slate-50 rounded-2xl border border-slate-200/80">
+                      <img
+                        src={photoUrl}
+                        alt={vehicle.model}
+                        className="w-16 h-12 object-cover rounded-xl border border-slate-200 shrink-0"
+                      />
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className="font-extrabold text-sm text-[#111827] truncate">
+                            {vehicle.year} {vehicle.make} {vehicle.model}
+                          </span>
+                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 shrink-0">
+                            Grade {vehicle.grade || "4.0"}
+                          </span>
+                        </div>
+                        <div className="text-[11px] text-[#64748B] font-mono mt-0.5 flex items-center gap-2">
+                          <span>Stockid #{vehicle.stockId}</span>
+                          <span>·</span>
+                          <span>FOB ¥{vehicle.priceFob.toLocaleString()}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Enquiry Options */}
+                    <div className="space-y-2">
+                      <label className="block text-xs font-bold text-slate-700">
+                        Request Type
+                      </label>
+                      <div className="grid grid-cols-3 gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setEnquiryType("reserve")}
+                          className={`p-2.5 rounded-xl border text-xs font-bold transition-all flex flex-col items-center gap-1 cursor-pointer ${
+                            enquiryType === "reserve"
+                              ? "bg-rose-50 text-[#E11D48] border-rose-300 ring-2 ring-rose-200"
+                              : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
+                          }`}
+                        >
+                          <Clock size={15} />
+                          <span>24h Reserve</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setEnquiryType("inspection")}
+                          className={`p-2.5 rounded-xl border text-xs font-bold transition-all flex flex-col items-center gap-1 cursor-pointer ${
+                            enquiryType === "inspection"
+                              ? "bg-rose-50 text-[#E11D48] border-rose-300 ring-2 ring-rose-200"
+                              : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
+                          }`}
+                        >
+                          <ShieldCheck size={15} />
+                          <span>Inspect Sheet</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setEnquiryType("quote")}
+                          className={`p-2.5 rounded-xl border text-xs font-bold transition-all flex flex-col items-center gap-1 cursor-pointer ${
+                            enquiryType === "quote"
+                              ? "bg-rose-50 text-[#E11D48] border-rose-300 ring-2 ring-rose-200"
+                              : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
+                          }`}
+                        >
+                          <Car size={15} />
+                          <span>Freight Quote</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Dealership Info */}
+                    <div className="grid grid-cols-2 gap-3 text-xs">
+                      <div>
+                        <label className="block font-bold text-slate-700 mb-1">Dealership</label>
+                        <input
+                          type="text"
+                          defaultValue="Auckland Auto Group"
+                          className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium outline-none focus:border-[#E11D48]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block font-bold text-slate-700 mb-1">Contact Phone</label>
+                        <input
+                          type="text"
+                          defaultValue="+64 21 582 9104"
+                          className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium outline-none focus:border-[#E11D48]"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Notes */}
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">
+                        Notes / Instructions (optional)
+                      </label>
+                      <textarea
+                        rows={2}
+                        value={enquiryNotes}
+                        onChange={(e) => setEnquiryNotes(e.target.value)}
+                        placeholder="e.g. Please hold lot for Auckland Auto Group inspection confirmation"
+                        className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 outline-none focus:border-[#E11D48] resize-none"
+                      />
+                    </div>
+
+                    <div className="pt-2 flex items-center gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setEnquiryModalOpen(false)}
+                        className="flex-1 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setEnquirySuccess(true)}
+                        className="flex-1 py-2.5 rounded-xl bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-bold transition-all shadow-sm hover:shadow-md cursor-pointer"
+                      >
+                        Confirm Reservation
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ─── AUCTION PROXY BIDDING MODAL ─── */}
         {bidModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-sm animate-fadeIn">
-            <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl border border-[#E8ECF0] p-6 space-y-5">
+            <div className="bg-white rounded-3xl w-full max-w-lg shadow-2xl border border-[#E8ECF0] p-6 space-y-5">
               <div className="flex items-start justify-between">
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#8899A6]">
-                    Direct Japan Auction Allocation
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600">
+                    Live Japan Auction Proxy Bidding
                   </span>
                   <h3 className="text-lg font-bold text-[#111C2D]">
                     {vehicle.year} {vehicle.make} {vehicle.model}
@@ -938,7 +1211,7 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
                   onClick={() => setBidModalOpen(false)}
                   className="text-[#8899A6] hover:text-[#111C2D] p-1 rounded-lg hover:bg-gray-100 cursor-pointer"
                 >
-                  ✕
+                  <X size={18} />
                 </button>
               </div>
 
@@ -948,11 +1221,10 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
                     <CheckCircle2 size={24} />
                   </div>
                   <h4 className="text-base font-bold text-emerald-900">
-                    Enquiry & Reservation Dispatched!
+                    Auction Proxy Bid Submitted!
                   </h4>
                   <p className="text-xs text-emerald-700 max-w-xs mx-auto">
-                    Your reservation request for ¥{bidAmountJpy.toLocaleString("en-US")} has been queued with Heiwa
-                    Japan. You can monitor its status under &quot;My Bids&quot;.
+                    Your proxy bid of ¥{bidAmountJpy.toLocaleString("en-US")} has been queued with USS Tokyo Japan. You can monitor its status under &quot;My Bids&quot;.
                   </p>
                 </div>
               ) : (
@@ -1034,9 +1306,10 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
                     </button>
                     <button
                       onClick={handlePlaceBid}
-                      className="flex-1 py-2.5 bg-[#E11D48] hover:bg-[#BE123C] text-white rounded-xl text-xs font-bold shadow-md shadow-rose-900/20 transition-all cursor-pointer"
+                      className="flex-1 py-2.5 bg-[#E11D48] hover:bg-[#BE123C] text-white rounded-xl text-xs font-bold shadow-md shadow-rose-900/20 transition-all cursor-pointer flex items-center justify-center gap-2"
                     >
-                      Submit Reservation / Enquiry
+                      <Gavel size={14} />
+                      <span>Submit Proxy Bid</span>
                     </button>
                   </div>
                 </>
@@ -1046,5 +1319,16 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
         )}
       </div>
     </AppLayout>
+  );
+}
+
+export default function VehicleDetailPage({ params }: { params?: { id?: string } }) {
+  const routeParams = useParams();
+  const rawId = params?.id || (Array.isArray(routeParams?.id) ? routeParams.id[0] : (routeParams?.id as string)) || "";
+
+  return (
+    <Suspense fallback={<div className="p-12 text-center text-xs text-slate-500">Loading vehicle details...</div>}>
+      <VehicleDetailContent vehicleId={rawId} />
+    </Suspense>
   );
 }
