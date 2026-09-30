@@ -26,8 +26,6 @@ import {
   Info,
   ChevronRight,
   Share2,
-  Calculator,
-  BarChart3,
   Layers,
   FileCheck,
 } from "lucide-react";
@@ -46,8 +44,6 @@ import {
   toggleStoredWatchlist,
   placeDealerBid,
 } from "@/lib/dealerStore";
-import PriceVsKmChart from "@/components/vehicle/PriceVsKmChart";
-import MarginCalculator from "@/components/vehicle/MarginCalculator";
 
 export default function VehicleDetailPage({ params }: { params?: { id?: string } }) {
   const routeParams = useParams();
@@ -75,7 +71,7 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
 
   // Intelligence Layer Active Section / Tab
   const [activeLayer, setActiveLayer] = useState<
-    "all" | "landed_cost" | "nz_market" | "comparables" | "price_vs_km" | "margin_calc" | "specs"
+    "all" | "landed_cost" | "nz_market" | "comparables" | "specs"
   >("all");
 
   useEffect(() => {
@@ -163,39 +159,7 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
   return (
     <AppLayout>
       <div className="space-y-6 pb-20 font-sans">
-        {/* ─── 0. Core Product Loop Breadcrumb ─── */}
-        <div className="bg-white border border-[#E8ECF0] rounded-2xl px-4 py-3 flex items-center justify-between text-xs shadow-2xs overflow-x-auto">
-          <div className="flex items-center gap-1.5 sm:gap-2.5 text-[11px] font-medium shrink-0">
-            <Link
-              href="/browse-vehicles?filter=wishlist"
-              className="text-slate-500 hover:text-[#111C2D] flex items-center gap-1 transition-colors"
-            >
-              <span>1. Wishlist</span>
-            </Link>
-            <ChevronRight size={12} className="text-slate-300" />
-            <Link
-              href="/browse-vehicles?filter=wishlist"
-              className="text-slate-500 hover:text-[#111C2D] transition-colors"
-            >
-              <span>2. Match Heiwa Stock</span>
-            </Link>
-            <ChevronRight size={12} className="text-slate-300" />
-            <span className="font-bold text-[#E11D48] bg-rose-50 px-2 py-0.5 rounded-md border border-rose-200/60">
-              3. View Vehicle
-            </span>
-            <ChevronRight size={12} className="text-slate-300" />
-            <span className="font-bold text-[#0F1B2E] bg-slate-100 px-2 py-0.5 rounded-md">
-              4. Compare NZ Market
-            </span>
-            <ChevronRight size={12} className="text-slate-300" />
-            <span className="text-slate-400">5. Investigate</span>
-          </div>
 
-          <div className="hidden lg:flex items-center gap-2 text-[11px] text-slate-500 font-medium">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Heiwa Direct Live Auction Feed</span>
-          </div>
-        </div>
 
         {/* ─── Action & Navigation Bar ─── */}
         <div className="flex items-center justify-between gap-4">
@@ -209,11 +173,10 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
           <div className="flex items-center gap-2.5">
             <button
               onClick={handleToggleWatchlist}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all ${
-                isWatchlisted
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all ${isWatchlisted
                   ? "bg-rose-50 text-rose-700 border-rose-200 shadow-2xs"
                   : "bg-white text-[#536471] border-[#E8ECF0] hover:bg-[#F0F2F5] hover:text-[#111C2D]"
-              }`}
+                }`}
             >
               <Heart
                 size={14}
@@ -297,10 +260,10 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
                       {vehicle.fuelType === "H"
                         ? "Hybrid"
                         : vehicle.fuelType === "D"
-                        ? "Diesel"
-                        : vehicle.fuelType === "E"
-                        ? "EV"
-                        : "Petrol"}
+                          ? "Diesel"
+                          : vehicle.fuelType === "E"
+                            ? "EV"
+                            : "Petrol"}
                     </span>
                   </div>
                   <div className="px-3 py-1.5 rounded-lg bg-[#F8FAFC] border border-[#E8ECF0] text-xs font-semibold text-[#111C2D]">
@@ -310,8 +273,8 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
                     {vehicle.trans === "FAT"
                       ? "Floor Automatic"
                       : vehicle.trans === "DAT"
-                      ? "Direct AT"
-                      : vehicle.trans}
+                        ? "Direct AT"
+                        : vehicle.trans}
                   </div>
                 </div>
               </div>
@@ -391,11 +354,10 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
         <div className="border-b border-[#E8ECF0] flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
           <button
             onClick={() => setActiveLayer("all")}
-            className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-bold transition-all shrink-0 ${
-              activeLayer === "all"
+            className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-bold transition-all shrink-0 ${activeLayer === "all"
                 ? "bg-[#0F1B2E] text-white shadow-xs"
                 : "text-[#536471] hover:text-[#111C2D] hover:bg-slate-100"
-            }`}
+              }`}
           >
             <Layers size={14} />
             <span>Full Intelligence Flow (All)</span>
@@ -403,11 +365,10 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
 
           <button
             onClick={() => setActiveLayer("landed_cost")}
-            className={`flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl font-semibold transition-all shrink-0 ${
-              activeLayer === "landed_cost"
+            className={`flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl font-semibold transition-all shrink-0 ${activeLayer === "landed_cost"
                 ? "bg-[#E11D48] text-white shadow-xs"
                 : "text-[#536471] hover:text-[#111C2D] hover:bg-slate-100"
-            }`}
+              }`}
           >
             <DollarSign size={14} />
             <span>1. Estimated Landed Cost</span>
@@ -415,11 +376,10 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
 
           <button
             onClick={() => setActiveLayer("nz_market")}
-            className={`flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl font-semibold transition-all shrink-0 ${
-              activeLayer === "nz_market"
+            className={`flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl font-semibold transition-all shrink-0 ${activeLayer === "nz_market"
                 ? "bg-[#E11D48] text-white shadow-xs"
                 : "text-[#536471] hover:text-[#111C2D] hover:bg-slate-100"
-            }`}
+              }`}
           >
             <TrendingUp size={14} />
             <span>2. NZ Market Comparison</span>
@@ -427,50 +387,24 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
 
           <button
             onClick={() => setActiveLayer("comparables")}
-            className={`flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl font-semibold transition-all shrink-0 ${
-              activeLayer === "comparables"
+            className={`flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl font-semibold transition-all shrink-0 ${activeLayer === "comparables"
                 ? "bg-[#E11D48] text-white shadow-xs"
                 : "text-[#536471] hover:text-[#111C2D] hover:bg-slate-100"
-            }`}
+              }`}
           >
             <Car size={14} />
             <span>3. Comparable Listings</span>
           </button>
 
           <button
-            onClick={() => setActiveLayer("price_vs_km")}
-            className={`flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl font-semibold transition-all shrink-0 ${
-              activeLayer === "price_vs_km"
-                ? "bg-[#E11D48] text-white shadow-xs"
-                : "text-[#536471] hover:text-[#111C2D] hover:bg-slate-100"
-            }`}
-          >
-            <BarChart3 size={14} />
-            <span>4. Price vs KM</span>
-          </button>
-
-          <button
-            onClick={() => setActiveLayer("margin_calc")}
-            className={`flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl font-semibold transition-all shrink-0 ${
-              activeLayer === "margin_calc"
-                ? "bg-[#E11D48] text-white shadow-xs"
-                : "text-[#536471] hover:text-[#111C2D] hover:bg-slate-100"
-            }`}
-          >
-            <Calculator size={14} />
-            <span>5. Margin Calculator</span>
-          </button>
-
-          <button
             onClick={() => setActiveLayer("specs")}
-            className={`flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl font-semibold transition-all shrink-0 ${
-              activeLayer === "specs"
+            className={`flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl font-semibold transition-all shrink-0 ${activeLayer === "specs"
                 ? "bg-[#E11D48] text-white shadow-xs"
                 : "text-[#536471] hover:text-[#111C2D] hover:bg-slate-100"
-            }`}
+              }`}
           >
             <FileCheck size={14} />
-            <span>Inspection & Specs</span>
+            <span>4. Inspection & Specs</span>
           </button>
         </div>
 
@@ -715,11 +649,10 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
                         </td>
                         <td className="py-3.5 px-5 text-right">
                           <span
-                            className={`inline-block font-mono font-bold text-xs px-2 py-0.5 rounded ${
-                              isPositive
+                            className={`inline-block font-mono font-bold text-xs px-2 py-0.5 rounded ${isPositive
                                 ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
                                 : "bg-rose-50 text-rose-700 border border-rose-200"
-                            }`}
+                              }`}
                           >
                             {isPositive
                               ? `+NZ$${compMargin.toLocaleString("en-US")}`
@@ -735,30 +668,7 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
           </div>
         )}
 
-        {/* ─── INTELLIGENCE LAYER 5: PRICE VS KM SCATTER ANALYSIS ─── */}
-        {(activeLayer === "all" || activeLayer === "price_vs_km") && (
-          <PriceVsKmChart
-            heiwaVehicle={{
-              year: vehicle.year,
-              make: vehicle.make,
-              model: vehicle.model,
-              kms: vehicle.kms,
-              landedCost: landed.totalLanded,
-            }}
-            comparables={comparables}
-          />
-        )}
-
-        {/* ─── INTELLIGENCE LAYER 6: OPTIONAL MARGIN CALCULATION ─── */}
-        {(activeLayer === "all" || activeLayer === "margin_calc") && (
-          <MarginCalculator
-            landedCost={landed.totalLanded}
-            nzMarketAverage={avgNzPrice}
-            vehicleTitle={`${vehicle.year} ${vehicle.make} ${vehicle.model}`}
-          />
-        )}
-
-        {/* ─── INTELLIGENCE LAYER 7: JAPANESE INSPECTION & SPECS (INVESTIGATE) ─── */}
+        {/* ─── INTELLIGENCE LAYER 5: JAPANESE INSPECTION & SPECS (INVESTIGATE) ─── */}
         {(activeLayer === "all" || activeLayer === "specs") && (
           <div className="bg-white rounded-2xl border border-[#E8ECF0] shadow-subtle p-6 space-y-6">
             <div className="flex items-center justify-between pb-3 border-b border-[#F1F5F9]">
@@ -795,10 +705,10 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
                     {vehicle.fuelType === "H"
                       ? "Hybrid"
                       : vehicle.fuelType === "D"
-                      ? "Diesel"
-                      : vehicle.fuelType === "E"
-                      ? "Electric"
-                      : "Petrol"}
+                        ? "Diesel"
+                        : vehicle.fuelType === "E"
+                          ? "Electric"
+                          : "Petrol"}
                   </span>
                 </div>
               </div>

@@ -244,30 +244,29 @@ function BrowseVehiclesContent() {
         <div className="flex items-center gap-2 self-start sm:self-center">
           <button
             onClick={() => {
-              setActiveScope("all");
-              setCurrentPage(1);
-            }}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all border ${activeScope === "all"
-              ? "bg-[#0F1B2E] text-white border-[#0F1B2E] shadow-sm"
-              : "bg-white text-[#64748B] border-[#CBD5E1] hover:text-[#111C2D] hover:bg-[#F8FAFC]"
-              }`}
-          >
-            <Car size={15} />
-            <span>All Auction Stock ({allCars.length})</span>
-          </button>
-
-          <button
-            onClick={() => {
               setActiveScope("wishlist");
               setCurrentPage(1);
             }}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all border ${activeScope === "wishlist"
               ? "bg-[#E11D48] text-white border-[#E11D48] shadow-sm shadow-rose-950/20"
-              : "bg-white text-[#64748B] border-[#CBD5E1] hover:text-[#111C2D] hover:bg-rose-50/50"
+              : "bg-white text-[#111827] border-[#CBD5E1] hover:text-[#111C2D] hover:bg-rose-50/50"
               }`}
           >
             <Heart size={15} className={activeScope === "wishlist" ? "fill-white" : "text-[#E11D48]"} />
             <span>Matching Wishlist ({matchedWishlistVehicles.length})</span>
+          </button>
+          <button
+            onClick={() => {
+              setActiveScope("all");
+              setCurrentPage(1);
+            }}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all border ${activeScope === "all"
+              ? "bg-[#E11D48] hover:bg-[#BE123C] text-white border-[#E11D48] shadow-md shadow-rose-950/40 transition-all flex items-center gap-2"
+              : "bg-white text-[#64748B] border-[#CBD5E1] hover:text-[#111C2D] hover:bg-[#F8FAFC]"
+              }`}
+          >
+            <Car size={15} />
+            <span>All Auction Stock ({allCars.length})</span>
           </button>
         </div>
       </div>

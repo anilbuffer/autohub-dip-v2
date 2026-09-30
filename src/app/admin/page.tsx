@@ -274,8 +274,8 @@ export default function AdminOverviewPage() {
                         onClick={() => handleNotify(v.stockId, `${v.year} ${v.make} ${v.model}`)}
                         disabled={isNotified}
                         className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 ${isNotified
-                          ? "bg-emerald-50 text-emerald-700 border border-emerald-200 cursor-default"
-                          : "bg-[#1E3A5F] hover:bg-[#152740] text-white shadow-xs"
+                          ? "bg-[#E11D48] hover:bg-[#BE123C] text-white shadow-sm"
+                          : "bg-[#E11D48] hover:bg-[#BE123C] text-white shadow-sm"
                           }`}
                       >
                         {isNotified ? (
@@ -285,7 +285,7 @@ export default function AdminOverviewPage() {
                           </>
                         ) : (
                           <>
-                            <Zap size={13} className="text-amber-400" />
+                            <Zap size={13} className="text-rose-100" />
                             <span>Notify Dealer</span>
                           </>
                         )}

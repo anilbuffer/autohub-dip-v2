@@ -113,20 +113,6 @@ export default function AdminVehiclesPage() {
                 {vehicles.length} Car Lots
               </span>
             </h1>
-            <p className="text-sm text-[#64748B] mt-1">
-              "What vehicles are available?" — Live Japanese auction feed directly synced with dealer portal calculation engine and dealer demand.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <Link
-              href="/browse-vehicles"
-              target="_blank"
-              className="px-4 py-2.5 rounded-xl bg-white border border-[#CBD5E1] text-[#1E3A5F] hover:bg-slate-50 text-xs font-bold shadow-xs transition-all flex items-center gap-2"
-            >
-              <span>Preview Dealer View</span>
-              <ExternalLink size={14} />
-            </Link>
           </div>
         </div>
 
@@ -149,22 +135,20 @@ export default function AdminVehiclesPage() {
             <div className="flex items-center gap-1.5 w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
               <button
                 onClick={() => setDemandFilter("all")}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
-                  demandFilter === "all"
-                    ? "bg-[#1E3A5F] text-white shadow-xs"
-                    : "bg-slate-100 text-[#475569] hover:bg-slate-200"
-                }`}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${demandFilter === "all"
+                  ? "bg-[#1E3A5F] text-white shadow-xs"
+                  : "bg-slate-100 text-[#475569] hover:bg-slate-200"
+                  }`}
               >
                 All Lots ({vehicles.length})
               </button>
 
               <button
                 onClick={() => setDemandFilter("matched")}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
-                  demandFilter === "matched"
-                    ? "bg-[#E11D48] text-white shadow-xs"
-                    : "bg-rose-50 text-[#E11D48] hover:bg-rose-100"
-                }`}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${demandFilter === "matched"
+                  ? "bg-[#E11D48] text-white shadow-xs"
+                  : "bg-rose-50 text-[#E11D48] hover:bg-rose-100"
+                  }`}
               >
                 <Sparkles size={12} />
                 <span>Matched Demand ({matchedVehicleKeys.size})</span>
@@ -172,11 +156,10 @@ export default function AdminVehiclesPage() {
 
               <button
                 onClick={() => setDemandFilter("high_margin")}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
-                  demandFilter === "high_margin"
-                    ? "bg-emerald-700 text-white shadow-xs"
-                    : "bg-emerald-50 text-emerald-800 hover:bg-emerald-100"
-                }`}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${demandFilter === "high_margin"
+                  ? "bg-emerald-700 text-white shadow-xs"
+                  : "bg-emerald-50 text-emerald-800 hover:bg-emerald-100"
+                  }`}
               >
                 <TrendingUp size={12} />
                 <span>High Margin (NZ$3,500+)</span>
@@ -193,11 +176,10 @@ export default function AdminVehiclesPage() {
               <button
                 key={make}
                 onClick={() => setSelectedMake(make)}
-                className={`px-2.5 py-1 rounded-lg font-semibold capitalize whitespace-nowrap transition-colors ${
-                  selectedMake === make
-                    ? "bg-slate-900 text-white"
-                    : "bg-slate-100 text-[#475569] hover:bg-slate-200"
-                }`}
+                className={`px-2.5 py-1 rounded-lg font-semibold capitalize whitespace-nowrap transition-colors ${selectedMake === make
+                  ? "bg-slate-900 text-white"
+                  : "bg-slate-100 text-[#475569] hover:bg-slate-200"
+                  }`}
               >
                 {make === "all" ? "All Makes" : make}
               </button>
@@ -233,17 +215,16 @@ export default function AdminVehiclesPage() {
                     v.fuelType === "H"
                       ? "Hybrid"
                       : v.fuelType === "D"
-                      ? "Diesel"
-                      : v.fuelType === "E"
-                      ? "Electric"
-                      : "Petrol";
+                        ? "Diesel"
+                        : v.fuelType === "E"
+                          ? "Electric"
+                          : "Petrol";
 
                   return (
                     <tr
                       key={vKey}
-                      className={`hover:bg-slate-50/70 transition-colors ${
-                        isMatched ? "bg-rose-50/20" : ""
-                      }`}
+                      className={`hover:bg-slate-50/70 transition-colors ${isMatched ? "bg-rose-50/20" : ""
+                        }`}
                     >
                       {/* Vehicle & Photo */}
                       <td className="py-3.5 px-4">
@@ -321,11 +302,10 @@ export default function AdminVehiclesPage() {
                           <button
                             onClick={() => handleNotify(v.stockId, `${v.year} ${v.make} ${v.model}`)}
                             disabled={isNotified}
-                            className={`p-1.5 rounded-lg text-xs font-bold transition-all ${
-                              isNotified
-                                ? "bg-emerald-50 text-emerald-600 border border-emerald-200"
-                                : "hover:bg-slate-100 text-[#1E3A5F]"
-                            }`}
+                            className={`p-1.5 rounded-lg text-xs font-bold transition-all ${isNotified
+                              ? "bg-emerald-50 text-emerald-600 border border-emerald-200"
+                              : "hover:bg-slate-100 text-[#1E3A5F]"
+                              }`}
                             title="Dispatch match notification to dealers"
                           >
                             {isNotified ? <Check size={16} /> : <Zap size={16} className="text-[#E11D48]" />}
