@@ -76,15 +76,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {/* Logo & Header */}
           <div className="h-[72px] flex items-center justify-between px-6 border-b border-white/[0.08] bg-white/[0.03]">
             <Link href="/admin" className="flex items-center gap-3 group">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#1E3A5F] to-[#2B5885] flex items-center justify-center shadow-lg shadow-blue-950/50 group-hover:scale-105 transition-transform border border-[#2B5885]/50">
-                <Shield size={18} className="text-white" />
+              <div className="w-9 h-9 rounded-xl bg-[#E11D48] flex items-center justify-center shadow-lg shadow-rose-950/40 group-hover:scale-105 transition-transform shrink-0">
+                <img
+                  src="/autohub-logo.jpg"
+                  alt="AutoHub"
+                  className="w-7 h-7 rounded-lg object-cover"
+                />
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-[14px] font-black text-white tracking-wider leading-none">AUTOHUB DIP</span>
+                  <span className="text-[15px] font-bold text-white tracking-tight leading-none">AutoHub</span>
                   <span className="text-[8px] px-1.5 py-0.5 rounded font-bold bg-[#E11D48] text-white">OPS</span>
                 </div>
-                <span className="block text-[10px] font-semibold text-[#9AB9D5] tracking-[0.12em] mt-1">DEALER INTELLIGENCE</span>
+                <span className="block text-[9.5px] font-bold text-[#4B88CF] tracking-[0.14em] uppercase mt-1 leading-none">
+                  INTELLIGENCE PLATFORM
+                </span>
               </div>
             </Link>
             <button 

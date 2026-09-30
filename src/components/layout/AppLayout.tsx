@@ -114,22 +114,26 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       `}
       >
         <div className="flex-1 flex flex-col pt-5 px-3">
-          {/* Brand Header: Auckland Auto Group */}
+          {/* Brand Header: AutoHub Intelligence Platform */}
           <div className="flex items-center justify-between px-3 mb-6">
             <Link
               href="/browse-vehicles"
-              className="flex items-center gap-2.5 text-white group"
+              className="flex items-center gap-3 text-white group"
               onClick={() => setMobileMenuOpen(false)}
             >
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#1E2E4A] to-[#152238] text-white flex items-center justify-center border border-[#273B5E] shadow-sm shadow-blue-950/40 group-hover:scale-105 transition-transform">
-                <Car size={18} className="stroke-[2.2] text-white" />
+              <div className="w-9 h-9 rounded-xl bg-[#E11D48] flex items-center justify-center shadow-lg shadow-rose-950/40 group-hover:scale-105 transition-transform shrink-0">
+                <img
+                  src="/autohub-logo.jpg"
+                  alt="AutoHub"
+                  className="w-7 h-7 rounded-lg object-cover"
+                />
               </div>
               <div className="min-w-0">
-                <span className="text-[14px] font-bold tracking-tight text-white block leading-tight truncate">
-                  Auckland Auto Group
+                <span className="text-[15px] font-bold tracking-tight text-white block leading-tight">
+                  AutoHub
                 </span>
-                <span className="text-[10px] font-semibold text-slate-400 tracking-wider uppercase block">
-                  Dealer Portal
+                <span className="text-[9.5px] font-bold text-[#4B88CF] tracking-[0.14em] uppercase block mt-0.5 truncate">
+                  INTELLIGENCE PLATFORM
                 </span>
               </div>
             </Link>

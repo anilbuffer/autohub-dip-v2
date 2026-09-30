@@ -54,9 +54,9 @@ export default function LoginPage() {
               />
             </div>
             <div>
-              <span className="text-[16px] font-bold tracking-wide block leading-none">AutoHub</span>
-              <span className="text-[11px] text-[#9AB9D5] font-semibold tracking-widest uppercase">
-                Dealer Intelligence Platform
+              <span className="text-[16px] font-bold tracking-tight block leading-none">AutoHub</span>
+              <span className="text-[10px] text-[#4B88CF] font-bold tracking-[0.14em] uppercase mt-1 block">
+                INTELLIGENCE PLATFORM
               </span>
             </div>
           </div>
@@ -97,7 +97,7 @@ export default function LoginPage() {
             </div>
             <div>
               <span className="text-[15px] font-bold text-[#111C2D] block leading-none">AutoHub</span>
-              <span className="text-[10px] text-[#94A3B8] uppercase tracking-wider font-medium">Dealer Intelligence Platform</span>
+              <span className="text-[9.5px] text-[#4B88CF] uppercase tracking-[0.14em] font-bold mt-0.5 block">INTELLIGENCE PLATFORM</span>
             </div>
           </div>
 
