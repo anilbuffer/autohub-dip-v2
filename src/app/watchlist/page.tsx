@@ -14,11 +14,11 @@ import {
   getStoredWatchlist,
   toggleStoredWatchlist,
   getVehiclePhoto,
+  getEstimatedNZRetailPrice,
 } from "@/lib/dealerStore";
 import {
   HEIWA_VEHICLES,
   calculateLandedCost,
-  getEstimatedNZRetailPrice,
   HeiwaVehicle,
 } from "@/lib/heiwaData";
 
