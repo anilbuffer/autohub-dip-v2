@@ -59,11 +59,12 @@ function BrowseVehiclesContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  // Top Scope: "all" general stock vs "wishlist" matched stock
+  // Top Scope: "all" general stock vs "wishlist" matched stock (defaults to wishlist)
   const [activeScope, setActiveScope] = useState<"all" | "wishlist">(() => {
     const f = searchParams.get("filter");
     const t = searchParams.get("tab");
-    return (f === "wishlist" || t === "wishlist") ? "wishlist" : "all";
+    if (f === "all" || t === "all") return "all";
+    return "wishlist";
   });
   const [wishlistModalOpen, setWishlistModalOpen] = useState<boolean>(false);
   const [wishlistCriteria, setWishlistCriteria] = useState<WishListCriteria[]>(DEFAULT_WISHLIST);
@@ -151,10 +152,10 @@ function BrowseVehiclesContent() {
   useEffect(() => {
     const filter = searchParams.get("filter");
     const tab = searchParams.get("tab");
-    if (filter === "wishlist" || tab === "wishlist") {
-      setActiveScope("wishlist");
-    } else if (filter === "all" || tab === "all") {
+    if (filter === "all" || tab === "all") {
       setActiveScope("all");
+    } else {
+      setActiveScope("wishlist");
     }
     const cond = searchParams.get("condition");
     if (cond) {
