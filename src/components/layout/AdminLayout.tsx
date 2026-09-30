@@ -16,7 +16,9 @@ import {
   RefreshCw,
   LogOut,
   Shield,
-  Sparkles
+  Sparkles,
+  LayoutDashboard,
+  Heart
 } from 'lucide-react';
 import { GLOBAL_SETTINGS } from '@/lib/data';
 import RoleSwitcher from './RoleSwitcher';
@@ -30,26 +32,26 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const { state: syncState } = useSyncStore();
 
   const getBreadcrumbs = () => {
-    if (pathname === '/admin') return [{ label: 'Demand Intelligence', href: '/admin' }];
-    if (pathname === '/admin/vehicles') return [{ label: 'Auction Inventory', href: '/admin/vehicles' }];
-    if (pathname.startsWith('/admin/vehicles/')) return [
-      { label: 'Auction Inventory', href: '/admin/vehicles' },
-      { label: 'Vehicle Broker Sheet', href: pathname }
-    ];
-    if (pathname === '/admin/dealers') return [{ label: 'Dealership Network', href: '/admin/dealers' }];
+    if (pathname === '/admin') return [{ label: 'Overview', href: '/admin' }];
+    if (pathname === '/admin/dealers') return [{ label: 'Dealers', href: '/admin/dealers' }];
     if (pathname.startsWith('/admin/dealers/')) return [
-      { label: 'Dealership Network', href: '/admin/dealers' },
-      { label: 'Dealer Profile & Criteria', href: pathname }
+      { label: 'Dealers', href: '/admin/dealers' },
+      { label: 'Dealer Profile', href: pathname }
     ];
-    if (pathname === '/admin/settings') return [{ label: 'Global FX & Calculation Engine', href: '/admin/settings' }];
-    return [{ label: 'Demand Intelligence', href: '/admin' }];
+    if (pathname === '/admin/wishlists') return [{ label: 'Wish Lists', href: '/admin/wishlists' }];
+    if (pathname === '/admin/vehicles') return [{ label: 'Heiwa Vehicles', href: '/admin/vehicles' }];
+    if (pathname.startsWith('/admin/vehicles/')) return [
+      { label: 'Heiwa Vehicles', href: '/admin/vehicles' },
+      { label: 'Vehicle Sheet', href: pathname }
+    ];
+    return [{ label: 'Overview', href: '/admin' }];
   };
 
   const navItems = [
-    { label: 'Demand Intelligence', href: '/admin', icon: Sparkles, badge: 'Live AI' },
-    { label: 'Auction Lots', href: '/admin/vehicles', icon: Car, badge: '38 Lots' },
-    { label: 'Dealers CRM', href: '/admin/dealers', icon: Users, badge: '3 Active' },
-    { label: 'Calculation Engine', href: '/admin/settings', icon: Settings, badge: null },
+    { label: 'Overview', href: '/admin', icon: LayoutDashboard, badge: 'Live' },
+    { label: 'Dealers', href: '/admin/dealers', icon: Users, badge: '3 Active' },
+    { label: 'Wish Lists', href: '/admin/wishlists', icon: Heart, badge: 'Active' },
+    { label: 'Heiwa Vehicles', href: '/admin/vehicles', icon: Car, badge: '38 Lots' },
   ];
 
   const handleRefreshFeeds = () => {
@@ -209,7 +211,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </div>
               {/* Page Title */}
               <div className="text-lg font-extrabold text-[#111C2D] tracking-tight flex items-center gap-2.5 mt-0.5">
-                {pathname === '/admin' ? 'Demand Intelligence' : 'Command Center'}
+                {pathname === '/admin' 
+                  ? 'Overview & System Health' 
+                  : pathname === '/admin/dealers' 
+                  ? 'Dealers Network & Criteria' 
+                  : pathname === '/admin/wishlists' 
+                  ? 'Dealer Wish Lists & Matches' 
+                  : pathname === '/admin/vehicles' 
+                  ? 'Heiwa Auction Vehicles' 
+                  : 'Command Center'}
                 <span className="hidden sm:inline-flex items-center gap-1.5 text-[10px] font-bold text-[#475569] bg-[#F1F5F9] px-2.5 py-1 rounded-lg border border-[#E2E8F0]">
                   <Shield size={11} className="text-[#E11D48]" /> 
                   {pathname === '/admin' ? 'AutoHub Dealer Intelligence Platform (DIP)' : 'DIP Brokerage Super Admin'}

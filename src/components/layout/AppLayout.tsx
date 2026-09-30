@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { getStoredBids, getStoredWatchlist, getStoredPurchases } from '@/lib/dealerStore';
 import WishlistHeaderModal, { WishlistButton } from '@/components/layout/WishlistHeaderModal';
+import RoleSwitcher from './RoleSwitcher';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -225,6 +226,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
           {/* Right Header: Wishlist Button + Notification + Dealer Profile */}
           <div className="flex items-center gap-2.5 sm:gap-3 ml-3 sm:ml-4">
+            {/* View Switcher: Dealer / Admin */}
+            <RoleSwitcher />
+
             {/* Wishlist Header Quick Access */}
             <WishlistButton onClick={() => setWishlistModalOpen(true)} />
 
