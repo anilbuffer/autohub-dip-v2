@@ -1,0 +1,440 @@
+// Dealer Store & Helper Services for AutoHub DIP Phase 1
+// Handles Wishlist Criteria, Watchlist, Bids, Purchases, and Vehicle Photo mappings
+
+import { HEIWA_VEHICLES, HeiwaVehicle, calculateLandedCost, LANDED_COST_CONSTANTS } from './heiwaData';
+
+export interface WishListCriteria {
+  id: string;
+  make: string;
+  model: string;
+  yearFrom: number;
+  yearTo: number;
+  maxKms: number;
+  maxBudget: number; // NZD landed budget
+}
+
+export interface DealerBid {
+  id: string;
+  vehicleStockId: string;
+  vehicleChassis: string;
+  make: string;
+  model: string;
+  year: number;
+  kms: number;
+  color: string;
+  bidFobJpy: number;
+  landedCostNzd: number;
+  status: 'leading' | 'under_reserve' | 'outbid' | 'won' | 'passed';
+  auctionDate: string;
+  auctionTimeLeft: string;
+  createdAt: string;
+}
+
+export interface DealerPurchase {
+  id: string;
+  vehicleStockId: string;
+  vehicleChassis: string;
+  make: string;
+  model: string;
+  year: number;
+  kms: number;
+  color: string;
+  purchaseFobJpy: number;
+  totalLandedNzd: number;
+  vesselName: string;
+  departurePort: string;
+  destinationPort: string;
+  etdDate: string;
+  etaDate: string;
+  currentStage: 1 | 2 | 3 | 4 | 5; // 1: Won, 2: De-reg/JEVIC, 3: Shipping, 4: Customs/MAF, 5: Yard Ready
+  stageStatus: string;
+  vinComplianceNumber?: string;
+}
+
+// Default initial wishlist criteria
+export const DEFAULT_WISHLIST: WishListCriteria[] = [
+  {
+    id: 'crit-1',
+    make: 'Toyota',
+    model: 'Aqua',
+    yearFrom: 2014,
+    yearTo: 2022,
+    maxKms: 90000,
+    maxBudget: 16000,
+  },
+  {
+    id: 'crit-2',
+    make: 'Toyota',
+    model: 'C-hr',
+    yearFrom: 2017,
+    yearTo: 2022,
+    maxKms: 80000,
+    maxBudget: 24000,
+  },
+];
+
+// Initial demo bids
+export const INITIAL_BIDS: DealerBid[] = [
+  {
+    id: 'bid-101',
+    vehicleStockId: '1173019',
+    vehicleChassis: 'MXPK11-2624436',
+    make: 'Toyota',
+    model: 'Aqua',
+    year: 2021,
+    kms: 112000,
+    color: 'pearl',
+    bidFobJpy: 890000,
+    landedCostNzd: 15380,
+    status: 'leading',
+    auctionDate: 'Tomorrow, 14:00 JST',
+    auctionTimeLeft: '18h 42m',
+    createdAt: '2026-09-29T14:30:00Z',
+  },
+  {
+    id: 'bid-102',
+    vehicleStockId: '1173386',
+    vehicleChassis: 'ZYX10-2079113',
+    make: 'Toyota',
+    model: 'C-hr',
+    year: 2017,
+    kms: 53000,
+    color: 'silver',
+    bidFobJpy: 1250000,
+    landedCostNzd: 19850,
+    status: 'under_reserve',
+    auctionDate: 'In 2 days, 11:30 JST',
+    auctionTimeLeft: '1d 16h',
+    createdAt: '2026-09-28T09:15:00Z',
+  },
+  {
+    id: 'bid-103',
+    vehicleStockId: '322293',
+    vehicleChassis: 'ZVW51-6108888',
+    make: 'Toyota',
+    model: 'Prius',
+    year: 2019,
+    kms: 24000,
+    color: 'blue',
+    bidFobJpy: 1350000,
+    landedCostNzd: 21200,
+    status: 'won',
+    auctionDate: 'Yesterday',
+    auctionTimeLeft: 'Completed',
+    createdAt: '2026-09-27T10:00:00Z',
+  },
+];
+
+// Initial demo purchases
+export const INITIAL_PURCHASES: DealerPurchase[] = [
+  {
+    id: 'po-78901',
+    vehicleStockId: '321855',
+    vehicleChassis: 'ZYX10-2188588',
+    make: 'Toyota',
+    model: 'C-hr',
+    year: 2018,
+    kms: 106000,
+    color: 'pearl-white',
+    purchaseFobJpy: 525000,
+    totalLandedNzd: 10950,
+    vesselName: 'Trans Future 7 (Voy 082)',
+    departurePort: 'Nagoya, Japan',
+    destinationPort: 'Ports of Auckland, NZ',
+    etdDate: '2026-09-22',
+    etaDate: '2026-10-14',
+    currentStage: 3,
+    stageStatus: 'At Sea (Tasman Route) · ETA 14 Oct',
+    vinComplianceNumber: '7AT0H00X260901',
+  },
+  {
+    id: 'po-78902',
+    vehicleStockId: '321973',
+    vehicleChassis: 'DJ3FS-142717',
+    make: 'Mazda',
+    model: 'Demio',
+    year: 2018,
+    kms: 38000,
+    color: 'meteor grey',
+    purchaseFobJpy: 325000,
+    totalLandedNzd: 8250,
+    vesselName: 'Dresden Highway (Voy 114)',
+    departurePort: 'Yokohama, Japan',
+    destinationPort: 'Ports of Auckland, NZ',
+    etdDate: '2026-09-10',
+    etaDate: '2026-09-28',
+    currentStage: 4,
+    stageStatus: 'Customs Cleared · MAF Bio-Security Inspection',
+    vinComplianceNumber: '7AT0H00X260844',
+  },
+];
+
+// Curated high quality automotive photography for key models
+export const MODEL_IMAGE_MAP: Record<string, string> = {
+  aqua: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80',
+  'c-hr': 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80',
+  chr: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80',
+  prius: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80',
+  'prius alpha': 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80',
+  'prius 50': 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80',
+  rav4: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80',
+  sienta: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80',
+  'corolla cross': 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80',
+  'corolla touring': 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80',
+  'corolla sports': 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80',
+  harrier: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
+  'harrier hybrid': 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
+  'harrier hybrid 4wd': 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
+  demio: 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80',
+  'cx-3': 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80',
+  mazda3: 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80',
+  accord: 'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=800&q=80',
+  civic: 'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=800&q=80',
+  jade: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80',
+  crv: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80',
+  note: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80',
+  'note 4d': 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80',
+  cube: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80',
+  'nv350 caravan van': 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80',
+  'nv200': 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80',
+  'hiace van': 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80',
+  swift: 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80',
+  ignis: 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80',
+  levorg: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=800&q=80',
+  'levorg 4wd': 'https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=800&q=80',
+  xv: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80',
+  wrx: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=800&q=80',
+  forester: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80',
+  'x-trail': 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80',
+  '3 series': 'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80',
+  '5 series': 'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80',
+  model3: 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?auto=format&fit=crop&w=800&q=80',
+  rx: 'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=800&q=80',
+  nx: 'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=800&q=80',
+  alphard: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80',
+  'alphard hybrid': 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80',
+};
+
+// Return a clean photo URL for any vehicle
+export function getVehiclePhoto(vehicle: HeiwaVehicle): string {
+  const modelKey = vehicle.model.toLowerCase().trim();
+  if (MODEL_IMAGE_MAP[modelKey]) {
+    return MODEL_IMAGE_MAP[modelKey];
+  }
+  // Try partial match
+  for (const [key, url] of Object.entries(MODEL_IMAGE_MAP)) {
+    if (modelKey.includes(key) || key.includes(modelKey)) {
+      return url;
+    }
+  }
+  // Fallback by vehicle category
+  if (vehicle.cc === 0 || vehicle.fuelType === 'E') {
+    return 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?auto=format&fit=crop&w=800&q=80';
+  }
+  if (vehicle.cc > 2200) {
+    return 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80';
+  }
+  return 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80';
+}
+
+// Check if a vehicle is a car (exclude bikes)
+export function isCarVehicle(v: HeiwaVehicle): boolean {
+  return !['CBR650R', 'CBR250R', 'REBEL 250', 'STREETFIGHTER', 'NINE T SCRAMBLER UNKNOWN'].includes(v.model);
+}
+
+// Find vehicle by chassis, stockId or combination
+export function findHeiwaVehicle(id: string): HeiwaVehicle | undefined {
+  if (!id) return undefined;
+  const decodedId = decodeURIComponent(id).trim().toLowerCase();
+  return HEIWA_VEHICLES.find(v => {
+    const chassis = v.chassis.toLowerCase();
+    const stockId = v.stockId.toLowerCase();
+    const combo = `${stockId}-${chassis}`;
+    return chassis === decodedId || stockId === decodedId || combo === decodedId;
+  });
+}
+
+// Calculate realistic estimated NZ market price for a Heiwa car
+export function getEstimatedNZRetailPrice(v: HeiwaVehicle): {
+  retailPrice: number;
+  grossMargin: number;
+  marginPercent: number;
+  marketRangeMin: number;
+  marketRangeMax: number;
+} {
+  const landed = calculateLandedCost(v.priceFob).totalLanded;
+  // NZ retail averages 20% to 35% above landed cost
+  // Better margins on cheaper cars or high demand hybrids
+  const markupFactor = v.kms < 60000 ? 1.28 : 1.22;
+  const retailPrice = Math.round((landed * markupFactor) / 100) * 100;
+  const grossMargin = retailPrice - landed;
+  const marginPercent = Math.round((grossMargin / retailPrice) * 100);
+  const marketRangeMin = Math.round((retailPrice * 0.94) / 100) * 100;
+  const marketRangeMax = Math.round((retailPrice * 1.08) / 100) * 100;
+  return { retailPrice, grossMargin, marginPercent, marketRangeMin, marketRangeMax };
+}
+
+// LocalStorage keys
+const STORAGE_KEYS = {
+  WISHLIST: 'autohub_wishlist_criteria_v2',
+  WATCHLIST: 'autohub_dealer_watchlist_v2',
+  BIDS: 'autohub_dealer_bids_v2',
+  PURCHASES: 'autohub_dealer_purchases_v2',
+};
+
+// Dispatch global event so all components react immediately
+export function notifyStoreChange() {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event('autohub_dealer_store_change'));
+  }
+}
+
+// WISHLIST CRITERIA HELPERS
+export function getStoredWishlistCriteria(): WishListCriteria[] {
+  if (typeof window === 'undefined') return DEFAULT_WISHLIST;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.WISHLIST);
+    if (!raw) {
+      // Check legacy key
+      const legacy = localStorage.getItem('autohub_wishlist');
+      if (legacy) {
+        const parsed = JSON.parse(legacy);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+      return DEFAULT_WISHLIST;
+    }
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) && parsed.length > 0 ? parsed : DEFAULT_WISHLIST;
+  } catch {
+    return DEFAULT_WISHLIST;
+  }
+}
+
+export function saveStoredWishlistCriteria(criteria: WishListCriteria[]) {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem(STORAGE_KEYS.WISHLIST, JSON.stringify(criteria));
+  localStorage.setItem('autohub_wishlist', JSON.stringify(criteria)); // legacy compatibility
+  notifyStoreChange();
+}
+
+// MATCHING ENGINE: Match vehicles against wishlist criteria
+export function matchVehiclesAgainstWishlist(
+  vehicles: HeiwaVehicle[],
+  criteriaList: WishListCriteria[]
+): HeiwaVehicle[] {
+  const activeCriteria = criteriaList.filter(c => c.make.trim() !== '');
+  if (activeCriteria.length === 0) return [];
+
+  const matchedSet = new Set<string>();
+  const results: HeiwaVehicle[] = [];
+
+  for (const v of vehicles) {
+    if (!isCarVehicle(v)) continue;
+    const vKey = `${v.stockId}-${v.chassis}`;
+    if (matchedSet.has(vKey)) continue;
+
+    for (const c of activeCriteria) {
+      const makeMatch = v.make.toLowerCase() === c.make.toLowerCase();
+      const modelMatch = !c.model || v.model.toLowerCase().includes(c.model.toLowerCase());
+      const yearMatch = v.year >= c.yearFrom && v.year <= c.yearTo;
+      const kmsMatch = v.kms <= c.maxKms;
+      const landed = calculateLandedCost(v.priceFob).totalLanded;
+      const budgetMatch = landed <= c.maxBudget;
+
+      if (makeMatch && modelMatch && yearMatch && kmsMatch && budgetMatch) {
+        matchedSet.add(vKey);
+        results.push(v);
+        break;
+      }
+    }
+  }
+
+  return results;
+}
+
+// WATCHLIST HELPERS
+export function getStoredWatchlist(): string[] {
+  if (typeof window === 'undefined') return ['ZYX10-2079113', 'NHP10-6902363'];
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.WATCHLIST);
+    if (!raw) return ['ZYX10-2079113', 'NHP10-6902363'];
+    return JSON.parse(raw);
+  } catch {
+    return ['ZYX10-2079113', 'NHP10-6902363'];
+  }
+}
+
+export function toggleStoredWatchlist(chassis: string): boolean {
+  if (typeof window === 'undefined') return false;
+  const current = getStoredWatchlist();
+  const exists = current.includes(chassis);
+  const updated = exists ? current.filter(c => c !== chassis) : [...current, chassis];
+  localStorage.setItem(STORAGE_KEYS.WATCHLIST, JSON.stringify(updated));
+  notifyStoreChange();
+  return !exists;
+}
+
+export function isVehicleWatchlisted(chassis: string): boolean {
+  const current = getStoredWatchlist();
+  return current.includes(chassis);
+}
+
+// BIDS HELPERS
+export function getStoredBids(): DealerBid[] {
+  if (typeof window === 'undefined') return INITIAL_BIDS;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.BIDS);
+    if (!raw) return INITIAL_BIDS;
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) && parsed.length > 0 ? parsed : INITIAL_BIDS;
+  } catch {
+    return INITIAL_BIDS;
+  }
+}
+
+export function saveStoredBids(bids: DealerBid[]) {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem(STORAGE_KEYS.BIDS, JSON.stringify(bids));
+  notifyStoreChange();
+}
+
+export function placeDealerBid(
+  vehicle: HeiwaVehicle,
+  bidFobJpy: number
+): DealerBid {
+  const bids = getStoredBids();
+  const landed = calculateLandedCost(bidFobJpy).totalLanded;
+  const newBid: DealerBid = {
+    id: `bid-${Date.now()}`,
+    vehicleStockId: vehicle.stockId,
+    vehicleChassis: vehicle.chassis,
+    make: vehicle.make,
+    model: vehicle.model,
+    year: vehicle.year,
+    kms: vehicle.kms,
+    color: vehicle.colorDesc || vehicle.color,
+    bidFobJpy,
+    landedCostNzd: landed,
+    status: 'leading',
+    auctionDate: 'Upcoming Auction',
+    auctionTimeLeft: '24h 00m',
+    createdAt: new Date().toISOString(),
+  };
+
+  const updated = [newBid, ...bids.filter(b => b.vehicleChassis !== vehicle.chassis)];
+  saveStoredBids(updated);
+  return newBid;
+}
+
+// PURCHASES HELPERS
+export function getStoredPurchases(): DealerPurchase[] {
+  if (typeof window === 'undefined') return INITIAL_PURCHASES;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.PURCHASES);
+    if (!raw) return INITIAL_PURCHASES;
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) && parsed.length > 0 ? parsed : INITIAL_PURCHASES;
+  } catch {
+    return INITIAL_PURCHASES;
+  }
+}
