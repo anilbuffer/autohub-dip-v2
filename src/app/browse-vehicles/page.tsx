@@ -630,11 +630,10 @@ function BrowseVehiclesContent() {
                 setSelectedListingType("all");
                 setCurrentPage(1);
               }}
-              className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                selectedListingType === "all"
-                  ? "bg-white text-[#111C2D] shadow-xs"
-                  : "text-[#64748B] hover:text-[#111C2D]"
-              }`}
+              className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${selectedListingType === "all"
+                ? "bg-white text-[#111C2D] shadow-xs"
+                : "text-[#64748B] hover:text-[#111C2D]"
+                }`}
             >
               All ({activeScope === "wishlist" ? matchedWishlistVehicles.length : allCars.length})
             </button>
@@ -644,14 +643,13 @@ function BrowseVehiclesContent() {
                 setSelectedListingType("reserve");
                 setCurrentPage(1);
               }}
-              className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                selectedListingType === "reserve"
-                  ? "bg-emerald-600 text-white shadow-xs"
-                  : "text-emerald-700 hover:text-emerald-900"
-              }`}
+              className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${selectedListingType === "reserve"
+                ? "bg-emerald-600 text-white shadow-xs"
+                : "text-emerald-700 hover:text-emerald-900"
+                }`}
             >
               <Clock size={12} />
-              <span>Enquire / Reserve ({reserveCount})</span>
+              <span> Reserve ({reserveCount})</span>
             </button>
             <button
               type="button"
@@ -659,14 +657,13 @@ function BrowseVehiclesContent() {
                 setSelectedListingType("auction");
                 setCurrentPage(1);
               }}
-              className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                selectedListingType === "auction"
-                  ? "bg-blue-600 text-white shadow-xs"
-                  : "text-blue-700 hover:text-blue-900"
-              }`}
+              className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${selectedListingType === "auction"
+                ? "bg-blue-600 text-white shadow-xs"
+                : "text-blue-700 hover:text-blue-900"
+                }`}
             >
               <Gavel size={12} />
-              <span>Auction / Bid ({auctionCount})</span>
+              <span>Auction ({auctionCount})</span>
             </button>
           </div>
         </div>
@@ -968,12 +965,12 @@ function BrowseVehiclesContent() {
                       {isReserve ? (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 shrink-0">
                           <Clock size={10} className="text-emerald-600" />
-                          Enquire / Reserve
+                          Reserve
                         </span>
                       ) : (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-800 border border-blue-200 shrink-0">
                           <Gavel size={10} className="text-blue-600" />
-                          Auction / Bid
+                          Auction
                         </span>
                       )}
                     </div>

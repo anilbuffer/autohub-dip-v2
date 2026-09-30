@@ -342,12 +342,12 @@ function VehicleDetailContent({ vehicleId }: { vehicleId: string }) {
                   {isReserve ? (
                     <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-200 shadow-2xs">
                       <Clock size={12} className="text-emerald-600" />
-                      Enquire / Reserve
+                      Reserve
                     </span>
                   ) : (
                     <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-extrabold bg-blue-50 text-blue-800 border border-blue-200 shadow-2xs">
                       <Gavel size={12} className="text-blue-600" />
-                      Auction / Bid
+                      Auction
                     </span>
                   )}
                 </div>
@@ -1098,11 +1098,10 @@ function VehicleDetailContent({ vehicleId }: { vehicleId: string }) {
                         <button
                           type="button"
                           onClick={() => setEnquiryType("reserve")}
-                          className={`p-2.5 rounded-xl border text-xs font-bold transition-all flex flex-col items-center gap-1 cursor-pointer ${
-                            enquiryType === "reserve"
-                              ? "bg-rose-50 text-[#E11D48] border-rose-300 ring-2 ring-rose-200"
-                              : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
-                          }`}
+                          className={`p-2.5 rounded-xl border text-xs font-bold transition-all flex flex-col items-center gap-1 cursor-pointer ${enquiryType === "reserve"
+                            ? "bg-rose-50 text-[#E11D48] border-rose-300 ring-2 ring-rose-200"
+                            : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
+                            }`}
                         >
                           <Clock size={15} />
                           <span>24h Reserve</span>
@@ -1110,11 +1109,10 @@ function VehicleDetailContent({ vehicleId }: { vehicleId: string }) {
                         <button
                           type="button"
                           onClick={() => setEnquiryType("inspection")}
-                          className={`p-2.5 rounded-xl border text-xs font-bold transition-all flex flex-col items-center gap-1 cursor-pointer ${
-                            enquiryType === "inspection"
-                              ? "bg-rose-50 text-[#E11D48] border-rose-300 ring-2 ring-rose-200"
-                              : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
-                          }`}
+                          className={`p-2.5 rounded-xl border text-xs font-bold transition-all flex flex-col items-center gap-1 cursor-pointer ${enquiryType === "inspection"
+                            ? "bg-rose-50 text-[#E11D48] border-rose-300 ring-2 ring-rose-200"
+                            : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
+                            }`}
                         >
                           <ShieldCheck size={15} />
                           <span>Inspect Sheet</span>
@@ -1122,11 +1120,10 @@ function VehicleDetailContent({ vehicleId }: { vehicleId: string }) {
                         <button
                           type="button"
                           onClick={() => setEnquiryType("quote")}
-                          className={`p-2.5 rounded-xl border text-xs font-bold transition-all flex flex-col items-center gap-1 cursor-pointer ${
-                            enquiryType === "quote"
-                              ? "bg-rose-50 text-[#E11D48] border-rose-300 ring-2 ring-rose-200"
-                              : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
-                          }`}
+                          className={`p-2.5 rounded-xl border text-xs font-bold transition-all flex flex-col items-center gap-1 cursor-pointer ${enquiryType === "quote"
+                            ? "bg-rose-50 text-[#E11D48] border-rose-300 ring-2 ring-rose-200"
+                            : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
+                            }`}
                         >
                           <Car size={15} />
                           <span>Freight Quote</span>
