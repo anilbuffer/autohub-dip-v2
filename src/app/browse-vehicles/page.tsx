@@ -348,6 +348,7 @@ function BrowseVehiclesContent() {
               {filteredVehicles.length} vehicles currently match your requirements.
             </p>
           </div>
+        </div>
       ) : (
         /* Standard Filter Bar when in All Auction Stock mode */
         <form onSubmit={handleSearchSubmit} className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/90 shadow-soft hover:shadow-soft-md transition-shadow">
