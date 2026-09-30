@@ -203,11 +203,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     key={item.href}
                     href={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`group relative flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-150 ${
-                      isActive
-                        ? 'bg-gradient-to-r from-[#E11D48] to-[#BE123C] text-white font-semibold shadow-lg shadow-rose-950/40 ring-1 ring-white/20'
-                        : 'text-slate-300 hover:text-white hover:bg-white/[0.08]'
-                    }`}
+                    className={`group relative flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-150 ${isActive
+                      ? 'bg-gradient-to-r from-[#E11D48] to-[#BE123C] text-white font-semibold shadow-lg shadow-rose-950/40 ring-1 ring-white/20'
+                      : 'text-slate-300 hover:text-white hover:bg-white/[0.08]'
+                      }`}
                   >
                     <div className="flex items-center gap-3">
                       <Icon
@@ -223,11 +222,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
                     {item.badge !== null && item.badge !== undefined && (
                       <span
-                        className={`text-[10.5px] font-bold px-2 py-0.5 rounded-full ${
-                          isActive
-                            ? 'bg-white text-[#BE123C] shadow-xs'
-                            : 'bg-white/15 text-slate-200 group-hover:bg-white/20'
-                        }`}
+                        className={`text-[10.5px] font-bold px-2 py-0.5 rounded-full ${isActive
+                          ? 'bg-white text-[#BE123C] shadow-xs'
+                          : 'bg-white/15 text-slate-200 group-hover:bg-white/20'
+                          }`}
                       >
                         {item.badge}
                       </span>
@@ -255,11 +253,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     key={item.href}
                     href={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`group flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-150 ${
-                      isActive
-                        ? 'bg-gradient-to-r from-[#E11D48] to-[#BE123C] text-white font-semibold shadow-lg shadow-rose-950/40'
-                        : 'text-slate-300 hover:text-white hover:bg-white/[0.08]'
-                    }`}
+                    className={`group flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-150 ${isActive
+                      ? 'bg-gradient-to-r from-[#E11D48] to-[#BE123C] text-white font-semibold shadow-lg shadow-rose-950/40'
+                      : 'text-slate-300 hover:text-white hover:bg-white/[0.08]'
+                      }`}
                   >
                     <div className="flex items-center gap-3">
                       <Icon
@@ -290,8 +287,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <div className="rounded-2xl bg-white/[0.04] border border-white/[0.09] p-3 space-y-3 backdrop-blur-md shadow-xl">
             {/* Dealer Profile Row */}
             <div className="flex items-center justify-between gap-2.5">
-              <Link 
-                href="/profile" 
+              <Link
+                href="/profile"
                 className="flex items-center gap-2.5 min-w-0 group"
                 title="View Dealership Profile"
               >
@@ -442,7 +439,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
         {/* Main Scrollable Content */}
         <main className="flex-1 overflow-y-auto bg-[#F8FAFC] p-4 sm:p-7 lg:p-9">
-          <div className="max-w-[1400px] mx-auto">
+          <div className="max-w-full mx-auto">
             {children}
           </div>
         </main>

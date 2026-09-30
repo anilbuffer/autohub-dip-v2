@@ -247,11 +247,10 @@ function BrowseVehiclesContent() {
               setActiveScope("all");
               setCurrentPage(1);
             }}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all border ${
-              activeScope === "all"
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all border ${activeScope === "all"
                 ? "bg-[#0F1B2E] text-white border-[#0F1B2E] shadow-sm"
                 : "bg-white text-[#64748B] border-[#CBD5E1] hover:text-[#111C2D] hover:bg-[#F8FAFC]"
-            }`}
+              }`}
           >
             <Car size={15} />
             <span>All Auction Stock ({allCars.length})</span>
@@ -262,11 +261,10 @@ function BrowseVehiclesContent() {
               setActiveScope("wishlist");
               setCurrentPage(1);
             }}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all border ${
-              activeScope === "wishlist"
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all border ${activeScope === "wishlist"
                 ? "bg-[#E11D48] text-white border-[#E11D48] shadow-sm shadow-rose-950/20"
                 : "bg-white text-[#64748B] border-[#CBD5E1] hover:text-[#111C2D] hover:bg-rose-50/50"
-            }`}
+              }`}
           >
             <Heart size={15} className={activeScope === "wishlist" ? "fill-white" : "text-[#E11D48]"} />
             <span>Matching Wishlist ({matchedWishlistVehicles.length})</span>
@@ -557,22 +555,20 @@ function BrowseVehiclesContent() {
           <div className="flex items-center p-1 bg-white border border-[#CBD5E1] rounded-xl shadow-2xs">
             <button
               onClick={() => setViewMode("grid")}
-              className={`p-1.5 rounded-lg transition-colors ${
-                viewMode === "grid"
+              className={`p-1.5 rounded-lg transition-colors ${viewMode === "grid"
                   ? "bg-[#0F1B2E] text-white shadow-xs"
                   : "text-[#64748B] hover:text-[#111C2D]"
-              }`}
+                }`}
               title="Grid View"
             >
               <LayoutGrid size={15} />
             </button>
             <button
               onClick={() => setViewMode("list")}
-              className={`p-1.5 rounded-lg transition-colors ${
-                viewMode === "list"
+              className={`p-1.5 rounded-lg transition-colors ${viewMode === "list"
                   ? "bg-[#0F1B2E] text-white shadow-xs"
                   : "text-[#64748B] hover:text-[#111C2D]"
-              }`}
+                }`}
               title="List View"
             >
               <List size={15} />
@@ -787,11 +783,10 @@ function BrowseVehiclesContent() {
                 <button
                   key={pageNum}
                   onClick={() => setCurrentPage(pageNum)}
-                  className={`w-8 h-8 rounded-lg text-xs font-bold transition-all ${
-                    isActive
+                  className={`w-8 h-8 rounded-lg text-xs font-bold transition-all ${isActive
                       ? "bg-[#E11D48] text-white shadow-xs"
                       : "bg-white border border-[#CBD5E1] text-[#475569] hover:bg-slate-50 hover:text-[#111C2D]"
-                  }`}
+                    }`}
                 >
                   {pageNum}
                 </button>
@@ -803,11 +798,10 @@ function BrowseVehiclesContent() {
                 <span className="text-[#94A3B8] px-1">…</span>
                 <button
                   onClick={() => setCurrentPage(totalPages)}
-                  className={`w-8 h-8 rounded-lg text-xs font-bold transition-all ${
-                    currentPage === totalPages
+                  className={`w-8 h-8 rounded-lg text-xs font-bold transition-all ${currentPage === totalPages
                       ? "bg-[#E11D48] text-white shadow-xs"
                       : "bg-white border border-[#CBD5E1] text-[#475569] hover:bg-slate-50 hover:text-[#111C2D]"
-                  }`}
+                    }`}
                 >
                   {totalPages}
                 </button>

@@ -125,31 +125,28 @@ export default function MyBidsPage() {
         <div className="flex items-center gap-2 p-1 bg-white border border-[#E5E7EB] rounded-xl w-fit shadow-2xs">
           <button
             onClick={() => setActiveFilter("all")}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
-              activeFilter === "all"
-                ? "bg-[#0F1B2E] text-white shadow-2xs"
-                : "text-[#64748B] hover:text-[#111827]"
-            }`}
+            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${activeFilter === "all"
+              ? "bg-[#0F1B2E] text-white shadow-2xs"
+              : "text-[#64748B] hover:text-[#111827]"
+              }`}
           >
             All Bids ({bids.length})
           </button>
           <button
             onClick={() => setActiveFilter("active")}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
-              activeFilter === "active"
-                ? "bg-[#0F1B2E] text-white shadow-2xs"
-                : "text-[#64748B] hover:text-[#111827]"
-            }`}
+            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${activeFilter === "active"
+              ? "bg-[#0F1B2E] text-white shadow-2xs"
+              : "text-[#64748B] hover:text-[#111827]"
+              }`}
           >
             Active Bids ({activeBids.length})
           </button>
           <button
             onClick={() => setActiveFilter("won")}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
-              activeFilter === "won"
-                ? "bg-[#0F1B2E] text-white shadow-2xs"
-                : "text-[#64748B] hover:text-[#111827]"
-            }`}
+            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${activeFilter === "won"
+              ? "bg-[#0F1B2E] text-white shadow-2xs"
+              : "text-[#64748B] hover:text-[#111827]"
+              }`}
           >
             Won ({wonBids.length})
           </button>
@@ -172,7 +169,7 @@ export default function MyBidsPage() {
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {displayedBids.map((bid) => {
               const matchingCar = HEIWA_VEHICLES.find(
                 (v) => v.chassis === bid.vehicleChassis || v.stockId === bid.vehicleStockId
@@ -218,7 +215,7 @@ export default function MyBidsPage() {
                       </div>
 
                       <div className="absolute bottom-3 right-3 bg-black/75 backdrop-blur-xs text-white text-[11px] font-semibold px-2 py-0.5 rounded">
-                        Auction #{bid.auctionHouse || "USS Tokyo"}
+                        {bid.auctionHouse || "USS Tokyo"}
                       </div>
                     </div>
 

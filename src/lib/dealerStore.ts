@@ -27,6 +27,7 @@ export interface DealerBid {
   status: 'leading' | 'under_reserve' | 'outbid' | 'won' | 'passed';
   auctionDate: string;
   auctionTimeLeft: string;
+  auctionHouse?: string;
   createdAt: string;
 }
 
@@ -80,6 +81,7 @@ export const INITIAL_BIDS: DealerBid[] = [
     status: 'leading',
     auctionDate: 'Tomorrow, 14:00 JST',
     auctionTimeLeft: '18h 42m',
+    auctionHouse: 'USS Tokyo',
     createdAt: '2026-09-29T14:30:00Z',
   },
   {
@@ -96,6 +98,7 @@ export const INITIAL_BIDS: DealerBid[] = [
     status: 'under_reserve',
     auctionDate: 'In 2 days, 11:30 JST',
     auctionTimeLeft: '1d 16h',
+    auctionHouse: 'USS Yokohama',
     createdAt: '2026-09-28T09:15:00Z',
   },
   {
@@ -112,6 +115,7 @@ export const INITIAL_BIDS: DealerBid[] = [
     status: 'won',
     auctionDate: 'Yesterday',
     auctionTimeLeft: 'Completed',
+    auctionHouse: 'HAA Kobe',
     createdAt: '2026-09-27T10:00:00Z',
   },
 ];
@@ -410,7 +414,8 @@ export function saveStoredBids(bids: DealerBid[]) {
 
 export function placeDealerBid(
   vehicle: HeiwaVehicle,
-  bidFobJpy: number
+  bidFobJpy: number,
+  auctionHouse?: string
 ): DealerBid {
   const bids = getStoredBids();
   const landed = calculateLandedCost(bidFobJpy).totalLanded;
@@ -428,6 +433,7 @@ export function placeDealerBid(
     status: 'leading',
     auctionDate: 'Upcoming Auction',
     auctionTimeLeft: '24h 00m',
+    auctionHouse: auctionHouse || 'USS Tokyo',
     createdAt: new Date().toISOString(),
   };
 
