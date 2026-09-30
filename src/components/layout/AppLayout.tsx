@@ -11,18 +11,11 @@ import {
   User,
   Search,
   Bell,
-  ChevronDown,
+  ChevronUp,
   Menu,
   X,
   LogOut,
-  Building2,
-  TrendingUp,
-  Sparkles,
-  ExternalLink,
-  ShieldCheck,
   CheckCircle2,
-  PhoneCall,
-  SlidersHorizontal,
 } from 'lucide-react';
 import { getStoredBids, getStoredWatchlist, getStoredPurchases } from '@/lib/dealerStore';
 import WishlistHeaderModal, { WishlistButton } from '@/components/layout/WishlistHeaderModal';
@@ -94,24 +87,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       badge: purchasesCount > 0 ? purchasesCount : null,
       badgeColor: 'emerald',
       activeCheck: (p: string) => p.startsWith('/purchases'),
-    },
-  ];
-
-  // Secondary Tools Navigation
-  const secondaryNavItems = [
-    {
-      label: 'NZ Market Intel',
-      href: '/market',
-      icon: TrendingUp,
-      badge: 'NZ Data',
-      activeCheck: (p: string) => p.startsWith('/market'),
-    },
-    {
-      label: 'Dealership Profile',
-      href: '/profile',
-      icon: Building2,
-      badge: null,
-      activeCheck: (p: string) => p.startsWith('/profile'),
     },
   ];
 
@@ -193,7 +168,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               </span>
               <span className="w-1.5 h-1.5 rounded-full bg-rose-500/80"></span>
             </div>
-            <nav className="space-y-1">
+            <nav className="space-y-3">
               {primaryNavItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = item.activeCheck(pathname);
@@ -235,63 +210,59 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               })}
             </nav>
           </div>
-
-          {/* Intelligence & Tools Section */}
-          <div className="pt-2 border-t border-white/[0.06]">
-            <div className="px-3 pb-2 flex items-center justify-between">
-              <span className="text-[10.5px] font-extrabold text-[#94A3B8] uppercase tracking-[0.14em]">
-                Intelligence & Tools
-              </span>
-            </div>
-            <nav className="space-y-1">
-              {secondaryNavItems.map((item) => {
-                const Icon = item.icon;
-                const isActive = item.activeCheck(pathname);
-
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`group flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-150 ${isActive
-                      ? 'bg-gradient-to-r from-[#E11D48] to-[#BE123C] text-white font-semibold shadow-lg shadow-rose-950/40'
-                      : 'text-slate-300 hover:text-white hover:bg-white/[0.08]'
-                      }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <Icon
-                        size={17}
-                        className={
-                          isActive
-                            ? 'text-white stroke-[2.2]'
-                            : 'text-slate-400 group-hover:text-white transition-colors'
-                        }
-                      />
-                      <span>{item.label}</span>
-                    </div>
-
-                    {item.badge && (
-                      <span className="text-[9.5px] font-extrabold px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-400/20 uppercase tracking-wide">
-                        {item.badge}
-                      </span>
-                    )}
-                  </Link>
-                );
-              })}
-            </nav>
-          </div>
         </div>
 
         {/* ─── 3. Elevated Docked Bottom Card (Clearly Separated) ─── */}
-        <div className="p-3 shrink-0">
+        <div className="p-3 shrink-0 relative">
+          {/* Profile Dropdown Popup Menu */}
+          {profileDropdownOpen && (
+            <>
+              <div
+                className="fixed inset-0 z-40"
+                onClick={() => setProfileDropdownOpen(false)}
+              />
+              <div className="absolute bottom-full left-3 right-3 mb-2 bg-[#0F1B2E] border border-white/10 rounded-2xl shadow-2xl p-1.5 z-50 backdrop-blur-xl animate-in fade-in slide-in-from-bottom-2 duration-150">
+                <div className="px-3 py-2 border-b border-white/[0.08] mb-1">
+                  <div className="text-[12.5px] font-bold text-white">Auckland Auto Group</div>
+                  <div className="text-[10px] text-slate-400 flex items-center gap-1 mt-0.5">
+                    <CheckCircle2 size={11} className="text-emerald-400 shrink-0" />
+                    <span>Registered NZ Motor Trader</span>
+                  </div>
+                </div>
+                <Link
+                  href="/profile"
+                  onClick={() => {
+                    setProfileDropdownOpen(false);
+                    setMobileMenuOpen(false);
+                  }}
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-[12.5px] font-medium text-slate-200 hover:text-white hover:bg-white/[0.08] transition-colors"
+                >
+                  <User size={15} className="text-slate-400" />
+                  <span>Profile Settings</span>
+                </Link>
+                <div className="border-t border-white/[0.08] my-1" />
+                <Link
+                  href="/login"
+                  onClick={() => {
+                    setProfileDropdownOpen(false);
+                    setMobileMenuOpen(false);
+                  }}
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-[12.5px] font-medium text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 transition-colors"
+                >
+                  <LogOut size={15} />
+                  <span>Logout</span>
+                </Link>
+              </div>
+            </>
+          )}
+
           <div className="rounded-2xl bg-white/[0.04] border border-white/[0.09] p-3 space-y-3 backdrop-blur-md shadow-xl">
-            {/* Dealer Profile Row */}
-            <div className="flex items-center justify-between gap-2.5">
-              <Link
-                href="/profile"
-                className="flex items-center gap-2.5 min-w-0 group"
-                title="View Dealership Profile"
-              >
+            {/* Dealer Profile Trigger Row */}
+            <button
+              onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+              className="w-full flex items-center justify-between gap-2 text-left group p-1 -m-1 transition-colors cursor-pointer"
+            >
+              <div className="flex items-center gap-2.5 min-w-0">
                 <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm ring-1 ring-white/20">
                   AA
                 </div>
@@ -304,29 +275,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     <span>Verified NZ Trader</span>
                   </div>
                 </div>
-              </Link>
-
-              {/* Logout Button */}
-              <Link
-                href="/login"
-                title="Sign Out"
-                className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-white/[0.08] rounded-lg transition-colors shrink-0"
-              >
-                <LogOut size={15} />
-              </Link>
-            </div>
-
-            {/* Live Feed Status Pill */}
-            <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between text-[11px]">
-              <div className="flex items-center gap-2">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                </span>
-                <span className="text-slate-300 font-medium text-[11px]">Heiwa Feed Live</span>
               </div>
-              <span className="text-[10px] text-slate-500 font-mono">v2.4</span>
-            </div>
+
+              <div className="p-1 text-slate-400 group-hover:text-white transition-colors shrink-0">
+                <ChevronUp size={15} className={`transition-transform duration-200 ${profileDropdownOpen ? 'rotate-180 text-rose-400' : ''}`} />
+              </div>
+            </button>
           </div>
         </div>
       </aside>
@@ -359,7 +313,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             </form>
           </div>
 
-          {/* Right Header: Role Switcher + Wishlist Button + Notifications + Profile */}
+          {/* Right Header: Role Switcher + Wishlist Button + Notifications */}
           <div className="flex items-center gap-2.5 sm:gap-3 ml-3 sm:ml-4">
             {/* View Switcher: Dealer / Admin */}
             <RoleSwitcher />
@@ -375,65 +329,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               <Bell size={19} />
               <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#E11D48] rounded-full ring-2 ring-white"></span>
             </button>
-
-            {/* User Profile Pill Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-                className="flex items-center gap-2.5 pl-2 pr-3 py-1.5 rounded-full hover:bg-slate-100 transition-colors text-left"
-              >
-                <div className="w-8 h-8 rounded-full bg-[#0F1B2E] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs border border-[#1E2E4A]">
-                  AA
-                </div>
-                <div className="hidden sm:flex items-center gap-1.5">
-                  <span className="text-[13px] font-semibold text-[#111827]">
-                    Auckland Auto Group
-                  </span>
-                  <ChevronDown size={14} className="text-[#6B7280]" />
-                </div>
-              </button>
-
-              {/* Profile Dropdown */}
-              {profileDropdownOpen && (
-                <>
-                  <div
-                    className="fixed inset-0 z-40"
-                    onClick={() => setProfileDropdownOpen(false)}
-                  />
-                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-[#E5E7EB] py-1 z-50 text-xs">
-                    <div className="px-4 py-2.5 border-b border-[#F1F5F9]">
-                      <div className="font-bold text-[#111827]">Auckland Auto Group</div>
-                      <div className="text-[11px] text-[#6B7280]">Registered NZ Motor Trader</div>
-                    </div>
-                    <Link
-                      href="/profile"
-                      onClick={() => setProfileDropdownOpen(false)}
-                      className="flex items-center gap-2 px-4 py-2 text-[#374151] hover:bg-slate-50"
-                    >
-                      <User size={14} />
-                      <span>Dealership Profile</span>
-                    </Link>
-                    <Link
-                      href="/market"
-                      onClick={() => setProfileDropdownOpen(false)}
-                      className="flex items-center gap-2 px-4 py-2 text-[#374151] hover:bg-slate-50"
-                    >
-                      <TrendingUp size={14} />
-                      <span>NZ Market Intelligence</span>
-                    </Link>
-                    <div className="border-t border-[#F1F5F9] my-1" />
-                    <Link
-                      href="/login"
-                      onClick={() => setProfileDropdownOpen(false)}
-                      className="flex items-center gap-2 px-4 py-2 text-rose-600 hover:bg-rose-50"
-                    >
-                      <LogOut size={14} />
-                      <span>Sign Out</span>
-                    </Link>
-                  </div>
-                </>
-              )}
-            </div>
           </div>
         </header>
 

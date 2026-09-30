@@ -22,6 +22,10 @@ import {
   Check,
   ChevronRight,
   Sparkles,
+  UserPlus,
+  Plus,
+  Copy,
+  X,
 } from "lucide-react";
 import { DEALERS, Dealer } from "@/lib/data";
 import {
@@ -34,29 +38,58 @@ import {
   matchVehiclesAgainstWishlist,
   getStoredBids,
   getStoredPurchases,
+  getStoredDealers,
+  addStoredDealer,
   WishListCriteria,
   DealerBid,
   DealerPurchase,
 } from "@/lib/dealerStore";
 import { useSyncStore } from "@/lib/syncStore";
 
+const POPULAR_MAKES = [
+  "Toyota",
+  "Honda",
+  "Mazda",
+  "Nissan",
+  "Subaru",
+  "Lexus",
+  "Mitsubishi",
+  "Suzuki",
+  "European",
+];
+
 export default function AdminDealersPage() {
   const { notifyDealersFromAdmin } = useSyncStore();
-  const [dealers, setDealers] = useState<Dealer[]>(DEALERS);
+  const [dealers, setDealers] = useState<Dealer[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedTier, setSelectedTier] = useState<string>("all");
   const [liveWishlists, setLiveWishlists] = useState<WishListCriteria[]>([]);
   const [bids, setBids] = useState<DealerBid[]>([]);
   const [purchases, setPurchases] = useState<DealerPurchase[]>([]);
   const [selectedDealer, setSelectedDealer] = useState<Dealer | null>(null);
   const [notifiedMsg, setNotifiedMsg] = useState<string | null>(null);
 
+  // Add / Invite Dealer Modal State
+  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
+  const [formName, setFormName] = useState("");
+  const [formLocation, setFormLocation] = useState("");
+  const [formContactName, setFormContactName] = useState("");
+  const [formEmail, setFormEmail] = useState("");
+  const [formPhone, setFormPhone] = useState("");
+  const [formTargetVolume, setFormTargetVolume] = useState<number>(15);
+  const [formAvgMargin, setFormAvgMargin] = useState<number>(3500);
+  const [formMakes, setFormMakes] = useState<string[]>(["Toyota", "Honda"]);
+  const [formModels, setFormModels] = useState("Aqua, Fit, Vezel, C-HR");
+  const [formSendInvite, setFormSendInvite] = useState(true);
+
   useEffect(() => {
+    setDealers(getStoredDealers());
     setLiveWishlists(getStoredWishlistCriteria());
     setBids(getStoredBids());
     setPurchases(getStoredPurchases());
 
     const handleStoreChange = () => {
+      setDealers(getStoredDealers());
       setLiveWishlists(getStoredWishlistCriteria());
       setBids(getStoredBids());
       setPurchases(getStoredPurchases());
@@ -72,9 +105,7 @@ export default function AdminDealersPage() {
       d.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       d.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
       d.contactName.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesTier =
-      selectedTier === "all" || d.tier.toLowerCase().includes(selectedTier.toLowerCase());
-    return matchesSearch && matchesTier;
+    return matchesSearch;
   });
 
   // Calculate matches for a specific dealer
@@ -83,7 +114,7 @@ export default function AdminDealersPage() {
       // Auckland Auto Group uses live wishlist criteria
       return matchVehiclesAgainstWishlist(HEIWA_VEHICLES, liveWishlists);
     }
-    const d = DEALERS.find((item) => item.id === dealerId);
+    const d = dealers.find((item) => item.id === dealerId);
     if (!d) return [];
     const crit: WishListCriteria[] = [
       {
@@ -103,6 +134,73 @@ export default function AdminDealersPage() {
     notifyDealersFromAdmin("priority-alert", "Priority Japan Auction Match", 1);
     setNotifiedMsg(`Dispatched priority match alert to ${dealerName}`);
     setTimeout(() => setNotifiedMsg(null), 3000);
+  };
+
+  const toggleMakeSelection = (make: string) => {
+    setFormMakes((prev) =>
+      prev.includes(make) ? prev.filter((m) => m !== make) : [...prev, make]
+    );
+  };
+
+  const handleCreateDealer = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formName.trim() || !formEmail.trim() || !formContactName.trim()) {
+      alert("Please fill in Dealership Name, Contact Name, and Email.");
+      return;
+    }
+
+    const modelsList = formModels
+      .split(",")
+      .map((m) => m.trim())
+      .filter((m) => m.length > 0);
+
+    const newDealer = addStoredDealer({
+      name: formName.trim(),
+      location: formLocation.trim() || "Auckland, NZ",
+      contactName: formContactName.trim(),
+      email: formEmail.trim(),
+      phone: formPhone.trim() || "+64 9 000 0000",
+      monthlyImportsTarget: Number(formTargetVolume) || 12,
+      avgMargin: Number(formAvgMargin) || 3500,
+      activeOpportunities: 18,
+      priorityBuys: 3,
+      preferences: {
+        makes: formMakes.length > 0 ? formMakes : ["Toyota", "Honda"],
+        models: modelsList.length > 0 ? modelsList : ["Aqua", "Fit"],
+        yearRange: "2016 – 2024",
+        maxKm: 90000,
+        fuelTypes: ["Hybrid", "Petrol"],
+        targetRetail: "NZ$16,000 – NZ$32,000",
+        targetMargin: `NZ$${(Number(formAvgMargin) || 3500).toLocaleString()}+`,
+      },
+    });
+
+    setIsInviteModalOpen(false);
+    setNotifiedMsg(
+      formSendInvite
+        ? `Invitation dispatched to ${newDealer.email} with AutoHub DIP credentials & Heiwa feed link`
+        : `Successfully added ${newDealer.name} to registered dealer network`
+    );
+    setTimeout(() => setNotifiedMsg(null), 4000);
+
+    // Reset form
+    setFormName("");
+    setFormLocation("");
+    setFormContactName("");
+    setFormEmail("");
+    setFormPhone("");
+    setFormMakes(["Toyota", "Honda"]);
+    setFormModels("Aqua, Fit, Vezel, C-HR");
+  };
+
+  const handleCopyInviteLink = () => {
+    if (typeof window !== "undefined") {
+      navigator.clipboard.writeText(
+        `https://autohub.co.nz/invite/dealer?ref=dip_admin_${Date.now()}`
+      );
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 2500);
+    }
   };
 
   return (
@@ -127,20 +225,28 @@ export default function AdminDealersPage() {
               <Heart size={14} className="text-[#E11D48]" />
               <span>All Wish Lists ({liveWishlists.length + 2})</span>
             </Link>
+
+            <button
+              onClick={() => setIsInviteModalOpen(true)}
+              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#E11D48] to-[#BE123C] hover:from-[#BE123C] hover:to-[#9F1239] text-white text-xs font-bold shadow-md shadow-rose-950/30 transition-all flex items-center gap-2 cursor-pointer"
+            >
+              <UserPlus size={15} />
+              <span>Invite Dealer</span>
+            </button>
           </div>
         </div>
 
         {/* ─── Notification Alert Toast ─── */}
         {notifiedMsg && (
           <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center gap-2 animate-in fade-in">
-            <CheckCircle2 size={16} className="text-emerald-600" />
+            <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
             <span>{notifiedMsg}</span>
           </div>
         )}
 
         {/* ─── Filters & Search ─── */}
-        <div className="bg-white p-4 rounded-2xl border border-[#E2E8F0] shadow-xs flex flex-col md:flex-row items-center justify-between gap-3">
-          <div className="relative w-full md:w-96">
+        <div className="bg-white p-4 rounded-2xl border border-[#E2E8F0] shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="relative w-full sm:max-w-md">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#94A3B8]" />
             <input
               type="text"
@@ -151,23 +257,12 @@ export default function AdminDealersPage() {
             />
           </div>
 
-          <div className="flex items-center gap-2 w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
-            <span className="text-xs font-bold text-[#64748B] uppercase tracking-wider whitespace-nowrap pl-1">
-              Tier:
-            </span>
-            {["all", "platinum", "gold"].map((tier) => (
-              <button
-                key={tier}
-                onClick={() => setSelectedTier(tier)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold capitalize transition-all whitespace-nowrap ${
-                  selectedTier === tier
-                    ? "bg-[#1E3A5F] text-white shadow-xs"
-                    : "bg-slate-100 text-[#475569] hover:bg-slate-200"
-                }`}
-              >
-                {tier === "all" ? "All Dealers" : `${tier} Tier`}
-              </button>
-            ))}
+          <div className="text-xs font-bold text-[#64748B] flex items-center gap-1.5 self-start sm:self-auto">
+            <span>Showing</span>
+            <span className="text-[#111827]">{filteredDealers.length}</span>
+            <span>of</span>
+            <span className="text-[#111827]">{dealers.length}</span>
+            <span>Dealers</span>
           </div>
         </div>
 
@@ -206,10 +301,6 @@ export default function AdminDealersPage() {
                           <span>{d.location}</span>
                         </div>
                       </div>
-
-                      <span className="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-blue-50 text-[#1E3A5F] border border-blue-200 shrink-0">
-                        {d.tier}
-                      </span>
                     </div>
 
                     {/* Contact details */}
@@ -293,7 +384,7 @@ export default function AdminDealersPage() {
                 <div className="p-4 bg-slate-50 border-t border-[#F1F5F9] flex items-center justify-between gap-2">
                   <button
                     onClick={() => setSelectedDealer(d)}
-                    className="text-xs font-bold text-[#1E3A5F] hover:text-[#152740] flex items-center gap-1"
+                    className="text-xs font-bold text-[#1E3A5F] hover:text-[#152740] flex items-center gap-1 cursor-pointer"
                   >
                     <span>View Full Profile</span>
                     <ChevronRight size={14} />
@@ -301,7 +392,7 @@ export default function AdminDealersPage() {
 
                   <button
                     onClick={() => handleQuickNotify(d.name)}
-                    className="px-3 py-1.5 rounded-xl bg-white border border-[#CBD5E1] hover:border-[#1E3A5F] text-[#1E3A5F] text-xs font-bold transition-all flex items-center gap-1.5 shadow-2xs"
+                    className="px-3 py-1.5 rounded-xl bg-white border border-[#CBD5E1] hover:border-[#1E3A5F] text-[#1E3A5F] text-xs font-bold transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer"
                   >
                     <Send size={12} className="text-[#E11D48]" />
                     <span>Send Matches</span>
@@ -314,25 +405,22 @@ export default function AdminDealersPage() {
 
         {/* ─── Detail Modal / Drawer ─── */}
         {selectedDealer && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-7 space-y-5 shadow-2xl animate-in zoom-in-95">
               <div className="flex items-start justify-between">
                 <div>
-                  <span className="text-[10px] font-extrabold uppercase tracking-wider bg-blue-50 text-[#1E3A5F] px-2.5 py-1 rounded-full border border-blue-200">
-                    {selectedDealer.tier}
-                  </span>
-                  <h3 className="text-xl font-extrabold text-[#111827] mt-2">
+                  <h3 className="text-xl font-extrabold text-[#111827]">
                     {selectedDealer.name}
                   </h3>
                   <p className="text-xs text-[#64748B] mt-0.5">
-                    {selectedDealer.location} · Member since 2024
+                    {selectedDealer.location} · Registered NZ Motor Trader
                   </p>
                 </div>
                 <button
                   onClick={() => setSelectedDealer(null)}
-                  className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100"
+                  className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 cursor-pointer"
                 >
-                  ✕
+                  <X size={18} />
                 </button>
               </div>
 
@@ -359,7 +447,7 @@ export default function AdminDealersPage() {
               <div className="flex justify-end gap-3 pt-2">
                 <button
                   onClick={() => setSelectedDealer(null)}
-                  className="px-4 py-2 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50"
+                  className="px-4 py-2 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 cursor-pointer"
                 >
                   Close
                 </button>
@@ -370,6 +458,243 @@ export default function AdminDealersPage() {
                   Manage Wish Lists
                 </Link>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* ─── Add / Invite Dealer Modal ─── */}
+        {isInviteModalOpen && (
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto">
+            <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 space-y-6 shadow-2xl animate-in zoom-in-95 my-8 max-h-[90vh] overflow-y-auto">
+              <div className="flex items-start justify-between border-b border-[#F1F5F9] pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#E11D48] to-[#BE123C] text-white flex items-center justify-center font-bold shadow-md shadow-rose-950/20">
+                    <UserPlus size={20} />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-extrabold text-[#111827]">
+                      Invite New Motor Trader
+                    </h3>
+                    <p className="text-xs text-[#64748B] mt-0.5">
+                      Register dealership profile and dispatch DIP platform access credentials
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setIsInviteModalOpen(false)}
+                  className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 cursor-pointer"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              <form onSubmit={handleCreateDealer} className="space-y-5">
+                {/* Dealership Basic Info */}
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-bold text-[#111827] mb-1.5">
+                      Dealership Legal Trade Name *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formName}
+                      onChange={(e) => setFormName(e.target.value)}
+                      placeholder="e.g. Wellington City Motors"
+                      className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-[#111827] outline-none focus:border-[#E11D48] focus:bg-white transition-all"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-[#111827] mb-1.5">
+                        Location / Yard Region *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={formLocation}
+                        onChange={(e) => setFormLocation(e.target.value)}
+                        placeholder="e.g. Lower Hutt, Wellington"
+                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-[#111827] outline-none focus:border-[#E11D48] focus:bg-white transition-all"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-[#111827] mb-1.5">
+                        Primary Contact Person *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={formContactName}
+                        onChange={(e) => setFormContactName(e.target.value)}
+                        placeholder="e.g. James Anderson"
+                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-[#111827] outline-none focus:border-[#E11D48] focus:bg-white transition-all"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-[#111827] mb-1.5">
+                        Contact Email *
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        value={formEmail}
+                        onChange={(e) => setFormEmail(e.target.value)}
+                        placeholder="e.g. james@wellingtonmotors.co.nz"
+                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-[#111827] outline-none focus:border-[#E11D48] focus:bg-white transition-all"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-[#111827] mb-1.5">
+                        Phone / Direct Line
+                      </label>
+                      <input
+                        type="tel"
+                        value={formPhone}
+                        onChange={(e) => setFormPhone(e.target.value)}
+                        placeholder="e.g. +64 4 568 2200"
+                        className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-[#111827] outline-none focus:border-[#E11D48] focus:bg-white transition-all"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Sourcing Preferences */}
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3.5">
+                  <div>
+                    <label className="block text-xs font-bold text-[#111827] mb-2">
+                      Target Japanese Auction Makes
+                    </label>
+                    <div className="flex flex-wrap gap-1.5">
+                      {POPULAR_MAKES.map((make) => {
+                        const isSelected = formMakes.includes(make);
+                        return (
+                          <button
+                            type="button"
+                            key={make}
+                            onClick={() => toggleMakeSelection(make)}
+                            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                              isSelected
+                                ? "bg-[#1E3A5F] text-white shadow-xs"
+                                : "bg-white border border-slate-200 text-[#475569] hover:bg-slate-100"
+                            }`}
+                          >
+                            {isSelected ? `✓ ${make}` : `+ ${make}`}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-[#111827] mb-1.5">
+                      Target Models (comma-separated)
+                    </label>
+                    <input
+                      type="text"
+                      value={formModels}
+                      onChange={(e) => setFormModels(e.target.value)}
+                      placeholder="e.g. Aqua, Fit, Vezel, C-HR, CX-5"
+                      className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-semibold text-[#111827] outline-none focus:border-[#E11D48]"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3 pt-1">
+                    <div>
+                      <label className="block text-[11px] font-bold text-[#64748B] mb-1">
+                        Monthly Target Units
+                      </label>
+                      <input
+                        type="number"
+                        min={1}
+                        value={formTargetVolume}
+                        onChange={(e) => setFormTargetVolume(Number(e.target.value) || 1)}
+                        className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-bold font-mono text-[#111827] outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-bold text-[#64748B] mb-1">
+                        Target Margin / Unit (NZD)
+                      </label>
+                      <input
+                        type="number"
+                        step={250}
+                        value={formAvgMargin}
+                        onChange={(e) => setFormAvgMargin(Number(e.target.value) || 2500)}
+                        className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-bold font-mono text-[#111827] outline-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Dispatch & Quick Link Options */}
+                <div className="space-y-3 pt-1">
+                  <label className="flex items-center gap-2.5 text-xs text-[#334155] font-semibold cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={formSendInvite}
+                      onChange={(e) => setFormSendInvite(e.target.checked)}
+                      className="w-4 h-4 rounded text-[#E11D48] accent-[#E11D48] focus:ring-[#E11D48]"
+                    />
+                    <span>
+                      Automatically dispatch email invite with portal access credentials
+                    </span>
+                  </label>
+
+                  <div className="flex items-center justify-between p-3 rounded-xl bg-slate-100 border border-slate-200 text-xs">
+                    <div className="truncate mr-2">
+                      <span className="text-[10px] font-bold uppercase text-[#64748B] block">
+                        Direct Dealer Invitation Link
+                      </span>
+                      <span className="font-mono text-[#1E3A5F] text-[11px] truncate block">
+                        https://autohub.co.nz/invite/dealer?ref=dip_onboard
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleCopyInviteLink}
+                      className="px-2.5 py-1 rounded-lg bg-white border border-slate-300 hover:bg-slate-50 text-[11px] font-bold text-[#111827] transition-all flex items-center gap-1 shrink-0 cursor-pointer shadow-2xs"
+                    >
+                      {copiedLink ? (
+                        <>
+                          <Check size={12} className="text-emerald-600" />
+                          <span>Copied</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy size={12} />
+                          <span>Copy Link</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Form Buttons */}
+                <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#F1F5F9]">
+                  <button
+                    type="button"
+                    onClick={() => setIsInviteModalOpen(false)}
+                    className="px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-[#475569] hover:bg-slate-50 transition-colors cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    type="submit"
+                    className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#E11D48] to-[#BE123C] hover:from-[#BE123C] hover:to-[#9F1239] text-white text-xs font-bold shadow-md shadow-rose-950/30 transition-all flex items-center gap-2 cursor-pointer"
+                  >
+                    <Send size={13} />
+                    <span>Save & Send Invite</span>
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         )}

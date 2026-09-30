@@ -2,6 +2,7 @@
 // Handles Wishlist Criteria, Watchlist, Bids, Purchases, and Vehicle Photo mappings
 
 import { HEIWA_VEHICLES, HeiwaVehicle, calculateLandedCost, LANDED_COST_CONSTANTS } from './heiwaData';
+import { DEALERS, Dealer } from './data';
 
 export interface WishListCriteria {
   id: string;
@@ -280,6 +281,7 @@ const STORAGE_KEYS = {
   WATCHLIST: 'autohub_dealer_watchlist_v2',
   BIDS: 'autohub_dealer_bids_v2',
   PURCHASES: 'autohub_dealer_purchases_v2',
+  DEALERS: 'autohub_dealers_directory_v2',
 };
 
 // Dispatch global event so all components react immediately
@@ -453,4 +455,57 @@ export function getStoredPurchases(): DealerPurchase[] {
   } catch {
     return INITIAL_PURCHASES;
   }
+}
+
+// DEALERS DIRECTORY HELPERS
+export function getStoredDealers(): Dealer[] {
+  if (typeof window === 'undefined') return DEALERS;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.DEALERS);
+    if (!raw) return DEALERS;
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) && parsed.length > 0 ? parsed : DEALERS;
+  } catch {
+    return DEALERS;
+  }
+}
+
+export function saveStoredDealers(dealers: Dealer[]) {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem(STORAGE_KEYS.DEALERS, JSON.stringify(dealers));
+  notifyStoreChange();
+}
+
+export function addStoredDealer(newDealerData: Partial<Dealer>): Dealer {
+  const current = getStoredDealers();
+  const nextId = Math.max(...current.map(d => d.id), 0) + 1;
+  const newDealer: Dealer = {
+    id: nextId,
+    name: newDealerData.name || 'New Dealership',
+    location: newDealerData.location || 'Auckland, NZ',
+    tier: 'Gold Dealer',
+    activeOpportunities: newDealerData.activeOpportunities || 16,
+    priorityBuys: newDealerData.priorityBuys || 3,
+    monthlyImportsTarget: newDealerData.monthlyImportsTarget || 12,
+    avgMargin: newDealerData.avgMargin || 3500,
+    contactName: newDealerData.contactName || 'Trade Manager',
+    email: newDealerData.email || 'contact@dealership.co.nz',
+    phone: newDealerData.phone || '+64 9 000 0000',
+    preferences: {
+      makes: newDealerData.preferences?.makes && newDealerData.preferences.makes.length > 0
+        ? newDealerData.preferences.makes
+        : ['Toyota', 'Honda'],
+      models: newDealerData.preferences?.models && newDealerData.preferences.models.length > 0
+        ? newDealerData.preferences.models
+        : ['Aqua', 'Fit', 'C-HR'],
+      yearRange: newDealerData.preferences?.yearRange || '2016 – 2024',
+      maxKm: newDealerData.preferences?.maxKm || 90000,
+      fuelTypes: newDealerData.preferences?.fuelTypes || ['Hybrid', 'Petrol'],
+      targetRetail: newDealerData.preferences?.targetRetail || 'NZ$16,000 – NZ$32,000',
+      targetMargin: newDealerData.preferences?.targetMargin || `NZ$${(newDealerData.avgMargin || 3500).toLocaleString()}+`,
+    },
+  };
+  const updated = [newDealer, ...current];
+  saveStoredDealers(updated);
+  return newDealer;
 }

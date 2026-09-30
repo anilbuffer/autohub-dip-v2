@@ -3,28 +3,22 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { 
-  Car, 
-  Users, 
-  Settings, 
-  Bell, 
-  Search, 
-  Menu, 
+import {
+  Car,
+  Users,
+  Bell,
+  Search,
+  Menu,
   X,
-  ChevronRight, 
-  Database,
   RefreshCw,
   LogOut,
   Shield,
-  Sparkles,
   LayoutDashboard,
   Heart,
-  DollarSign,
-  CheckCircle2,
-  SlidersHorizontal,
+  ChevronUp,
+  User,
 } from 'lucide-react';
 import RoleSwitcher from './RoleSwitcher';
-import { useSyncStore } from '@/lib/syncStore';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -32,8 +26,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [headerSearchQuery, setHeaderSearchQuery] = useState('');
-  
-  const { state: syncState } = useSyncStore();
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
 
   const handleHeaderSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,11 +44,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { label: 'Heiwa Vehicles', href: '/admin/vehicles', icon: Car, badge: '38 Lots' },
   ];
 
-  const secondaryNavItems = [
-    { label: 'Auction Feeds', href: '/admin/vehicles', icon: Database, badge: '4 Live' },
-    { label: 'FX Benchmark', href: '/admin', icon: DollarSign, badge: '¥91.24' },
-  ];
-
   const handleRefreshFeeds = () => {
     setIsRefreshing(true);
     setTimeout(() => setIsRefreshing(false), 800);
@@ -65,7 +53,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <div className="flex h-screen bg-[#F8FAFC] text-[#111C2D] font-sans antialiased overflow-hidden">
       {/* Mobile Backdrop */}
       {mobileMenuOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/60 backdrop-blur-xs z-40 md:hidden"
           onClick={() => setMobileMenuOpen(false)}
         />
@@ -103,7 +91,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </span>
             </div>
           </Link>
-          <button 
+          <button
             onClick={() => setMobileMenuOpen(false)}
             className="md:hidden text-slate-400 hover:text-white p-1.5 hover:bg-white/10 rounded-lg transition-colors"
           >
@@ -121,7 +109,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </span>
               <span className="w-1.5 h-1.5 rounded-full bg-rose-500/80"></span>
             </div>
-            <nav className="space-y-1">
+            <nav className="space-y-3">
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = item.href === '/admin' ? pathname === '/admin' : pathname.startsWith(item.href);
@@ -130,11 +118,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     key={item.href}
                     href={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`group relative flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-150 ${
-                      isActive
-                        ? 'bg-gradient-to-r from-[#E11D48] to-[#BE123C] text-white font-semibold shadow-lg shadow-rose-950/40 ring-1 ring-white/20'
-                        : 'text-slate-300 hover:text-white hover:bg-white/[0.08]'
-                    }`}
+                    className={`group relative flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-150 ${isActive
+                      ? 'bg-gradient-to-r from-[#E11D48] to-[#BE123C] text-white font-semibold shadow-lg shadow-rose-950/40 ring-1 ring-white/20'
+                      : 'text-slate-300 hover:text-white hover:bg-white/[0.08]'
+                      }`}
                   >
                     <div className="flex items-center gap-3">
                       <Icon
@@ -144,62 +131,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                       <span>{item.label}</span>
                     </div>
                     {item.badge && (
-                      <span className={`text-[10.5px] font-bold px-2 py-0.5 rounded-full ${
-                        isActive 
-                          ? 'bg-white text-[#BE123C] shadow-xs' 
-                          : 'bg-white/15 text-slate-200 group-hover:bg-white/20'
-                      }`}>
-                        {item.badge}
-                      </span>
-                    )}
-                  </Link>
-                );
-              })}
-            </nav>
-          </div>
-
-          {/* Engine & Feeds Section */}
-          <div className="pt-2 border-t border-white/[0.06]">
-            <div className="px-3 pb-2 flex items-center justify-between">
-              <span className="text-[10.5px] font-extrabold text-[#94A3B8] uppercase tracking-[0.14em]">
-                Engine & Brokerage
-              </span>
-              <button
-                onClick={handleRefreshFeeds}
-                title="Sync Feeds"
-                className="text-slate-400 hover:text-white transition-colors p-0.5"
-              >
-                <RefreshCw size={11} className={isRefreshing ? 'animate-spin text-rose-400' : ''} />
-              </button>
-            </div>
-            <nav className="space-y-1">
-              {secondaryNavItems.map((item) => {
-                const Icon = item.icon;
-                const isActive = item.href === '/admin' ? pathname === '/admin' : pathname.startsWith(item.href);
-                return (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`group flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-150 ${
-                      isActive && item.label !== 'FX Benchmark' && item.label !== 'Auction Feeds'
-                        ? 'bg-gradient-to-r from-[#E11D48] to-[#BE123C] text-white font-semibold shadow-lg shadow-rose-950/40'
-                        : 'text-slate-300 hover:text-white hover:bg-white/[0.08]'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <Icon
-                        size={17}
-                        className="text-slate-400 group-hover:text-white transition-colors"
-                      />
-                      <span>{item.label}</span>
-                    </div>
-                    {item.badge && (
-                      <span className={`text-[9.5px] font-extrabold px-1.5 py-0.5 rounded uppercase tracking-wide ${
-                        item.badge.includes('Live')
-                          ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/20'
-                          : 'bg-white/10 text-slate-200 border border-white/10'
-                      }`}>
+                      <span className={`text-[10.5px] font-bold px-2 py-0.5 rounded-full ${isActive
+                        ? 'bg-white text-[#BE123C] shadow-xs'
+                        : 'bg-white/15 text-slate-200 group-hover:bg-white/20'
+                        }`}>
                         {item.badge}
                       </span>
                     )}
@@ -211,16 +146,61 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
 
         {/* ─── 3. Elevated Docked Bottom Card (Clearly Separated) ─── */}
-        <div className="p-3 shrink-0">
+        <div className="p-3 shrink-0 relative">
+          {/* Super Admin Profile Dropdown Popup Menu */}
+          {profileDropdownOpen && (
+            <>
+              <div
+                className="fixed inset-0 z-40"
+                onClick={() => setProfileDropdownOpen(false)}
+              />
+              <div className="absolute bottom-full left-3 right-3 mb-2 bg-[#0F1B2E] border border-white/10 rounded-2xl shadow-2xl p-1.5 z-50 backdrop-blur-xl animate-in fade-in slide-in-from-bottom-2 duration-150">
+                <div className="px-3 py-2 border-b border-white/[0.08] mb-1">
+                  <div className="text-[12.5px] font-bold text-white">Super Admin</div>
+                  <div className="text-[10px] text-slate-400 flex items-center gap-1 mt-0.5">
+                    <Shield size={11} className="text-rose-400 shrink-0" />
+                    <span>AutoHub Operations</span>
+                  </div>
+                </div>
+                <Link
+                  href="/profile"
+                  onClick={() => {
+                    setProfileDropdownOpen(false);
+                    setMobileMenuOpen(false);
+                  }}
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-[12.5px] font-medium text-slate-200 hover:text-white hover:bg-white/[0.08] transition-colors"
+                >
+                  <User size={15} className="text-slate-400" />
+                  <span>Profile Settings</span>
+                </Link>
+                <div className="border-t border-white/[0.08] my-1" />
+                <Link
+                  href="/login"
+                  onClick={() => {
+                    setProfileDropdownOpen(false);
+                    setMobileMenuOpen(false);
+                  }}
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-[12.5px] font-medium text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 transition-colors"
+                >
+                  <LogOut size={15} />
+                  <span>Logout</span>
+                </Link>
+              </div>
+            </>
+          )}
+
           <div className="rounded-2xl bg-white/[0.04] border border-white/[0.09] p-3 space-y-3 backdrop-blur-md shadow-xl">
-            {/* Super Admin Profile Row */}
-            <div className="flex items-center justify-between gap-2.5">
+            {/* Super Admin Profile Trigger Row */}
+            <button
+              onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+              className="w-full flex items-center justify-between gap-2 text-left group p-1 -m-1 rounded-xl hover:bg-white/[0.05] transition-colors cursor-pointer"
+            >
               <div className="flex items-center gap-2.5 min-w-0">
                 <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#1E3A5F] to-[#2B5885] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm ring-1 ring-white/20">
                   AH
                 </div>
                 <div className="min-w-0">
-                  <div className="text-[12.5px] font-bold text-white truncate leading-tight">
+                  <div className="text-[12.5px] font-bold text-white group-hover:text-rose-400 transition-colors truncate leading-tight">
                     Super Admin
                   </div>
                   <div className="text-[10px] text-slate-400 font-medium truncate flex items-center gap-1 mt-0.5">
@@ -230,27 +210,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </div>
               </div>
 
-              {/* Logout Button */}
-              <Link
-                href="/login"
-                title="Sign Out"
-                className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-white/[0.08] rounded-lg transition-colors shrink-0"
-              >
-                <LogOut size={15} />
-              </Link>
-            </div>
-
-            {/* DIP Engine Status Pill */}
-            <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between text-[11px]">
-              <div className="flex items-center gap-2">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                </span>
-                <span className="text-slate-300 font-medium text-[11px]">DIP Engine Online</span>
+              <div className="p-1 text-slate-400 group-hover:text-white transition-colors shrink-0">
+                <ChevronUp size={15} className={`transition-transform duration-200 ${profileDropdownOpen ? 'rotate-180 text-rose-400' : ''}`} />
               </div>
-              <span className="text-[10px] text-slate-500 font-mono">¥91.24/NZD</span>
-            </div>
+            </button>
           </div>
         </div>
       </aside>
@@ -283,7 +246,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </form>
           </div>
 
-          {/* Right Header: Role Switcher + Feeds Sync + Notification + Admin Profile Pill */}
+          {/* Right Header: Role Switcher + Feeds Sync + Notification */}
           <div className="flex items-center gap-2.5 sm:gap-3 ml-3 sm:ml-4">
             {/* View Switcher: Dealer / Admin */}
             <RoleSwitcher />
@@ -291,9 +254,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             {/* Feeds Refresh Button */}
             <button
               onClick={handleRefreshFeeds}
-              className={`p-2 text-[#4B5563] hover:text-[#111827] hover:bg-slate-100 rounded-full transition-colors ${
-                isRefreshing ? 'text-rose-600' : ''
-              }`}
+              className={`p-2 text-[#4B5563] hover:text-[#111827] hover:bg-slate-100 rounded-full transition-colors ${isRefreshing ? 'text-rose-600' : ''
+                }`}
               title="Sync Live Heiwa Feeds"
             >
               <RefreshCw size={17} className={isRefreshing ? 'animate-spin' : ''} />
@@ -307,23 +269,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <Bell size={19} />
               <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#E11D48] rounded-full ring-2 ring-white"></span>
             </button>
-
-            {/* Admin Profile Pill */}
-            <div className="relative">
-              <div className="flex items-center gap-2.5 pl-2 pr-3 py-1.5 rounded-full hover:bg-slate-100 transition-colors text-left cursor-default">
-                <div className="w-8 h-8 rounded-full bg-[#1E3A5F] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs border border-[#273B5E]">
-                  AH
-                </div>
-                <div className="hidden sm:block">
-                  <span className="text-[13px] font-bold text-[#111827] block leading-tight">
-                    Super Admin
-                  </span>
-                  <span className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider block">
-                    AutoHub Operations
-                  </span>
-                </div>
-              </div>
-            </div>
           </div>
         </header>
 

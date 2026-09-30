@@ -248,8 +248,8 @@ function BrowseVehiclesContent() {
               setCurrentPage(1);
             }}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all border ${activeScope === "all"
-                ? "bg-[#0F1B2E] text-white border-[#0F1B2E] shadow-sm"
-                : "bg-white text-[#64748B] border-[#CBD5E1] hover:text-[#111C2D] hover:bg-[#F8FAFC]"
+              ? "bg-[#0F1B2E] text-white border-[#0F1B2E] shadow-sm"
+              : "bg-white text-[#64748B] border-[#CBD5E1] hover:text-[#111C2D] hover:bg-[#F8FAFC]"
               }`}
           >
             <Car size={15} />
@@ -262,8 +262,8 @@ function BrowseVehiclesContent() {
               setCurrentPage(1);
             }}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all border ${activeScope === "wishlist"
-                ? "bg-[#E11D48] text-white border-[#E11D48] shadow-sm shadow-rose-950/20"
-                : "bg-white text-[#64748B] border-[#CBD5E1] hover:text-[#111C2D] hover:bg-rose-50/50"
+              ? "bg-[#E11D48] text-white border-[#E11D48] shadow-sm shadow-rose-950/20"
+              : "bg-white text-[#64748B] border-[#CBD5E1] hover:text-[#111C2D] hover:bg-rose-50/50"
               }`}
           >
             <Heart size={15} className={activeScope === "wishlist" ? "fill-white" : "text-[#E11D48]"} />
@@ -547,7 +547,7 @@ function BrowseVehiclesContent() {
                 <option value="year_desc">Newest Year</option>
                 <option value="kms_asc">Lowest Mileage</option>
               </select>
-              <ChevronDown size={13} className="absolute right-2 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none" />
+
             </div>
           </div>
 
@@ -556,8 +556,8 @@ function BrowseVehiclesContent() {
             <button
               onClick={() => setViewMode("grid")}
               className={`p-1.5 rounded-lg transition-colors ${viewMode === "grid"
-                  ? "bg-[#0F1B2E] text-white shadow-xs"
-                  : "text-[#64748B] hover:text-[#111C2D]"
+                ? "bg-[#0F1B2E] text-white shadow-xs"
+                : "text-[#64748B] hover:text-[#111C2D]"
                 }`}
               title="Grid View"
             >
@@ -566,8 +566,8 @@ function BrowseVehiclesContent() {
             <button
               onClick={() => setViewMode("list")}
               className={`p-1.5 rounded-lg transition-colors ${viewMode === "list"
-                  ? "bg-[#0F1B2E] text-white shadow-xs"
-                  : "text-[#64748B] hover:text-[#111C2D]"
+                ? "bg-[#0F1B2E] text-white shadow-xs"
+                : "text-[#64748B] hover:text-[#111C2D]"
                 }`}
               title="List View"
             >
@@ -784,8 +784,8 @@ function BrowseVehiclesContent() {
                   key={pageNum}
                   onClick={() => setCurrentPage(pageNum)}
                   className={`w-8 h-8 rounded-lg text-xs font-bold transition-all ${isActive
-                      ? "bg-[#E11D48] text-white shadow-xs"
-                      : "bg-white border border-[#CBD5E1] text-[#475569] hover:bg-slate-50 hover:text-[#111C2D]"
+                    ? "bg-[#E11D48] text-white shadow-xs"
+                    : "bg-white border border-[#CBD5E1] text-[#475569] hover:bg-slate-50 hover:text-[#111C2D]"
                     }`}
                 >
                   {pageNum}
@@ -799,8 +799,8 @@ function BrowseVehiclesContent() {
                 <button
                   onClick={() => setCurrentPage(totalPages)}
                   className={`w-8 h-8 rounded-lg text-xs font-bold transition-all ${currentPage === totalPages
-                      ? "bg-[#E11D48] text-white shadow-xs"
-                      : "bg-white border border-[#CBD5E1] text-[#475569] hover:bg-slate-50 hover:text-[#111C2D]"
+                    ? "bg-[#E11D48] text-white shadow-xs"
+                    : "bg-white border border-[#CBD5E1] text-[#475569] hover:bg-slate-50 hover:text-[#111C2D]"
                     }`}
                 >
                   {totalPages}
