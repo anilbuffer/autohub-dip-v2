@@ -100,7 +100,7 @@ export const VEHICLES: Vehicle[] = [
       { source: "Trade Me Motors", year: 2019, km: 61000, price: 23990, daysListed: 14 },
       { source: "Turners Penrose", year: 2019, km: 55000, price: 24500, daysListed: 9 },
       { source: "AutoTrader NZ", year: 2019, km: 64200, price: 23450, daysListed: 21 },
-      { source: "2 Cheap Cars", year: 2018, km: 68000, price: 22800, daysListed: 32 }
+      { source: "Giltrap Group", year: 2018, km: 68000, price: 22800, daysListed: 32 }
     ],
     costBreakdown: {
       fobConvertedNzd: 15550,
