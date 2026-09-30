@@ -167,22 +167,28 @@ export const INITIAL_PURCHASES: DealerPurchase[] = [
 
 // Curated high quality automotive photography for key models
 export const MODEL_IMAGE_MAP: Record<string, string> = {
-  aqua: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80',
-  'c-hr': 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80',
-  chr: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80',
-  prius: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80',
-  'prius alpha': 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80',
-  'prius 50': 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80',
-  rav4: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80',
+  aqua: '/vehicles/aqua.jpg',
+  'aqua crossover': '/vehicles/aqua.jpg',
+  'c-hr': '/vehicles/c-hr.jpg',
+  chr: '/vehicles/c-hr.jpg',
+  'prius 5d': '/vehicles/prius-5d.jpg',
+  prius: '/vehicles/prius-5d.jpg',
+  'prius alpha': '/vehicles/prius-alpha.jpg',
+  'prius 50': '/vehicles/prius-5d.jpg',
+  rav4: '/vehicles/rav4.jpg',
   sienta: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80',
   corolla: 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80',
-  'corolla cross': 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80',
+  'corolla cross': '/vehicles/corolla-cross.jpg',
   'corolla touring': 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80',
   'corolla sports': 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80',
   hilux: 'https://images.unsplash.com/photo-1559416523-140ddc3d238c?auto=format&fit=crop&w=800&q=80',
   harrier: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
   'harrier hybrid': 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
   'harrier hybrid 4wd': 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
+  'avensis wagon': 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80',
+  vitz: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80',
+  yaris: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80',
+  'yarithe hybrid': 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80',
   demio: 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80',
   'cx-3': 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80',
   'cx-5': 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80',
@@ -196,8 +202,10 @@ export const MODEL_IMAGE_MAP: Record<string, string> = {
   note: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80',
   'note 4d': 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80',
   cube: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80',
+  march: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80',
   'nv350 caravan van': 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80',
-  'nv200': 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80',
+  'nv350 vanette van': 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80',
+  nv200: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80',
   'hiace van': 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80',
   swift: 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80',
   ignis: 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80',
@@ -214,6 +222,11 @@ export const MODEL_IMAGE_MAP: Record<string, string> = {
   nx: 'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=800&q=80',
   alphard: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80',
   'alphard hybrid': 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80',
+  cbr650r: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80',
+  cbr250r: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80',
+  'rebel 250': 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80',
+  streetfighter: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80',
+  'nine t scrambler unknown': 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80',
 };
 
 // Return a clean photo URL for any vehicle
@@ -258,18 +271,21 @@ const STORAGE_KEYS = {
 
 // Retrieve combined list of base Heiwa vehicles and custom Admin-added vehicles
 export function getAllVehicles(): HeiwaVehicle[] {
-  if (typeof window === 'undefined') return HEIWA_VEHICLES;
+  const sanitize = (list: HeiwaVehicle[]) =>
+    list.map(v => (v.model === 'Prius 50' ? { ...v, model: 'Prius 5d' } : v));
+
+  if (typeof window === 'undefined') return sanitize(HEIWA_VEHICLES);
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.CUSTOM_VEHICLES);
-    if (!raw) return HEIWA_VEHICLES;
+    const base = sanitize(HEIWA_VEHICLES);
+    if (!raw) return base;
     const custom: HeiwaVehicle[] = JSON.parse(raw);
-    if (!Array.isArray(custom) || custom.length === 0) return HEIWA_VEHICLES;
-    // Combine custom added vehicles at the top with base stock
+    if (!Array.isArray(custom) || custom.length === 0) return base;
     const customIds = new Set(custom.map(c => `${c.stockId}-${c.chassis}`));
-    const remainingBase = HEIWA_VEHICLES.filter(v => !customIds.has(`${v.stockId}-${v.chassis}`));
-    return [...custom, ...remainingBase];
+    const remainingBase = base.filter(v => !customIds.has(`${v.stockId}-${v.chassis}`));
+    return [...sanitize(custom), ...remainingBase];
   } catch {
-    return HEIWA_VEHICLES;
+    return sanitize(HEIWA_VEHICLES);
   }
 }
 
@@ -495,6 +511,38 @@ export function placeDealerBid(
   const updated = [newBid, ...bids.filter(b => b.vehicleChassis !== vehicle.chassis)];
   saveStoredBids(updated);
   return newBid;
+}
+
+export function batchPlaceDealerBids(
+  bidsList: { vehicle: HeiwaVehicle; bidFobJpy: number; auctionHouse?: string }[]
+): DealerBid[] {
+  const currentBids = getStoredBids();
+  const newCreated: DealerBid[] = bidsList.map((item, idx) => {
+    const landed = calculateLandedCost(item.bidFobJpy).totalLanded;
+    return {
+      id: `bid-${Date.now()}-${idx}`,
+      vehicleStockId: item.vehicle.stockId,
+      vehicleChassis: item.vehicle.chassis,
+      make: item.vehicle.make,
+      model: item.vehicle.model,
+      year: item.vehicle.year,
+      kms: item.vehicle.kms,
+      color: item.vehicle.colorDesc || item.vehicle.color,
+      bidFobJpy: item.bidFobJpy,
+      landedCostNzd: landed,
+      status: 'leading' as const,
+      auctionDate: 'Upcoming Auction',
+      auctionTimeLeft: '23h 50m',
+      auctionHouse: item.auctionHouse || 'USS Tokyo / Yokohama',
+      createdAt: new Date().toISOString(),
+    };
+  });
+
+  const newChassisSet = new Set(newCreated.map(b => b.vehicleChassis));
+  const remaining = currentBids.filter(b => !newChassisSet.has(b.vehicleChassis));
+  const updated = [...newCreated, ...remaining];
+  saveStoredBids(updated);
+  return newCreated;
 }
 
 // PURCHASES HELPERS

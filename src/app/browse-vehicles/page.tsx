@@ -60,7 +60,6 @@ function BrowseVehiclesContent() {
   const [selectedModel, setSelectedModel] = useState<string>("all");
   const [selectedYear, setSelectedYear] = useState<string>("all");
   const [selectedFuel, setSelectedFuel] = useState<string>("all");
-  const [selectedLocation, setSelectedLocation] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   // Sort & View States
@@ -226,7 +225,6 @@ function BrowseVehiclesContent() {
     setSelectedModel("all");
     setSelectedYear("all");
     setSelectedFuel("all");
-    setSelectedLocation("all");
     setSearchQuery("");
     setCurrentPage(1);
   };
@@ -352,7 +350,7 @@ function BrowseVehiclesContent() {
       ) : (
         /* Standard Filter Bar when in All Auction Stock mode */
         <form onSubmit={handleSearchSubmit} className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/90 shadow-soft hover:shadow-soft-md transition-shadow">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5 items-end">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5 items-end">
             {/* Make */}
             <div>
               <label className="block text-[12px] font-semibold text-[#475569] mb-1.5">
@@ -450,31 +448,6 @@ function BrowseVehiclesContent() {
                   <option value="P">Petrol</option>
                   <option value="D">Diesel</option>
                   <option value="E">Electric</option>
-                </select>
-                <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none" />
-              </div>
-            </div>
-
-            {/* Location */}
-            <div>
-              <label className="block text-[12px] font-semibold text-[#475569] mb-1.5">
-                Location
-              </label>
-              <div className="relative">
-                <select
-                  value={selectedLocation}
-                  onChange={(e) => {
-                    setSelectedLocation(e.target.value);
-                    setCurrentPage(1);
-                  }}
-                  className="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl px-3 py-2.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#E11D48] focus:ring-1 focus:ring-[#E11D48] appearance-none pr-8 cursor-pointer"
-                >
-                  <option value="all">All Locations</option>
-                  <option value="auckland">Auckland Yard</option>
-                  <option value="wellington">Wellington Yard</option>
-                  <option value="christchurch">Christchurch Yard</option>
-                  <option value="japan_yokohama">Yokohama Port (Direct)</option>
-                  <option value="japan_nagoya">Nagoya Port (Direct)</option>
                 </select>
                 <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none" />
               </div>

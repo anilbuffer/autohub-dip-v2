@@ -52,26 +52,28 @@ export function WishlistButton({ onClick }: { onClick: () => void }) {
 
   return (
     <button
-      id="update-wishlist-header-btn"
+      id="add-update-wishlist-header-btn"
       onClick={onClick}
-      className={`relative flex items-center gap-2 px-3 py-1.5 rounded-xl text-[12px] font-semibold transition-all duration-200 border cursor-pointer ${
+      className={`relative flex items-center gap-2 px-3 py-1.5 rounded-xl text-[12px] font-semibold transition-all duration-200 border cursor-pointer select-none ${
         criteriaCount > 0
           ? 'bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100 shadow-xs'
-          : 'bg-[#F8FAFC] text-[#475569] border-[#E2E8F0] hover:bg-[#F1F5F9] hover:text-[#0A1322] shadow-xs'
+          : 'bg-rose-50/70 text-rose-700 border-rose-200/80 hover:bg-rose-100 shadow-xs'
       }`}
-      title="Update Buying Wishlist Criteria"
+      title="Add / Update Wishlist Criteria"
     >
-      <div className={`w-5 h-5 rounded-lg flex items-center justify-center ${
-        criteriaCount > 0 ? 'bg-[#E11D48] text-white shadow-xs' : 'bg-slate-200/80 text-[#64748B]'
-      }`}>
-        <Heart size={12} className={criteriaCount > 0 ? 'fill-white text-white' : ''} />
+      <div className="w-5 h-5 rounded-lg bg-[#E11D48] text-white flex items-center justify-center shadow-xs shrink-0">
+        <Heart size={12} className="fill-white text-white" />
       </div>
-      <span className="font-semibold text-[12px]">Update Wishlist</span>
+      <span className="font-semibold text-[12px] whitespace-nowrap">Add / Update Wishlist</span>
       
-      {criteriaCount > 0 && (
-        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-[#E11D48] text-white ml-0.5">
+      {criteriaCount > 0 ? (
+        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10.5px] font-bold bg-[#E11D48] text-white ml-0.5 shrink-0">
           <span>{criteriaCount}</span>
-          <span className="opacity-80 font-normal">| {matchCount}</span>
+          <span className="opacity-90 font-normal">| {matchCount} cars</span>
+        </span>
+      ) : (
+        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-200 text-rose-800 ml-0.5 shrink-0">
+          + Add
         </span>
       )}
     </button>

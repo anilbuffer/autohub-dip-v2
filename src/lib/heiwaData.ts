@@ -24,7 +24,7 @@ export interface HeiwaVehicle {
 }
 
 export const HEIWA_VEHICLES: HeiwaVehicle[] = [
-  { stockId: "R45735", make: "Toyota", model: "Prius 50", grade: "L", chassis: "ZVW30-1812701", year: 2015, march: null, kms: 43000, color: "black", colorDesc: "black", cc: 1800, trans: "AT", fuelType: "H", condition: "", ac: "4 AAC", equip: "ps, pw, nav", priceFob: 685000 },
+  { stockId: "R45735", make: "Toyota", model: "Prius 5d", grade: "L", chassis: "ZVW30-1812701", year: 2015, march: null, kms: 43000, color: "black", colorDesc: "black", cc: 1800, trans: "AT", fuelType: "H", condition: "", ac: "4 AAC", equip: "ps, pw, nav", priceFob: 685000 },
   { stockId: "R45735", make: "Toyota", model: "Prius Alpha", grade: "S", chassis: "ZVW41W-3353272", year: 2015, march: null, kms: 110000, color: "black", colorDesc: "black", cc: 1800, trans: "FAT", fuelType: "P", condition: "", ac: "3.5 AC", equip: "ps, pw", priceFob: 573000 },
   { stockId: "322771", make: "Toyota", model: "Aqua", grade: "G", chassis: "NHP10-6223017", year: 2013, march: null, kms: 47000, color: "silver", colorDesc: "silver", cc: 1500, trans: "FAT", fuelType: "H", condition: "", ac: "3.5 AC", equip: "ps, pw", priceFob: 365000 },
   { stockId: "1173386", make: "Toyota", model: "C-hr", grade: "S", chassis: "ZYX10-2079113", year: 2017, march: null, kms: 53000, color: "silver", colorDesc: "silver", cc: 1800, trans: "FAT", fuelType: "P", condition: "", ac: "4 AAC", equip: "ps, pw, abs", priceFob: 1280000 },
