@@ -19,6 +19,11 @@ import {
   Check,
   CheckSquare,
   AlertCircle,
+  Clock,
+  CheckCircle2,
+  X,
+  ShieldCheck,
+  SlidersHorizontal,
 } from "lucide-react";
 import {
   HEIWA_VEHICLES,
@@ -55,7 +60,9 @@ function BrowseVehiclesContent() {
 
   // Top Scope: "all" general stock vs "wishlist" matched stock
   const [activeScope, setActiveScope] = useState<"all" | "wishlist">(() => {
-    return searchParams.get("filter") === "wishlist" ? "wishlist" : "all";
+    const f = searchParams.get("filter");
+    const t = searchParams.get("tab");
+    return (f === "wishlist" || t === "wishlist") ? "wishlist" : "all";
   });
   const [wishlistModalOpen, setWishlistModalOpen] = useState<boolean>(false);
   const [wishlistCriteria, setWishlistCriteria] = useState<WishListCriteria[]>(DEFAULT_WISHLIST);
@@ -68,12 +75,18 @@ function BrowseVehiclesContent() {
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   // Sort & View States
-  const [sortBy, setSortBy] = useState<string>("ending_soon");
+  const [sortBy, setSortBy] = useState<string>("best_match");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
-  // Pagination (6 items per page)
+  // Enquire / Reserve Modal State
+  const [enquiryVehicle, setEnquiryVehicle] = useState<HeiwaVehicle | null>(null);
+  const [enquirySuccess, setEnquirySuccess] = useState<boolean>(false);
+  const [enquiryType, setEnquiryType] = useState<"reserve" | "inspection" | "quote">("reserve");
+  const [enquiryNotes, setEnquiryNotes] = useState<string>("");
+
+  // Pagination (18 items for wishlist to view all 14 matching vehicles at once, 12 for all auction stock)
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = activeScope === "wishlist" ? 18 : 12;
 
   // Watchlist synchronization
   const [watchlistIds, setWatchlistIds] = useState<string[]>([]);
@@ -135,8 +148,11 @@ function BrowseVehiclesContent() {
 
   useEffect(() => {
     const filter = searchParams.get("filter");
-    if (filter === "wishlist") {
+    const tab = searchParams.get("tab");
+    if (filter === "wishlist" || tab === "wishlist") {
       setActiveScope("wishlist");
+    } else if (filter === "all" || tab === "all") {
+      setActiveScope("all");
     }
     const q = searchParams.get("search");
     if (q !== null && q !== undefined) {
@@ -162,9 +178,6 @@ function BrowseVehiclesContent() {
     return allCars.filter((v) => selectedChassis.includes(v.chassis));
   }, [allCars, selectedChassis]);
 
-  // Primary criteria representation for summary card
-  const primaryCriteria = wishlistCriteria.find((c) => c.make.trim() !== "") || wishlistCriteria[0];
-
   // Unique list of makes
   const makes = useMemo(() => {
     return Array.from(new Set(allCars.map((v) => v.make))).sort();
@@ -186,23 +199,21 @@ function BrowseVehiclesContent() {
   const filteredVehicles = useMemo(() => {
     const pool = activeScope === "wishlist" ? matchedWishlistVehicles : allCars;
     return pool.filter((v) => {
-      if (activeScope === "all") {
-        if (selectedMake !== "all" && v.make.toLowerCase() !== selectedMake.toLowerCase()) {
-          return false;
-        }
-        if (selectedModel !== "all" && v.model.toLowerCase() !== selectedModel.toLowerCase()) {
-          return false;
-        }
-        if (selectedYear !== "all") {
-          const minYear = parseInt(selectedYear);
-          if (v.year < minYear) return false;
-        }
-        if (selectedFuel !== "all") {
-          if (selectedFuel === "H" && v.fuelType !== "H") return false;
-          if (selectedFuel === "D" && v.fuelType !== "D") return false;
-          if (selectedFuel === "E" && v.fuelType !== "E" && v.cc !== 0) return false;
-          if (selectedFuel === "P" && v.fuelType !== "P" && v.fuelType !== "") return false;
-        }
+      if (selectedMake !== "all" && v.make.toLowerCase() !== selectedMake.toLowerCase()) {
+        return false;
+      }
+      if (selectedModel !== "all" && v.model.toLowerCase() !== selectedModel.toLowerCase()) {
+        return false;
+      }
+      if (selectedYear !== "all") {
+        const minYear = parseInt(selectedYear);
+        if (v.year < minYear) return false;
+      }
+      if (selectedFuel !== "all") {
+        if (selectedFuel === "H" && v.fuelType !== "H") return false;
+        if (selectedFuel === "D" && v.fuelType !== "D") return false;
+        if (selectedFuel === "E" && v.fuelType !== "E" && v.cc !== 0) return false;
+        if (selectedFuel === "P" && v.fuelType !== "P" && v.fuelType !== "") return false;
       }
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase().trim();
@@ -210,6 +221,7 @@ function BrowseVehiclesContent() {
           v.make.toLowerCase().includes(q) ||
           v.model.toLowerCase().includes(q) ||
           v.chassis.toLowerCase().includes(q) ||
+          v.stockId.toLowerCase().includes(q) ||
           v.year.toString().includes(q);
         if (!matchesText) return false;
       }
@@ -220,8 +232,19 @@ function BrowseVehiclesContent() {
   // Sorting
   const sortedVehicles = useMemo(() => {
     const list = [...filteredVehicles];
-    if (sortBy === "ending_soon") {
-      return list;
+    if (sortBy === "best_match") {
+      const wishlistChassisSet = new Set(matchedWishlistVehicles.map((v) => v.chassis));
+      return list.sort((a, b) => {
+        const aWishlist = wishlistChassisSet.has(a.chassis) ? 10000 : 0;
+        const bWishlist = wishlistChassisSet.has(b.chassis) ? 10000 : 0;
+        const aMargin = getEstimatedNZRetailPrice(a).grossMargin || 0;
+        const bMargin = getEstimatedNZRetailPrice(b).grossMargin || 0;
+        const aGrade = parseFloat(a.grade) || 3.5;
+        const bGrade = parseFloat(b.grade) || 3.5;
+        const aScore = aWishlist + aMargin + (aGrade * 500) + ((a.year - 2010) * 100) - (a.kms / 200);
+        const bScore = bWishlist + bMargin + (bGrade * 500) + ((b.year - 2010) * 100) - (b.kms / 200);
+        return bScore - aScore;
+      });
     }
     if (sortBy === "price_asc") {
       return list.sort((a, b) => a.priceFob - b.priceFob);
@@ -232,11 +255,17 @@ function BrowseVehiclesContent() {
     if (sortBy === "year_desc") {
       return list.sort((a, b) => b.year - a.year);
     }
+    if (sortBy === "year_asc") {
+      return list.sort((a, b) => a.year - b.year);
+    }
     if (sortBy === "kms_asc") {
       return list.sort((a, b) => a.kms - b.kms);
     }
+    if (sortBy === "stockid") {
+      return list.sort((a, b) => a.stockId.localeCompare(b.stockId, undefined, { numeric: true }));
+    }
     return list;
-  }, [filteredVehicles, sortBy]);
+  }, [filteredVehicles, sortBy, matchedWishlistVehicles]);
 
   // Pagination calculation
   const totalItems = sortedVehicles.length;
@@ -264,11 +293,22 @@ function BrowseVehiclesContent() {
       {/* ─── Page Title & Subtitle ─── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111C2D] tracking-tight">
-            Find Vehicles at Auction
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111C2D] tracking-tight flex items-center gap-3">
+            <span>
+              {activeScope === "wishlist"
+                ? `${matchedWishlistVehicles.length} Matching Vehicles`
+                : "Find Vehicles at Auction"}
+            </span>
+            {activeScope === "wishlist" && (
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-50 text-[#E11D48] border border-rose-200 shadow-2xs">
+                Wishlist Matches
+              </span>
+            )}
           </h1>
           <p className="text-sm text-[#64748B] mt-1">
-            AutoHub Dealer Intelligence Platform · Quality used vehicles from Japan auction inventory.
+            {activeScope === "wishlist"
+              ? `${matchedWishlistVehicles.length} vehicles currently match your requirements.`
+              : "AutoHub Dealer Intelligence Platform · Quality used vehicles from Japan auction inventory."}
           </p>
         </div>
 
@@ -278,6 +318,11 @@ function BrowseVehiclesContent() {
             onClick={() => {
               setActiveScope("wishlist");
               setCurrentPage(1);
+              if (typeof window !== "undefined") {
+                const url = new URL(window.location.href);
+                url.searchParams.set("tab", "wishlist");
+                window.history.replaceState({}, "", url.toString());
+              }
             }}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all border ${activeScope === "wishlist"
               ? "bg-[#E11D48] text-white border-[#E11D48] shadow-sm shadow-rose-950/20"
@@ -291,6 +336,11 @@ function BrowseVehiclesContent() {
             onClick={() => {
               setActiveScope("all");
               setCurrentPage(1);
+              if (typeof window !== "undefined") {
+                const url = new URL(window.location.href);
+                url.searchParams.set("tab", "all");
+                window.history.replaceState({}, "", url.toString());
+              }
             }}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all border ${activeScope === "all"
               ? "bg-[#E11D48] hover:bg-[#BE123C] text-white border-[#E11D48] shadow-md shadow-rose-950/40 transition-all flex items-center gap-2"
@@ -303,205 +353,131 @@ function BrowseVehiclesContent() {
         </div>
       </div>
 
-      {/* ─── Conditional Header Area: Wishlist Search Card OR Standard Filters ─── */}
-      {activeScope === "wishlist" ? (
-        <div className="space-y-4">
-          {/* ┌──────────────────────────────────────────────────────┐
-              │ Your current search                                  │
-              │                                                      │
-              │ Make              Toyota                             │
-              │ Model             Aqua / C-HR                        │
-              │ Year              2022 or newer                      │
-              │ Kilometres        Under 60,000 km                    │
-              │ Budget            Up to NZ$25,000                    │
-              │                                                      │
-              │                 [ Edit Wishlist ]                    │
-              └──────────────────────────────────────────────────────┘ */}
-          <div className="bg-white rounded-2xl border border-[#CBD5E1] shadow-2xs p-6 max-w-xl">
-            <div className="flex items-center justify-between pb-3.5 border-b border-[#E8ECF0]">
-              <h2 className="text-base font-bold text-[#111C2D]">Your current search</h2>
-              <button
-                onClick={() => setWishlistModalOpen(true)}
-                className="text-xs font-semibold text-[#E11D48] hover:text-[#BE123C] px-3 py-1 rounded-lg border border-rose-200 hover:bg-rose-50 transition-colors"
+      {/* ─── Filter Bar (Included in both All Stock and Wishlist modes) ─── */}
+      <form onSubmit={handleSearchSubmit} className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/90 shadow-soft hover:shadow-soft-md transition-shadow">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5 items-end">
+          {/* Make */}
+          <div>
+            <label className="block text-[12px] font-semibold text-[#475569] mb-1.5">
+              Make
+            </label>
+            <div className="relative">
+              <select
+                value={selectedMake}
+                onChange={(e) => {
+                  setSelectedMake(e.target.value);
+                  setSelectedModel("all");
+                  setCurrentPage(1);
+                }}
+                className="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl px-3 py-2.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#E11D48] focus:ring-1 focus:ring-[#E11D48] appearance-none pr-8 cursor-pointer"
               >
-                Edit Wishlist
-              </button>
-            </div>
-
-            <div className="py-4 space-y-2.5 text-xs font-medium">
-              <div className="grid grid-cols-3 py-1 border-b border-[#F8FAFC]">
-                <span className="text-[#64748B]">Make</span>
-                <span className="col-span-2 text-[#111C2D] font-bold">{primaryCriteria?.make || "Toyota"}</span>
-              </div>
-              <div className="grid grid-cols-3 py-1 border-b border-[#F8FAFC]">
-                <span className="text-[#64748B]">Model</span>
-                <span className="col-span-2 text-[#111C2D] font-bold">{primaryCriteria?.model || "Aqua / C-HR"}</span>
-              </div>
-              <div className="grid grid-cols-3 py-1 border-b border-[#F8FAFC]">
-                <span className="text-[#64748B]">Year</span>
-                <span className="col-span-2 text-[#111C2D] font-bold">
-                  {primaryCriteria?.yearFrom && primaryCriteria.yearFrom > 2013 ? `${primaryCriteria.yearFrom} or newer` : "2022 or newer"}
-                </span>
-              </div>
-              <div className="grid grid-cols-3 py-1 border-b border-[#F8FAFC]">
-                <span className="text-[#64748B]">Kilometres</span>
-                <span className="col-span-2 text-[#111C2D] font-bold">
-                  {primaryCriteria?.maxKms && primaryCriteria.maxKms < 100000 ? `Under ${primaryCriteria.maxKms.toLocaleString("en-US")} km` : "Under 60,000 km"}
-                </span>
-              </div>
-              <div className="grid grid-cols-3 py-1">
-                <span className="text-[#64748B]">Budget</span>
-                <span className="col-span-2 text-[#111C2D] font-bold">
-                  {primaryCriteria?.maxBudget ? `Up to NZ$${primaryCriteria.maxBudget.toLocaleString("en-US")}` : "Up to NZ$25,000"}
-                </span>
-              </div>
-            </div>
-
-            <div className="pt-2 text-center">
-              <button
-                onClick={() => setWishlistModalOpen(true)}
-                className="px-6 py-2 bg-[#F8FAFC] hover:bg-[#F1F5F9] text-[#111C2D] border border-[#CBD5E1] rounded-xl text-xs font-bold transition-all shadow-2xs hover:border-[#94A3B8]"
-              >
-                [ Edit Wishlist ]
-              </button>
+                <option value="all">Any Make</option>
+                {makes.map((m) => (
+                  <option key={m} value={m}>
+                    {m}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none" />
             </div>
           </div>
 
-          {/* 18 matching vehicles */}
-          <div className="pt-1">
-            <h3 className="text-xl sm:text-2xl font-extrabold text-[#111C2D] tracking-tight">
-              {filteredVehicles.length} matching vehicles
-            </h3>
-            <p className="text-xs text-[#64748B] font-medium mt-1">
-              {filteredVehicles.length} vehicles currently match your requirements.
-            </p>
+          {/* Model */}
+          <div>
+            <label className="block text-[12px] font-semibold text-[#475569] mb-1.5">
+              Model
+            </label>
+            <div className="relative">
+              <select
+                value={selectedModel}
+                onChange={(e) => {
+                  setSelectedModel(e.target.value);
+                  setCurrentPage(1);
+                }}
+                disabled={selectedMake === "all"}
+                className="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl px-3 py-2.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#E11D48] focus:ring-1 focus:ring-[#E11D48] appearance-none pr-8 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <option value="all">{selectedMake === "all" ? "Any Model" : `All ${selectedMake}`}</option>
+                {availableModels.map((mod) => (
+                  <option key={mod} value={mod}>
+                    {mod}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none" />
+            </div>
+          </div>
+
+          {/* Year */}
+          <div>
+            <label className="block text-[12px] font-semibold text-[#475569] mb-1.5">
+              Year
+            </label>
+            <div className="relative">
+              <select
+                value={selectedYear}
+                onChange={(e) => {
+                  setSelectedYear(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl px-3 py-2.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#E11D48] focus:ring-1 focus:ring-[#E11D48] appearance-none pr-8 cursor-pointer"
+              >
+                <option value="all">Any Year</option>
+                <option value="2022">2022 & Newer</option>
+                <option value="2020">2020 & Newer</option>
+                <option value="2018">2018 & Newer</option>
+                <option value="2016">2016 & Newer</option>
+                <option value="2014">2014 & Newer</option>
+                <option value="2012">2012 & Newer</option>
+              </select>
+              <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none" />
+            </div>
+          </div>
+
+          {/* Fuel Type */}
+          <div>
+            <label className="block text-[12px] font-semibold text-[#475569] mb-1.5">
+              Fuel Type
+            </label>
+            <div className="relative">
+              <select
+                value={selectedFuel}
+                onChange={(e) => {
+                  setSelectedFuel(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl px-3 py-2.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#E11D48] focus:ring-1 focus:ring-[#E11D48] appearance-none pr-8 cursor-pointer"
+              >
+                <option value="all">Any Fuel</option>
+                <option value="H">Hybrid</option>
+                <option value="P">Petrol</option>
+                <option value="D">Diesel</option>
+                <option value="E">Electric</option>
+              </select>
+              <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none" />
+            </div>
+          </div>
+
+          {/* Search Button */}
+          <div>
+            <button
+              type="submit"
+              className="w-full py-2.5 px-4 bg-[#E11D48] hover:bg-[#BE123C] text-white rounded-xl text-xs font-bold transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2 h-[41px]"
+            >
+              <Search size={15} />
+              <span>{activeScope === "wishlist" ? "Filter Matches" : "Search Stock"}</span>
+            </button>
           </div>
         </div>
-      ) : (
-        /* Standard Filter Bar when in All Auction Stock mode */
-        <form onSubmit={handleSearchSubmit} className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/90 shadow-soft hover:shadow-soft-md transition-shadow">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5 items-end">
-            {/* Make */}
-            <div>
-              <label className="block text-[12px] font-semibold text-[#475569] mb-1.5">
-                Make
-              </label>
-              <div className="relative">
-                <select
-                  value={selectedMake}
-                  onChange={(e) => {
-                    setSelectedMake(e.target.value);
-                    setSelectedModel("all");
-                    setCurrentPage(1);
-                  }}
-                  className="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl px-3 py-2.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#E11D48] focus:ring-1 focus:ring-[#E11D48] appearance-none pr-8 cursor-pointer"
-                >
-                  <option value="all">Any Make</option>
-                  {makes.map((m) => (
-                    <option key={m} value={m}>
-                      {m}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none" />
-              </div>
-            </div>
-
-            {/* Model */}
-            <div>
-              <label className="block text-[12px] font-semibold text-[#475569] mb-1.5">
-                Model
-              </label>
-              <div className="relative">
-                <select
-                  value={selectedModel}
-                  onChange={(e) => {
-                    setSelectedModel(e.target.value);
-                    setCurrentPage(1);
-                  }}
-                  disabled={selectedMake === "all"}
-                  className="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl px-3 py-2.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#E11D48] focus:ring-1 focus:ring-[#E11D48] appearance-none pr-8 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <option value="all">{selectedMake === "all" ? "Any Model" : `All ${selectedMake}`}</option>
-                  {availableModels.map((mod) => (
-                    <option key={mod} value={mod}>
-                      {mod}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none" />
-              </div>
-            </div>
-
-            {/* Year */}
-            <div>
-              <label className="block text-[12px] font-semibold text-[#475569] mb-1.5">
-                Year
-              </label>
-              <div className="relative">
-                <select
-                  value={selectedYear}
-                  onChange={(e) => {
-                    setSelectedYear(e.target.value);
-                    setCurrentPage(1);
-                  }}
-                  className="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl px-3 py-2.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#E11D48] focus:ring-1 focus:ring-[#E11D48] appearance-none pr-8 cursor-pointer"
-                >
-                  <option value="all">Any Year</option>
-                  <option value="2022">2022 & Newer</option>
-                  <option value="2020">2020 & Newer</option>
-                  <option value="2018">2018 & Newer</option>
-                  <option value="2016">2016 & Newer</option>
-                  <option value="2014">2014 & Newer</option>
-                  <option value="2012">2012 & Newer</option>
-                </select>
-                <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none" />
-              </div>
-            </div>
-
-            {/* Fuel Type */}
-            <div>
-              <label className="block text-[12px] font-semibold text-[#475569] mb-1.5">
-                Fuel Type
-              </label>
-              <div className="relative">
-                <select
-                  value={selectedFuel}
-                  onChange={(e) => {
-                    setSelectedFuel(e.target.value);
-                    setCurrentPage(1);
-                  }}
-                  className="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl px-3 py-2.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#E11D48] focus:ring-1 focus:ring-[#E11D48] appearance-none pr-8 cursor-pointer"
-                >
-                  <option value="all">Any Fuel</option>
-                  <option value="H">Hybrid</option>
-                  <option value="P">Petrol</option>
-                  <option value="D">Diesel</option>
-                  <option value="E">Electric</option>
-                </select>
-                <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none" />
-              </div>
-            </div>
-
-            {/* Search Button */}
-            <div>
-              <button
-                type="submit"
-                className="w-full py-2.5 px-4 bg-[#E11D48] hover:bg-[#BE123C] text-white rounded-xl text-xs font-bold transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2 h-[41px]"
-              >
-                <Search size={15} />
-                <span>Search Stock</span>
-              </button>
-            </div>
-          </div>
-        </form>
-      )}
+      </form>
 
       {/* ─── Results Header & Sorter Bar ─── */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2">
         <div>
           <span className="text-[15px] font-bold text-[#111C2D]">
-            {totalItems} Vehicles Available
+            {activeScope === "wishlist"
+              ? `${totalItems} Matching Vehicles`
+              : `${totalItems} Vehicles Available`}
           </span>
           {(selectedMake !== "all" || selectedModel !== "all" || selectedYear !== "all" || selectedFuel !== "all" || searchQuery) && (
             <button
@@ -520,14 +496,19 @@ function BrowseVehiclesContent() {
             <div className="relative">
               <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
+                onChange={(e) => {
+                  setSortBy(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="bg-white border border-[#CBD5E1] rounded-xl px-3 py-1.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#E11D48] pr-7 cursor-pointer shadow-2xs"
               >
-                <option value="ending_soon">Ending Soon</option>
+                <option value="best_match">Best Match</option>
                 <option value="price_asc">Price: Low to High</option>
                 <option value="price_desc">Price: High to Low</option>
-                <option value="year_desc">Newest Year</option>
+                <option value="year_desc">Year: Newest First</option>
+                <option value="year_asc">Year: Oldest First</option>
                 <option value="kms_asc">Lowest Mileage</option>
+                <option value="stockid">Stockid</option>
               </select>
 
             </div>
@@ -587,42 +568,41 @@ function BrowseVehiclesContent() {
             return (
               <div
                 key={vehicle.chassis + vehicle.stockId + index}
-                className={`bg-white rounded-2xl overflow-hidden shadow-soft hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between group border relative ${
-                  isSelected
+                className={`bg-white rounded-2xl overflow-hidden shadow-soft hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between group border relative ${isSelected
                     ? "border-[#E11D48] ring-2 ring-[#E11D48]/30 shadow-md shadow-rose-950/10"
                     : "border-slate-200/90"
-                }`}
+                  }`}
               >
                 {/* ─── Clean Image Container ─── */}
                 <div className="relative aspect-[16/10] w-full bg-[#F1F5F9] overflow-hidden">
-                  <img
-                    src={photoUrl}
-                    alt={`${vehicle.year} ${vehicle.make} ${vehicle.model}`}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    loading="lazy"
-                  />
+                  <Link href={`/vehicles/${uniqueId}`} className="block w-full h-full">
+                    <img
+                      src={photoUrl}
+                      alt={`${vehicle.year} ${vehicle.make} ${vehicle.model}`}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                    />
+                  </Link>
 
                   {/* Batch Bid Select Checkbox (Top Left - Up to 4 cars) */}
                   <button
                     type="button"
                     onClick={(e) => handleToggleSelectVehicle(e, vehicle.chassis)}
-                    className={`absolute top-3 left-3 z-10 h-8 px-2.5 rounded-xl flex items-center gap-1.5 transition-all cursor-pointer shadow-md backdrop-blur-md ${
-                      isSelected
+                    className={`absolute top-3 left-3 z-10 h-8 px-2.5 rounded-xl flex items-center gap-1.5 transition-all cursor-pointer shadow-md backdrop-blur-md ${isSelected
                         ? "bg-[#E11D48] text-white ring-2 ring-white scale-102"
                         : "bg-black/50 text-white/90 hover:text-white hover:bg-black/70 border border-white/20"
-                    }`}
+                      }`}
                     title={
                       isSelected
                         ? "Selected for batch bidding (click to remove)"
                         : selectedChassis.length >= 4
-                        ? "Maximum 4 vehicles can be selected for batch bid"
-                        : "Select to place bid together (up to 4 cars)"
+                          ? "Maximum 4 vehicles can be selected for batch bid"
+                          : "Select to place bid together (up to 4 cars)"
                     }
                   >
                     <div
-                      className={`w-3.5 h-3.5 rounded flex items-center justify-center border transition-all ${
-                        isSelected ? "bg-white text-[#E11D48] border-white" : "border-white/70"
-                      }`}
+                      className={`w-3.5 h-3.5 rounded flex items-center justify-center border transition-all ${isSelected ? "bg-white text-[#E11D48] border-white" : "border-white/70"
+                        }`}
                     >
                       {isSelected && <Check size={11} strokeWidth={3.5} />}
                     </div>
@@ -634,7 +614,7 @@ function BrowseVehiclesContent() {
                   {/* Minimal Watchlist Button (Top Right) */}
                   <button
                     onClick={(e) => handleToggleWatchlist(e, vehicle)}
-                    className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-xs shadow-xs flex items-center justify-center text-[#64748B] hover:text-[#E11D48] transition-colors z-10"
+                    className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-xs shadow-xs flex items-center justify-center text-[#64748B] hover:text-[#E11D48] transition-colors z-10 cursor-pointer"
                     title={isWatchlisted ? "Remove from Watchlist" : "Add to Watchlist"}
                   >
                     <Heart
@@ -647,10 +627,16 @@ function BrowseVehiclesContent() {
                 {/* ─── Simplified Details ─── */}
                 <div className="p-5 flex-1 flex flex-col justify-between">
                   <div>
+                    <span className="text-[11px] text-[#94A3B8] font-mono font-semibold block mb-1">
+                      Stockid #{vehicle.stockId}
+                    </span>
+
                     {/* Title */}
-                    <h3 className="text-[16px] font-bold text-[#111C2D] truncate">
-                      {vehicle.year} {vehicle.make} {vehicle.model}
-                    </h3>
+                    <Link href={`/vehicles/${uniqueId}`} className="hover:text-[#E11D48] transition-colors block">
+                      <h3 className="text-[16px] font-bold text-[#111C2D] truncate hover:text-[#E11D48]">
+                        {vehicle.year} {vehicle.make} {vehicle.model}
+                      </h3>
+                    </Link>
 
                     {/* Single Clean Specs Line */}
                     <p className="text-xs text-[#64748B] mt-1.5 font-medium truncate">
@@ -679,29 +665,29 @@ function BrowseVehiclesContent() {
                     </div>
                   </div>
 
-                  {/* Action Buttons: Bid & Details */}
-                  <div className="mt-3.5 flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={(e) => handleToggleSelectVehicle(e, vehicle.chassis)}
-                      className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer border ${
-                        isSelected
-                          ? "bg-rose-50 text-[#E11D48] border-rose-200 hover:bg-rose-100"
-                          : "bg-slate-100 hover:bg-slate-200 text-[#0A1322] border-slate-200/80"
-                      }`}
-                    >
-                      <Gavel size={13} className={isSelected ? "text-[#E11D48]" : "text-slate-600"} />
-                      <span>{isSelected ? "Selected (Bid)" : "Select to Bid"}</span>
-                    </button>
-
-                    <Link
-                      href={`/vehicles/${uniqueId}`}
-                      className="px-3.5 py-2.5 bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-semibold rounded-xl transition-all shadow-xs hover:shadow-md flex items-center justify-center gap-1 shrink-0"
-                      title="View Vehicle Specs & Landed Cost Breakdown"
-                    >
-                      <span>Details</span>
-                      <ArrowRight size={13} />
-                    </Link>
+                  {/* Action Button: Single CTA per card (Alternating between "Enquire / Reserve" and "View Details") */}
+                  <div className="mt-3.5">
+                    {index % 2 === 0 ? (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEnquiryVehicle(vehicle);
+                          setEnquirySuccess(false);
+                        }}
+                        className="w-full py-2.5 px-4 rounded-xl text-xs font-bold bg-[#E11D48] hover:bg-[#BE123C] text-white transition-all shadow-xs hover:shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                      >
+                        <Clock size={14} />
+                        <span>Enquire / Reserve</span>
+                      </button>
+                    ) : (
+                      <Link
+                        href={`/vehicles/${uniqueId}`}
+                        className="w-full py-2.5 px-4 bg-[#0F1B2E] hover:bg-[#1E3A5F] text-white text-xs font-bold rounded-xl transition-all shadow-xs hover:shadow-md flex items-center justify-center gap-2 text-center"
+                      >
+                        <span>View Details</span>
+                        <ArrowRight size={14} />
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>
@@ -722,26 +708,24 @@ function BrowseVehiclesContent() {
             return (
               <div
                 key={vehicle.chassis + vehicle.stockId + index}
-                className={`p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors ${
-                  isSelected ? "bg-rose-50/40" : "hover:bg-[#F8FAFC]"
-                }`}
+                className={`p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors ${isSelected ? "bg-rose-50/40" : "hover:bg-[#F8FAFC]"
+                  }`}
               >
                 <div className="flex items-center gap-3.5 min-w-0">
                   {/* Select Checkbox */}
                   <button
                     type="button"
                     onClick={(e) => handleToggleSelectVehicle(e, vehicle.chassis)}
-                    className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all cursor-pointer shrink-0 border ${
-                      isSelected
+                    className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all cursor-pointer shrink-0 border ${isSelected
                         ? "bg-[#E11D48] text-white border-[#E11D48] shadow-xs"
                         : "bg-slate-100 text-slate-400 hover:text-slate-700 hover:bg-slate-200 border-slate-200"
-                    }`}
+                      }`}
                     title={
                       isSelected
                         ? "Selected for batch bidding"
                         : selectedChassis.length >= 4
-                        ? "Maximum 4 vehicles can be selected"
-                        : "Select to bid with batch (up to 4 cars)"
+                          ? "Maximum 4 vehicles can be selected"
+                          : "Select to bid with batch (up to 4 cars)"
                     }
                   >
                     {isSelected ? <Check size={15} strokeWidth={3} /> : <div className="w-3.5 h-3.5 rounded-xs border-2 border-slate-400" />}
@@ -763,7 +747,7 @@ function BrowseVehiclesContent() {
                       {formatSpecsLine(vehicle)}
                     </p>
                     <span className="text-[11px] text-[#94A3B8] font-mono mt-0.5 block">
-                      Lot #{vehicle.stockId}
+                      Stockid #{vehicle.stockId}
                     </span>
                   </div>
                 </div>
@@ -794,13 +778,27 @@ function BrowseVehiclesContent() {
                         className={isWatchlisted ? "fill-[#E11D48] text-[#E11D48]" : ""}
                       />
                     </button>
-                    <Link
-                      href={`/vehicles/${uniqueId}`}
-                      className="px-4 py-2 bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-semibold rounded-xl transition-all shadow-xs hover:shadow-md flex items-center gap-1"
-                    >
-                      <span>View Details</span>
-                      <ArrowRight size={13} />
-                    </Link>
+                    {index % 2 === 0 ? (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEnquiryVehicle(vehicle);
+                          setEnquirySuccess(false);
+                        }}
+                        className="px-4 py-2 bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-bold rounded-xl transition-all shadow-xs hover:shadow-md flex items-center gap-1.5 cursor-pointer shrink-0"
+                      >
+                        <Clock size={13} />
+                        <span>Enquire / Reserve</span>
+                      </button>
+                    ) : (
+                      <Link
+                        href={`/vehicles/${uniqueId}`}
+                        className="px-4 py-2 bg-[#0F1B2E] hover:bg-[#1E3A5F] text-white text-xs font-bold rounded-xl transition-all shadow-xs hover:shadow-md flex items-center gap-1.5 shrink-0"
+                      >
+                        <span>View Details</span>
+                        <ArrowRight size={13} />
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>
@@ -952,6 +950,189 @@ function BrowseVehiclesContent() {
           refreshWishlistCriteria();
         }}
       />
+
+      {/* ─── Enquire / Reserve Vehicle Modal ─── */}
+      {enquiryVehicle && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-xs animate-fadeIn">
+          <div className="bg-white rounded-3xl w-full max-w-lg shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh]">
+            {/* Modal Header */}
+            <div className="flex items-start justify-between p-5 sm:p-6 border-b border-slate-100 shrink-0 bg-slate-50/70">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#E11D48] animate-pulse" />
+                  <span className="text-[10px] font-extrabold uppercase text-[#E11D48] tracking-widest">
+                    Direct Heiwa Japan Allocation
+                  </span>
+                </div>
+                <h3 className="text-lg font-extrabold text-[#111827] mt-0.5">
+                  Enquire / Reserve Vehicle
+                </h3>
+                <p className="text-xs text-[#64748B] mt-0.5">
+                  Lock in a 24-hour auction reservation or request inspector verification.
+                </p>
+              </div>
+              <button
+                onClick={() => setEnquiryVehicle(null)}
+                className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-200/60 transition-colors cursor-pointer"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-5 sm:p-6 overflow-y-auto space-y-4">
+              {enquirySuccess ? (
+                <div className="p-6 text-center space-y-3 bg-emerald-50 rounded-2xl border border-emerald-200">
+                  <div className="w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center mx-auto shadow-md">
+                    <CheckCircle2 size={26} />
+                  </div>
+                  <h4 className="text-base font-extrabold text-emerald-900">
+                    Reservation & Enquiry Received!
+                  </h4>
+                  <p className="text-xs text-emerald-800 leading-relaxed max-w-sm mx-auto">
+                    Your request for <strong>{enquiryVehicle.year} {enquiryVehicle.make} {enquiryVehicle.model}</strong> (Stockid #{enquiryVehicle.stockId}) has been logged. An AutoHub Japanese auction specialist will contact Auckland Auto Group within 15 minutes.
+                  </p>
+                  <div className="pt-2 flex justify-center gap-2">
+                    <button
+                      onClick={() => setEnquiryVehicle(null)}
+                      className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-xs cursor-pointer"
+                    >
+                      Done
+                    </button>
+                    <Link
+                      href={`/vehicles/${encodeURIComponent(enquiryVehicle.chassis)}`}
+                      className="px-4 py-2 rounded-xl bg-white border border-emerald-300 text-emerald-800 hover:bg-emerald-50 text-xs font-bold transition-all"
+                    >
+                      View Vehicle Details
+                    </Link>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  {/* Vehicle Mini Card */}
+                  <div className="flex items-center gap-3.5 p-3.5 bg-slate-50 rounded-2xl border border-slate-200/80">
+                    <img
+                      src={getVehiclePhoto(enquiryVehicle)}
+                      alt={enquiryVehicle.model}
+                      className="w-16 h-12 object-cover rounded-xl border border-slate-200 shrink-0"
+                    />
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className="font-extrabold text-sm text-[#111827] truncate">
+                          {enquiryVehicle.year} {enquiryVehicle.make} {enquiryVehicle.model}
+                        </span>
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 shrink-0">
+                          Grade {enquiryVehicle.grade || "4.0"}
+                        </span>
+                      </div>
+                      <div className="text-[11px] text-[#64748B] font-mono mt-0.5 flex items-center gap-2">
+                        <span>Stockid #{enquiryVehicle.stockId}</span>
+                        <span>·</span>
+                        <span>{enquiryVehicle.chassis}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Enquiry Options */}
+                  <div className="space-y-2">
+                    <label className="block text-xs font-bold text-slate-700">
+                      Request Type
+                    </label>
+                    <div className="grid grid-cols-3 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setEnquiryType("reserve")}
+                        className={`p-2.5 rounded-xl border text-xs font-bold transition-all flex flex-col items-center gap-1 cursor-pointer ${enquiryType === "reserve"
+                            ? "bg-rose-50 text-[#E11D48] border-rose-300 ring-2 ring-rose-200"
+                            : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
+                          }`}
+                      >
+                        <Clock size={15} />
+                        <span>24h Reserve</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setEnquiryType("inspection")}
+                        className={`p-2.5 rounded-xl border text-xs font-bold transition-all flex flex-col items-center gap-1 cursor-pointer ${enquiryType === "inspection"
+                            ? "bg-rose-50 text-[#E11D48] border-rose-300 ring-2 ring-rose-200"
+                            : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
+                          }`}
+                      >
+                        <ShieldCheck size={15} />
+                        <span>Inspect Sheet</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setEnquiryType("quote")}
+                        className={`p-2.5 rounded-xl border text-xs font-bold transition-all flex flex-col items-center gap-1 cursor-pointer ${enquiryType === "quote"
+                            ? "bg-rose-50 text-[#E11D48] border-rose-300 ring-2 ring-rose-200"
+                            : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
+                          }`}
+                      >
+                        <Car size={15} />
+                        <span>Freight Quote</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Dealer Info */}
+                  <div className="grid grid-cols-2 gap-3 text-xs">
+                    <div>
+                      <label className="block font-bold text-slate-700 mb-1">Dealership</label>
+                      <input
+                        type="text"
+                        defaultValue="Auckland Auto Group"
+                        className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium outline-none focus:border-[#E11D48]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-bold text-slate-700 mb-1">Contact Phone</label>
+                      <input
+                        type="text"
+                        placeholder="+64 21 000 0000"
+                        defaultValue="+64 21 582 9104"
+                        className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium outline-none focus:border-[#E11D48]"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Optional Notes */}
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">
+                      Notes / Target FOB Max (optional)
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={enquiryNotes}
+                      onChange={(e) => setEnquiryNotes(e.target.value)}
+                      placeholder="e.g. Please confirm hybrid battery SOH or reserve for auction session tomorrow"
+                      className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 outline-none focus:border-[#E11D48] resize-none"
+                    />
+                  </div>
+
+                  {/* Submit Button */}
+                  <div className="pt-2 flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setEnquiryVehicle(null)}
+                      className="flex-1 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setEnquirySuccess(true)}
+                      className="flex-1 py-2.5 rounded-xl bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-bold transition-all shadow-sm hover:shadow-md cursor-pointer"
+                    >
+                      Confirm Reservation
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

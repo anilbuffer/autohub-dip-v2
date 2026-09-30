@@ -85,7 +85,7 @@ export default function UpcomingAuctionMatchSection({ onNotifyToast }: UpcomingA
                     {vehicle.auctionHouse}
                   </span>
                   <span className="px-2 py-1 rounded-lg text-[10px] font-bold bg-white/90 text-slate-800 backdrop-blur-xs border border-slate-200 shadow-2xs">
-                    Lot #{vehicle.lotNumber}
+                    Stockid #{vehicle.lotNumber}
                   </span>
                 </div>
 

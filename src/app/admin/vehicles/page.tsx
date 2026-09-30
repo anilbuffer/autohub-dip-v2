@@ -200,9 +200,9 @@ export default function AdminVehiclesPage() {
   };
 
   const handleDeleteVehicle = (stockId: string, chassis: string, makeModel: string) => {
-    if (confirm(`Are you sure you want to remove lot #${stockId} (${makeModel})?`)) {
+    if (confirm(`Are you sure you want to remove Stockid #${stockId} (${makeModel})?`)) {
       deleteAdminVehicle(stockId, chassis);
-      setSuccessMessage(`Lot #${stockId} successfully deleted.`);
+      setSuccessMessage(`Stockid #${stockId} successfully deleted.`);
       loadVehiclesData();
       setTimeout(() => setSuccessMessage(null), 4000);
     }
@@ -232,12 +232,12 @@ export default function AdminVehiclesPage() {
       trans: form.trans,
       color: form.color.trim() || "White",
       equip: form.equip.trim(),
-      auctionDate: "Active Live Auction Lot",
+      auctionDate: "Active Live Auction Stockid",
       photoUrl: form.photoUrl.trim() || undefined,
     };
 
     addAdminVehicle(newVehicle);
-    setSuccessMessage(`Lot #${newVehicle.stockId} (${newVehicle.year} ${newVehicle.make} ${newVehicle.model}) successfully added!`);
+    setSuccessMessage(`Stockid #${newVehicle.stockId} (${newVehicle.year} ${newVehicle.make} ${newVehicle.model}) successfully added!`);
     setAddModalOpen(false);
     setForm(initialForm);
 
@@ -487,7 +487,7 @@ export default function AdminVehiclesPage() {
                             <div className="text-[11px] text-[#64748B] font-mono mt-0.5 flex items-center gap-1.5">
                               <span>{v.chassis}</span>
                               <span>·</span>
-                              <span>Lot #{v.stockId}</span>
+                              <span>Stockid #{v.stockId}</span>
                               {v.photoUrl && (
                                 <span className="text-[10px] text-[#E11D48] font-bold">
                                   · Custom Photo
@@ -700,7 +700,7 @@ export default function AdminVehiclesPage() {
         </div>
       </div>
 
-      {/* ─── ADD VEHICLE LOT MODAL (ADMIN ROLE) ─── */}
+      {/* ─── ADD VEHICLE MODAL (ADMIN ROLE) ─── */}
       {addModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-xs animate-fadeIn">
           <div className="bg-white rounded-3xl w-full max-w-2xl shadow-2xl border border-slate-200 flex flex-col max-h-[90vh] overflow-hidden">
@@ -791,7 +791,7 @@ export default function AdminVehiclesPage() {
                   {/* Mileage */}
                   <div>
                     <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Verified Odometer (km)
+                      Odometer (km)
                     </label>
                     <input
                       type="number"
@@ -853,7 +853,7 @@ export default function AdminVehiclesPage() {
                   {/* Stock ID */}
                   <div>
                     <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Auction Lot Stock ID (optional)
+                      Stockid (optional)
                     </label>
                     <input
                       type="text"
@@ -1072,7 +1072,7 @@ export default function AdminVehiclesPage() {
                   <div className="relative aspect-[16/10] rounded-2xl overflow-hidden bg-slate-900 border border-slate-200 shadow-sm">
                     <img
                       src={editPhotoUrl.trim() || getVehiclePhoto(photoEditVehicle)}
-                      alt="Vehicle Lot"
+                      alt="Vehicle"
                       className="w-full h-full object-cover"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80';
@@ -1080,7 +1080,7 @@ export default function AdminVehiclesPage() {
                     />
                     <div className="absolute top-2.5 left-2.5 flex items-center gap-2">
                       <span className="px-2.5 py-1 rounded-lg bg-black/75 backdrop-blur-xs text-white text-xs font-mono font-bold">
-                        LOT #{photoEditVehicle.stockId}
+                        Stockid #{photoEditVehicle.stockId}
                       </span>
                       {editPhotoUrl ? (
                         <span className="px-2 py-0.5 rounded-md bg-[#E11D48] text-white text-[10px] font-bold">

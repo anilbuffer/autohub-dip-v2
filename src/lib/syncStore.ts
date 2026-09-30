@@ -63,7 +63,7 @@ const DEFAULT_STATE: SyncState = {
     {
       id: 'notif-init-1',
       title: 'Priority Buy Identified',
-      body: '2019 Toyota Aqua S at USS Tokyo (Lot #40822) has NZ$4,000 margin spread.',
+      body: '2019 Toyota Aqua S at USS Tokyo (Stockid #40822) has NZ$4,000 margin spread.',
       timestamp: '15 mins ago',
       isRead: false,
       type: 'bid_alert',

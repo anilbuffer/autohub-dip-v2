@@ -220,7 +220,7 @@ export default function DealerChatAssistant({
       return {
         id: `bot-${Date.now()}`,
         sender: "bot",
-        text: `### 🚗 2019 Toyota Aqua S Hybrid (Lot #${aqua.lotNumber})\n**Auction House:** ${aqua.auctionHouse} | **Grade:** ${aqua.grade} (Interior ${aqua.interiorGrade})\n\n**Current Live Landed Breakdown (¥${fx} FX):**\n- **FOB Bid:** ¥${aqua.fobJpy.toLocaleString("en-US")} (≈ NZ$${fobNzd.toLocaleString("en-US")})\n- **RoRo Sea Freight:** NZ$${syncState.freightPerUnitNzd.toLocaleString("en-US")}\n- **NZ Compliance & Bio-Security:** NZ$${syncState.compliancePerUnitNzd.toLocaleString("en-US")}\n- **GST (15%) & Port Doc:** NZ$${Math.round(landed - fobNzd - syncState.freightPerUnitNzd - syncState.compliancePerUnitNzd).toLocaleString("en-US")}\n- **Total Landed Cost:** **NZ$${landed.toLocaleString("en-US")}**\n- **Auckland Est. Retail:** NZ$${aqua.estRetailNzd.toLocaleString("en-US")}\n- **Projected Net Margin:** <span class="text-emerald-700 font-extrabold">+NZ$${margin.toLocaleString("en-US")} (${Math.round((margin/landed)*100)}% ROI)</span>\n\n**Auction Sheet Intelligence:**\nInspection sheet shows pristine hybrid battery health (SOH > 92%), 0 structural remarks, and minor A1 scratch on rear quarter. Highly liquid Auckland turn time (avg 14 days).`,
+        text: `### 🚗 2019 Toyota Aqua S Hybrid (Stockid #${aqua.lotNumber})\n**Auction House:** ${aqua.auctionHouse} | **Grade:** ${aqua.grade} (Interior ${aqua.interiorGrade})\n\n**Current Live Landed Breakdown (¥${fx} FX):**\n- **FOB Bid:** ¥${aqua.fobJpy.toLocaleString("en-US")} (≈ NZ$${fobNzd.toLocaleString("en-US")})\n- **RoRo Sea Freight:** NZ$${syncState.freightPerUnitNzd.toLocaleString("en-US")}\n- **NZ Compliance & Bio-Security:** NZ$${syncState.compliancePerUnitNzd.toLocaleString("en-US")}\n- **GST (15%) & Port Doc:** NZ$${Math.round(landed - fobNzd - syncState.freightPerUnitNzd - syncState.compliancePerUnitNzd).toLocaleString("en-US")}\n- **Total Landed Cost:** **NZ$${landed.toLocaleString("en-US")}**\n- **Auckland Est. Retail:** NZ$${aqua.estRetailNzd.toLocaleString("en-US")}\n- **Projected Net Margin:** <span class="text-emerald-700 font-extrabold">+NZ$${margin.toLocaleString("en-US")} (${Math.round((margin/landed)*100)}% ROI)</span>\n\n**Auction Sheet Intelligence:**\nInspection sheet shows pristine hybrid battery health (SOH > 92%), 0 structural remarks, and minor A1 scratch on rear quarter. Highly liquid Auckland turn time (avg 14 days).`,
         timestamp: "Just now",
         type: "vehicles",
         vehiclesData: [aqua],
@@ -237,7 +237,7 @@ export default function DealerChatAssistant({
       return {
         id: `bot-${Date.now()}`,
         sender: "bot",
-        text: `### 🚗 2020 Honda Fit e:HEV Home (Lot #${fit.lotNumber})\n**Auction House:** ${fit.auctionHouse} | **Grade:** ${fit.grade} (Interior ${fit.interiorGrade})\n\n**Key Highlights for NZ Market:**\n- **Dual-motor e:HEV powertrain:** High fuel efficiency (85g/km CO2, neutral Clean Car).\n- **FOB JPY:** ¥${fit.fobJpy.toLocaleString("en-US")} (≈ NZ$${Math.round(fit.fobJpy/fx).toLocaleString("en-US")})\n- **Total Landed:** **NZ$${fit.landedNzd.toLocaleString("en-US")}**\n- **Projected Margin:** **+NZ$${fit.targetMarginNzd.toLocaleString("en-US")}**\n- Low mileage: 45,100 km with full Japanese dealer service booklet.`,
+        text: `### 🚗 2020 Honda Fit e:HEV Home (Stockid #${fit.lotNumber})\n**Auction House:** ${fit.auctionHouse} | **Grade:** ${fit.grade} (Interior ${fit.interiorGrade})\n\n**Key Highlights for NZ Market:**\n- **Dual-motor e:HEV powertrain:** High fuel efficiency (85g/km CO2, neutral Clean Car).\n- **FOB JPY:** ¥${fit.fobJpy.toLocaleString("en-US")} (≈ NZ$${Math.round(fit.fobJpy/fx).toLocaleString("en-US")})\n- **Total Landed:** **NZ$${fit.landedNzd.toLocaleString("en-US")}**\n- **Projected Margin:** **+NZ$${fit.targetMarginNzd.toLocaleString("en-US")}**\n- Low mileage: 45,100 km with full Japanese dealer service booklet.`,
         timestamp: "Just now",
         type: "vehicles",
         vehiclesData: [fit],
@@ -254,7 +254,7 @@ export default function DealerChatAssistant({
       return {
         id: `bot-${Date.now()}`,
         sender: "bot",
-        text: `### 🚗 2019 Toyota C-HR G LED Hybrid (Lot #${chr.lotNumber})\n**Auction House:** ${chr.auctionHouse} | **Grade:** ${chr.grade}\n\n- **FOB:** ¥${chr.fobJpy.toLocaleString("en-US")} | **Landed NZD:** **NZ$${chr.landedNzd.toLocaleString("en-US")}**\n- **Est. Retail:** NZ$${chr.estRetailNzd.toLocaleString("en-US")} | **Margin:** <span class="text-emerald-700 font-extrabold">+NZ$${chr.targetMarginNzd.toLocaleString("en-US")}</span>\n- **Market Analysis:** Compact crossovers command premium retail velocity in Auckland & Hamilton. 2-tone black/pearl roof is the highest-spec variant.`,
+        text: `### 🚗 2019 Toyota C-HR G LED Hybrid (Stockid #${chr.lotNumber})\n**Auction House:** ${chr.auctionHouse} | **Grade:** ${chr.grade}\n\n- **FOB:** ¥${chr.fobJpy.toLocaleString("en-US")} | **Landed NZD:** **NZ$${chr.landedNzd.toLocaleString("en-US")}**\n- **Est. Retail:** NZ$${chr.estRetailNzd.toLocaleString("en-US")} | **Margin:** <span class="text-emerald-700 font-extrabold">+NZ$${chr.targetMarginNzd.toLocaleString("en-US")}</span>\n- **Market Analysis:** Compact crossovers command premium retail velocity in Auckland & Hamilton. 2-tone black/pearl roof is the highest-spec variant.`,
         timestamp: "Just now",
         type: "vehicles",
         vehiclesData: [chr],
@@ -531,7 +531,7 @@ export default function DealerChatAssistant({
             <div className="flex items-center gap-1.5 truncate text-slate-200">
               <Car size={13} className="text-[#e56168] shrink-0" />
               <span className="font-semibold truncate">
-                Context: {activeVehicle.year} {activeVehicle.model} (Lot #{activeVehicle.lotNumber})
+                Context: {activeVehicle.year} {activeVehicle.model} (Stockid #{activeVehicle.lotNumber})
               </span>
             </div>
             <button
@@ -870,7 +870,7 @@ function VehicleChatCard({ vehicle }: { vehicle: Vehicle }) {
           </span>
         </div>
         <p className="text-[10px] text-slate-500 truncate">
-          {vehicle.auctionHouse} · Lot #{vehicle.lotNumber} · {vehicle.km.toLocaleString("en-US")} km
+          {vehicle.auctionHouse} · Stockid #{vehicle.lotNumber} · {vehicle.km.toLocaleString("en-US")} km
         </p>
         <div className="flex items-center justify-between mt-1 text-[11px]">
           <span className="font-bold text-slate-900">

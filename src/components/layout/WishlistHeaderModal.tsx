@@ -54,18 +54,17 @@ export function WishlistButton({ onClick }: { onClick: () => void }) {
     <button
       id="add-update-wishlist-header-btn"
       onClick={onClick}
-      className={`relative flex items-center gap-2 px-3 py-1.5 rounded-xl text-[12px] font-semibold transition-all duration-200 border cursor-pointer select-none ${
-        criteriaCount > 0
+      className={`relative flex items-center gap-2 px-3 py-1.5 rounded-xl text-[12px] font-semibold transition-all duration-200 border cursor-pointer select-none ${criteriaCount > 0
           ? 'bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100 shadow-xs'
           : 'bg-rose-50/70 text-rose-700 border-rose-200/80 hover:bg-rose-100 shadow-xs'
-      }`}
+        }`}
       title="Add / Update Wishlist Criteria"
     >
       <div className="w-5 h-5 rounded-lg bg-[#E11D48] text-white flex items-center justify-center shadow-xs shrink-0">
         <Heart size={12} className="fill-white text-white" />
       </div>
       <span className="font-semibold text-[12px] whitespace-nowrap">Add / Update Wishlist</span>
-      
+
       {criteriaCount > 0 ? (
         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10.5px] font-bold bg-[#E11D48] text-white ml-0.5 shrink-0">
           <span>{criteriaCount}</span>
@@ -152,8 +151,8 @@ export default function WishlistHeaderModal({ isOpen, onClose, onApply }: Wishli
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm transition-all animate-fadeIn">
-      <div 
-        className="bg-white rounded-2xl w-full max-w-2xl shadow-2xl border border-[#E8ECF0] flex flex-col max-h-[90vh] overflow-hidden"
+      <div
+        className="bg-white rounded-2xl w-full max-w-3xl shadow-2xl border border-[#E8ECF0] flex flex-col max-h-[90vh] overflow-hidden"
         onClick={e => e.stopPropagation()}
       >
         {/* Modal Header */}

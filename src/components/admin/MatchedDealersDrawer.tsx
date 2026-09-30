@@ -62,7 +62,7 @@ export default function MatchedDealersDrawer({
                   Buyer Matching Engine
                 </span>
                 <span className="text-xs text-slate-300 font-medium">
-                  {vehicle.auctionHouse} · Lot #{vehicle.lotNumber}
+                  {vehicle.auctionHouse} · Stockid #{vehicle.lotNumber}
                 </span>
               </div>
               <h3 className="text-lg font-black text-white tracking-tight">

@@ -16,14 +16,20 @@ import {
   ArrowRight,
   ArrowUpRight,
   RefreshCw,
+  Heart,
+  SlidersHorizontal,
 } from "lucide-react";
 import {
   DealerBid,
   getStoredBids,
   saveStoredBids,
   getVehiclePhoto,
+  WishListCriteria,
+  DEFAULT_WISHLIST,
+  getStoredWishlistCriteria,
 } from "@/lib/dealerStore";
 import { HEIWA_VEHICLES, calculateLandedCost } from "@/lib/heiwaData";
+import WishlistHeaderModal from "@/components/layout/WishlistHeaderModal";
 
 export default function MyBidsPage() {
   const [bids, setBids] = useState<DealerBid[]>([]);
@@ -31,16 +37,32 @@ export default function MyBidsPage() {
   const [editingBid, setEditingBid] = useState<DealerBid | null>(null);
   const [newBidAmount, setNewBidAmount] = useState<number>(0);
 
+  // Wishlist state for Active Wishlist Requirements
+  const [wishlistModalOpen, setWishlistModalOpen] = useState(false);
+  const [wishlistCriteria, setWishlistCriteria] = useState<WishListCriteria[]>(DEFAULT_WISHLIST);
+
+  const refreshWishlistCriteria = () => {
+    if (typeof window !== "undefined") {
+      setWishlistCriteria(getStoredWishlistCriteria());
+    }
+  };
+
   const refreshBids = () => {
     setBids(getStoredBids());
   };
 
   useEffect(() => {
     refreshBids();
-    const handler = () => refreshBids();
+    refreshWishlistCriteria();
+    const handler = () => {
+      refreshBids();
+      refreshWishlistCriteria();
+    };
     window.addEventListener("autohub_dealer_store_change", handler);
     return () => window.removeEventListener("autohub_dealer_store_change", handler);
   }, []);
+
+  const primaryCriteria = wishlistCriteria.find((c) => c.make.trim() !== "") || wishlistCriteria[0];
 
   const activeBids = bids.filter((b) => b.status === "leading" || b.status === "under_reserve");
   const wonBids = bids.filter((b) => b.status === "won");
@@ -99,26 +121,63 @@ export default function MyBidsPage() {
           </Link>
         </div>
 
-        {/* ─── Metric Summary Cards ─── */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-soft hover:shadow-soft-md transition-shadow">
-            <span className="text-xs font-semibold text-[#64748B]">Active Bids</span>
-            <div className="text-2xl font-extrabold text-[#111827] mt-1 font-mono">
-              {activeBids.length}
+        {/* ─── Active Wishlist Requirements Banner (Replaces Stats Cards) ─── */}
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-soft p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="flex items-center gap-3.5">
+            <div className="w-10 h-10 rounded-xl bg-rose-50 text-[#E11D48] border border-rose-100 flex items-center justify-center shrink-0">
+              <Heart size={20} className="fill-[#E11D48]" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#E11D48]">
+                  Active Wishlist Requirements
+                </span>
+                <span className="text-[11px] text-[#64748B]">
+                  · Live matching Japan auction inventory
+                </span>
+              </div>
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-[#111C2D] mt-1">
+                <span>
+                  <strong className="text-[#64748B] font-normal">Make:</strong>{" "}
+                  {primaryCriteria?.make || "Toyota"}
+                </span>
+                <span className="text-[#CBD5E1]">•</span>
+                <span>
+                  <strong className="text-[#64748B] font-normal">Model:</strong>{" "}
+                  {primaryCriteria?.model || "Aqua / C-HR"}
+                </span>
+                <span className="text-[#CBD5E1]">•</span>
+                <span>
+                  <strong className="text-[#64748B] font-normal">Year:</strong>{" "}
+                  {primaryCriteria?.yearFrom && primaryCriteria.yearFrom > 2013
+                    ? `${primaryCriteria.yearFrom} or newer`
+                    : "2014 or newer"}
+                </span>
+                <span className="text-[#CBD5E1]">•</span>
+                <span>
+                  <strong className="text-[#64748B] font-normal">Kilometres:</strong>{" "}
+                  {primaryCriteria?.maxKms && primaryCriteria.maxKms < 100000
+                    ? `Under ${primaryCriteria.maxKms.toLocaleString("en-US")} km`
+                    : "Under 90,000 km"}
+                </span>
+                <span className="text-[#CBD5E1]">•</span>
+                <span>
+                  <strong className="text-[#64748B] font-normal">Budget:</strong>{" "}
+                  {primaryCriteria?.maxBudget
+                    ? `Up to NZ$${primaryCriteria.maxBudget.toLocaleString("en-US")}`
+                    : "Up to NZ$25,000"}
+                </span>
+              </div>
             </div>
           </div>
-          <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-soft hover:shadow-soft-md transition-shadow">
-            <span className="text-xs font-semibold text-emerald-600">Won Lots</span>
-            <div className="text-2xl font-extrabold text-emerald-700 mt-1 font-mono">
-              {wonBids.length}
-            </div>
-          </div>
-          <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-soft hover:shadow-soft-md transition-shadow">
-            <span className="text-xs font-semibold text-amber-600">Under Reserve / Outbid</span>
-            <div className="text-2xl font-extrabold text-amber-600 mt-1 font-mono">
-              {bids.filter((b) => b.status === "under_reserve" || b.status === "outbid").length}
-            </div>
-          </div>
+
+          <button
+            onClick={() => setWishlistModalOpen(true)}
+            className="px-4 py-2 bg-[#F8FAFC] hover:bg-[#F1F5F9] text-[#111C2D] border border-[#CBD5E1] rounded-xl text-xs font-bold transition-all shadow-2xs hover:border-[#94A3B8] shrink-0 flex items-center gap-2 cursor-pointer"
+          >
+            <SlidersHorizontal size={14} />
+            <span>Edit Wishlist</span>
+          </button>
         </div>
 
         {/* ─── Filter Tabs ─── */}
@@ -214,6 +273,9 @@ export default function MyBidsPage() {
                         )}
                       </div>
 
+                      <div className="absolute bottom-3 left-3 bg-black/75 backdrop-blur-xs text-white text-[11px] font-mono font-bold px-2 py-0.5 rounded">
+                        Stockid #{bid.vehicleStockId}
+                      </div>
                       <div className="absolute bottom-3 right-3 bg-black/75 backdrop-blur-xs text-white text-[11px] font-semibold px-2 py-0.5 rounded">
                         {bid.auctionHouse || "USS Tokyo"}
                       </div>
@@ -225,7 +287,7 @@ export default function MyBidsPage() {
                         {bid.year} {bid.make} {bid.model}
                       </h3>
                       <p className="text-xs text-[#64748B] mt-1 font-mono">
-                        Chassis: {bid.vehicleChassis}
+                        Stockid #{bid.vehicleStockId} · Chassis: {bid.vehicleChassis}
                       </p>
 
                       <div className="mt-4 pt-3 border-t border-[#F1F5F9] grid grid-cols-2 gap-2 text-xs">
@@ -251,7 +313,7 @@ export default function MyBidsPage() {
                       href={`/vehicles/${encodeURIComponent(bid.vehicleChassis)}`}
                       className="text-xs font-semibold text-[#E11D48] hover:underline"
                     >
-                      View Lot Specs
+                      View Stockid Specs
                     </Link>
 
                     {bid.status !== "won" && (
@@ -332,6 +394,16 @@ export default function MyBidsPage() {
             </div>
           </div>
         )}
+
+        {/* Wishlist Header Modal accessible directly from Edit Wishlist button */}
+        <WishlistHeaderModal
+          isOpen={wishlistModalOpen}
+          onClose={() => setWishlistModalOpen(false)}
+          onApply={() => {
+            setWishlistModalOpen(false);
+            refreshWishlistCriteria();
+          }}
+        />
       </div>
     </AppLayout>
   );
