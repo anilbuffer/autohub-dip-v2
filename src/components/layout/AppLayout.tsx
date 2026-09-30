@@ -7,30 +7,31 @@ import {
   Car,
   Gavel,
   Heart,
-  PackageCheck,
+  FileText,
+  User,
+  HelpCircle,
   Search,
+  Bell,
+  ChevronDown,
   Menu,
   X,
   LogOut,
   Building2,
-  Bell,
-  ChevronRight,
-  TrendingUp,
+  ExternalLink,
 } from 'lucide-react';
-import WishlistHeaderModal, { WishlistButton } from './WishlistHeaderModal';
 import { getStoredBids, getStoredWatchlist, getStoredPurchases } from '@/lib/dealerStore';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [wishlistModalOpen, setWishlistModalOpen] = useState(false);
   const [headerSearchQuery, setHeaderSearchQuery] = useState('');
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
 
   // Dynamic counts for sidebar badges
-  const [bidsCount, setBidsCount] = useState<number>(3);
-  const [watchlistCount, setWatchlistCount] = useState<number>(2);
-  const [purchasesCount, setPurchasesCount] = useState<number>(2);
+  const [bidsCount, setBidsCount] = useState<number>(0);
+  const [watchlistCount, setWatchlistCount] = useState<number>(0);
+  const [purchasesCount, setPurchasesCount] = useState<number>(0);
 
   const refreshBadgeCounts = () => {
     try {
@@ -52,122 +53,137 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener('autohub_dealer_store_change', handler);
   }, []);
 
-  const navItems = [
+  // Primary menu items matching reference image
+  const primaryNavItems = [
     {
       label: 'Browse Vehicles',
-      href: '/',
+      href: '/browse-vehicles',
       icon: Car,
-      badge: null,
+      activeCheck: (p: string) =>
+        p === '/browse-vehicles' || p === '/' || p.startsWith('/vehicles') || p.startsWith('/vehicle'),
     },
     {
       label: 'My Bids',
-      href: '/bids',
+      href: '/my-bids',
       icon: Gavel,
-      badge: bidsCount > 0 ? `${bidsCount} Active` : null,
-      badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+      badge: bidsCount > 0 ? bidsCount : null,
+      activeCheck: (p: string) => p.startsWith('/my-bids') || p.startsWith('/bids'),
     },
     {
-      label: 'My Watchlist',
+      label: 'Watchlist',
       href: '/watchlist',
       icon: Heart,
-      badge: watchlistCount > 0 ? `${watchlistCount}` : null,
-      badgeColor: 'bg-rose-500/20 text-rose-300 border-rose-500/30',
+      badge: watchlistCount > 0 ? watchlistCount : null,
+      activeCheck: (p: string) => p.startsWith('/watchlist'),
     },
     {
       label: 'Purchases',
       href: '/purchases',
-      icon: PackageCheck,
-      badge: purchasesCount > 0 ? `${purchasesCount}` : null,
-      badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+      icon: FileText,
+      badge: purchasesCount > 0 ? purchasesCount : null,
+      activeCheck: (p: string) => p.startsWith('/purchases'),
+    },
+  ];
+
+  // Secondary lower menu items matching reference image
+  const secondaryNavItems = [
+    {
+      label: 'Profile',
+      href: '/profile',
+      icon: User,
+      activeCheck: (p: string) => p.startsWith('/profile'),
+    },
+    {
+      label: 'Help',
+      href: '/help',
+      icon: HelpCircle,
+      activeCheck: (p: string) => p.startsWith('/help'),
     },
   ];
 
   const handleHeaderSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (headerSearchQuery.trim()) {
-      router.push(`/?search=${encodeURIComponent(headerSearchQuery.trim())}`);
+      router.push(`/browse-vehicles?search=${encodeURIComponent(headerSearchQuery.trim())}`);
     } else {
-      router.push('/');
+      router.push('/browse-vehicles');
     }
   };
 
   return (
-    <div className="flex h-screen bg-[#F8FAFC] text-[#111C2D] font-sans antialiased overflow-hidden">
+    <div className="flex h-screen bg-[#F8FAFC] text-[#111827] font-sans antialiased overflow-hidden">
       {/* Mobile Menu Backdrop */}
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden transition-opacity"
+          className="fixed inset-0 bg-black/40 backdrop-blur-xs z-40 md:hidden transition-opacity"
           onClick={() => setMobileMenuOpen(false)}
         />
       )}
 
-      {/* ─── Wishlist Modal in Header ─── */}
-      <WishlistHeaderModal
-        isOpen={wishlistModalOpen}
-        onClose={() => setWishlistModalOpen(false)}
-      />
-
-      {/* ─── Left Sidebar Navigation — Light Navy Theme ─── */}
-      <aside className={`
-        fixed md:static inset-y-0 left-0 z-50 w-[264px] bg-gradient-to-b from-[#182C48] via-[#14243B] to-[#101C2E] border-r border-[#1E3A5F]/40 text-white/90 flex flex-col justify-between shrink-0 transition-transform duration-300 ease-in-out
+      {/* ─── Left Sidebar Navigation — Clean White matching Reference Design ─── */}
+      <aside
+        className={`
+        fixed md:static inset-y-0 left-0 z-50 w-[240px] bg-white border-r border-[#E5E7EB] flex flex-col justify-between shrink-0 transition-transform duration-200 ease-in-out
         ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
-      `}>
-        <div>
-          {/* Brand Header */}
-          <div className="h-[72px] flex items-center justify-between px-6 border-b border-white/[0.08]">
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-9 h-9 rounded-xl bg-[#C8102E] flex items-center justify-center overflow-hidden shadow-lg shadow-red-950/40 group-hover:scale-105 transition-transform">
-                <img
-                  src="/autohub-logo.jpg"
-                  alt="AutoHub"
-                  className="w-7 h-7 rounded-lg object-cover"
-                />
+      `}
+      >
+        <div className="flex-1 flex flex-col pt-5 px-3">
+          {/* Brand Header: Auckland Auto Group */}
+          <div className="flex items-center justify-between px-3 mb-6">
+            <Link
+              href="/browse-vehicles"
+              className="flex items-center gap-2.5 text-[#111827] group"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <div className="w-8 h-8 rounded-lg bg-[#EFF6FF] text-[#1E3A5F] flex items-center justify-center border border-[#DBEAFE] group-hover:scale-105 transition-transform">
+                <Car size={18} className="stroke-[2.2]" />
               </div>
-              <div>
-                <span className="text-[15px] font-bold text-white block leading-none tracking-wide">AutoHub DIP</span>
-                <span className="text-[10px] text-[#9AB9D5] font-semibold tracking-widest uppercase">Dealer Portal</span>
-              </div>
+              <span className="text-[15px] font-bold tracking-tight text-[#111827]">
+                Auckland Auto Group
+              </span>
             </Link>
+
             <button
               onClick={() => setMobileMenuOpen(false)}
-              className="md:hidden text-white/60 hover:text-white p-1.5 hover:bg-white/10 rounded-lg transition-colors"
+              className="md:hidden text-[#9CA3AF] hover:text-[#111827] p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
             >
               <X size={18} />
             </button>
           </div>
 
-          {/* Navigation Links */}
-          <nav className="mt-7 px-4 space-y-1.5">
-            <div className="px-3 pb-2 text-[10px] font-bold text-[#7E9CBA] uppercase tracking-[0.16em]">
-              Dealer Operations
-            </div>
-            {navItems.map((item) => {
+          {/* Primary Navigation Links */}
+          <nav className="space-y-1">
+            {primaryNavItems.map((item) => {
               const Icon = item.icon;
-              const isActive = item.href === '/'
-                ? (pathname === '/' || pathname.startsWith('/vehicles') || pathname.startsWith('/vehicle'))
-                : pathname.startsWith(item.href);
+              const isActive = item.activeCheck(pathname);
 
               return (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`group relative flex items-center gap-3.5 px-4 py-3 rounded-xl text-[13px] font-medium transition-all duration-200 ${isActive
-                    ? 'bg-[#1E3A5F] text-white font-semibold shadow-sm border border-[#2B4E7D]/50 nav-active-glow'
-                    : 'text-[#BACDD8] hover:bg-white/[0.06] hover:text-white'
-                    }`}
+                  className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[13px] font-medium transition-all ${
+                    isActive
+                      ? 'bg-[#EFF6FF] text-[#1E3A5F] font-semibold'
+                      : 'text-[#4B5563] hover:text-[#111827] hover:bg-[#F9FAFB]'
+                  }`}
                 >
-                  <div className={`flex items-center justify-center w-8 h-8 rounded-lg transition-all ${isActive
-                    ? 'bg-[#C8102E] shadow-md shadow-red-950/40 text-white'
-                    : 'bg-white/[0.06] group-hover:bg-white/[0.1] text-[#9AB9D5] group-hover:text-white'
-                    }`}>
-                    <Icon size={16} />
+                  <div className="flex items-center gap-3">
+                    <Icon
+                      size={18}
+                      className={isActive ? 'text-[#1E3A5F] stroke-[2.2]' : 'text-[#6B7280]'}
+                    />
+                    <span>{item.label}</span>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <span className="block leading-tight text-[13px]">{item.label}</span>
-                  </div>
-                  {item.badge && (
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${item.badgeColor || 'bg-white/10 text-white/80 border-white/20'}`}>
+
+                  {item.badge !== null && item.badge !== undefined && (
+                    <span
+                      className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${
+                        isActive
+                          ? 'bg-[#1E3A5F] text-white'
+                          : 'bg-[#F1F5F9] text-[#64748B]'
+                      }`}
+                    >
                       {item.badge}
                     </span>
                   )}
@@ -175,91 +191,135 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               );
             })}
           </nav>
+
+          {/* Secondary Lower Links */}
+          <div className="mt-8 pt-4 border-t border-[#F1F5F9] space-y-1">
+            {secondaryNavItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = item.activeCheck(pathname);
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[13px] font-medium transition-all ${
+                    isActive
+                      ? 'bg-[#EFF6FF] text-[#1E3A5F] font-semibold'
+                      : 'text-[#4B5563] hover:text-[#111827] hover:bg-[#F9FAFB]'
+                  }`}
+                >
+                  <Icon
+                    size={18}
+                    className={isActive ? 'text-[#1E3A5F] stroke-[2.2]' : 'text-[#6B7280]'}
+                  />
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
+          </div>
         </div>
 
-        {/* User Footer */}
-        <div className="p-4 mx-4 mb-4 bg-[#0E1B2C]/70 rounded-xl border border-[#1E3A5F]/40 flex items-center justify-between">
-          <div className="flex items-center gap-3 min-w-0">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#C8102E] to-[#E8384F] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-md shadow-red-950/30">
-              DM
-            </div>
-            <div className="min-w-0">
-              <div className="text-[12px] font-semibold text-white truncate">David Miller</div>
-              <div className="text-[10px] text-[#9AB9D5] truncate flex items-center gap-1">
-                <Building2 size={10} /> Auckland Auto Group
-              </div>
-            </div>
-          </div>
-          <Link
-            href="/login"
-            title="Logout"
-            className="p-2 text-[#9AB9D5] hover:text-white hover:bg-white/[0.08] rounded-lg transition-all"
-          >
-            <LogOut size={14} />
-          </Link>
+        {/* Small footer info */}
+        <div className="p-4 border-t border-[#F1F5F9] text-[11px] text-[#9CA3AF] flex items-center justify-between">
+          <span>AutoHub DIP v2.4</span>
+          <span className="w-2 h-2 rounded-full bg-emerald-500" title="Connected to Heiwa Live Feed" />
         </div>
       </aside>
 
       {/* ─── Main Viewport ─── */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        {/* Top Header Bar */}
-        <header className="h-[68px] bg-white border-b border-[#E2E8F0] px-4 sm:px-8 flex items-center justify-between shrink-0 shadow-subtle z-30">
-          <div className="flex items-center gap-4">
+        {/* Top Header Bar matching reference */}
+        <header className="h-[64px] bg-white border-b border-[#E5E7EB] px-4 sm:px-8 flex items-center justify-between shrink-0 z-30">
+          <div className="flex items-center gap-3 flex-1 max-w-xl">
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="md:hidden p-2 text-[#475569] hover:text-[#111C2D] rounded-xl hover:bg-[#F1F5F9] transition-colors"
+              className="md:hidden p-2 text-[#4B5563] hover:text-[#111827] rounded-xl hover:bg-slate-100 transition-colors"
             >
               <Menu size={20} />
             </button>
 
-            {/* Breadcrumb / Title */}
-            <div className="flex items-center gap-2 text-[12px] text-[#64748B]">
-              <span className="font-bold text-[#111C2D]">Auckland Auto Group</span>
-              <ChevronRight size={12} className="text-[#94A3B8]" />
-              <span className="text-[#475569] font-medium hidden sm:inline">Dealer Portal</span>
-              <ChevronRight size={12} className="text-[#94A3B8] hidden sm:inline" />
-              <span className="text-[#C8102E] font-semibold">
-                {pathname === '/' ? 'Browse Vehicles' :
-                  pathname.startsWith('/bids') ? 'My Bids' :
-                    pathname.startsWith('/watchlist') ? 'My Watchlist' :
-                      pathname.startsWith('/purchases') ? 'Purchases' :
-                        pathname.startsWith('/vehicles') || pathname.startsWith('/vehicle') ? 'Vehicle Detail' :
-                          'Overview'}
-              </span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            {/* Quick Search in Header */}
-            <form onSubmit={handleHeaderSearch} className="relative hidden md:flex items-center">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#94A3B8]" />
+            {/* Centered/Wide Search Input matching reference */}
+            <form onSubmit={handleHeaderSearch} className="relative w-full">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#9CA3AF]" />
               <input
                 type="text"
                 value={headerSearchQuery}
-                onChange={e => setHeaderSearchQuery(e.target.value)}
-                placeholder="Search Heiwa stock..."
-                className="pl-9 pr-3 py-1.5 bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl focus:bg-white focus:border-[#1E3A5F] focus:ring-2 focus:ring-[#1E3A5F]/15 outline-none transition-all w-[220px] lg:w-[280px] text-xs text-[#111C2D] placeholder:text-[#94A3B8] font-medium"
+                onChange={(e) => setHeaderSearchQuery(e.target.value)}
+                placeholder="Search make, model, year or keyword..."
+                className="w-full pl-10 pr-4 py-2 bg-white border border-[#E5E7EB] rounded-xl text-xs sm:text-sm text-[#111827] placeholder:text-[#9CA3AF] outline-none focus:border-[#1E3A5F] focus:ring-1 focus:ring-[#1E3A5F] transition-all"
               />
             </form>
+          </div>
 
-            {/* Wishlist Accessible from Header */}
-            <WishlistButton onClick={() => setWishlistModalOpen(true)} />
-
+          {/* Right Header: Notification + Dealer Profile */}
+          <div className="flex items-center gap-3 ml-4">
             {/* Notification Bell */}
-            <button className="relative p-2 text-[#475569] hover:text-[#111C2D] hover:bg-[#F1F5F9] rounded-xl transition-colors">
-              <Bell size={18} />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#C8102E] rounded-full border-2 border-white animate-pulse-dot"></span>
+            <button
+              className="relative p-2 text-[#4B5563] hover:text-[#111827] hover:bg-slate-100 rounded-full transition-colors"
+              title="Notifications"
+            >
+              <Bell size={19} />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#EF4444] rounded-full ring-2 ring-white"></span>
             </button>
 
-            {/* User Profile */}
-            <div className="hidden sm:flex items-center gap-2 pl-3 border-l border-[#E2E8F0]">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#C8102E] to-[#E8384F] text-white flex items-center justify-center font-bold text-[11px]">
-                DM
-              </div>
-              <div className="hidden xl:block">
-                <div className="text-[12px] font-semibold text-[#111C2D] leading-none">David Miller</div>
-                <div className="text-[10px] text-[#64748B] mt-0.5">Dealer Principal</div>
-              </div>
+            {/* User Profile Pill matching reference screenshot */}
+            <div className="relative">
+              <button
+                onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+                className="flex items-center gap-2.5 pl-2 pr-3 py-1.5 rounded-full hover:bg-slate-100 transition-colors text-left"
+              >
+                <div className="w-8 h-8 rounded-full bg-[#1E3A5F] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs">
+                  AA
+                </div>
+                <div className="hidden sm:flex items-center gap-1.5">
+                  <span className="text-[13px] font-semibold text-[#111827]">
+                    Auckland Auto Group
+                  </span>
+                  <ChevronDown size={14} className="text-[#6B7280]" />
+                </div>
+              </button>
+
+              {/* Profile Dropdown */}
+              {profileDropdownOpen && (
+                <>
+                  <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setProfileDropdownOpen(false)}
+                  />
+                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-[#E5E7EB] py-1 z-50 text-xs">
+                    <div className="px-4 py-2.5 border-b border-[#F1F5F9]">
+                      <div className="font-bold text-[#111827]">Auckland Auto Group</div>
+                      <div className="text-[11px] text-[#6B7280]">Registered NZ Motor Trader</div>
+                    </div>
+                    <Link
+                      href="/profile"
+                      onClick={() => setProfileDropdownOpen(false)}
+                      className="flex items-center gap-2 px-4 py-2 text-[#374151] hover:bg-slate-50"
+                    >
+                      <User size={14} />
+                      <span>Dealership Profile</span>
+                    </Link>
+                    <Link
+                      href="/help"
+                      onClick={() => setProfileDropdownOpen(false)}
+                      className="flex items-center gap-2 px-4 py-2 text-[#374151] hover:bg-slate-50"
+                    >
+                      <HelpCircle size={14} />
+                      <span>Help & Documentation</span>
+                    </Link>
+                    <div className="border-t border-[#F1F5F9] my-1" />
+                    <Link
+                      href="/login"
+                      onClick={() => setProfileDropdownOpen(false)}
+                      className="flex items-center gap-2 px-4 py-2 text-rose-600 hover:bg-rose-50"
+                    >
+                      <LogOut size={14} />
+                      <span>Sign Out</span>
+                    </Link>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </header>

@@ -140,7 +140,7 @@ export default function VehicleDetailPage() {
         {/* ─── Breadcrumb & Navigation Bar ─── */}
         <div className="flex items-center justify-between">
           <Link
-            href="/"
+            href="/browse-vehicles"
             className="inline-flex items-center gap-2 text-xs font-semibold text-[#536471] hover:text-[#111C2D] bg-white border border-[#E8ECF0] px-3.5 py-2 rounded-xl transition-colors shadow-xs"
           >
             <ArrowLeft size={14} /> Back to Browse Vehicles

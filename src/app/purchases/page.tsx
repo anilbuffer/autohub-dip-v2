@@ -16,6 +16,7 @@ import {
   ArrowRight,
   ExternalLink,
   Calendar,
+  Plus,
 } from "lucide-react";
 import {
   DealerPurchase,
@@ -41,37 +42,45 @@ export default function PurchasesPage() {
 
   return (
     <AppLayout>
-      <div className="space-y-6 pb-16">
-        {/* ─── Hero Header — Light Navy Theme ─── */}
-        <div className="bg-gradient-to-r from-[#182C48] via-[#15253D] to-[#111E32] text-white rounded-2xl p-6 sm:p-8 shadow-elevated relative overflow-hidden border border-[#25426B]/50">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 relative z-10">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white/90 text-xs font-semibold mb-3 border border-white/10">
-                <PackageCheck size={13} className="text-emerald-400" />
-                <span>AutoHub Import Pipeline Tracking</span>
-              </div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
-                Purchases & Logistics
-              </h1>
-              <p className="text-sm text-white/70 max-w-xl mt-1.5 leading-relaxed">
-                Live status of your won vehicles from Japan auction hammer to your Auckland yard. JEVIC certs, customs EDI, and vessel tracking.
-              </p>
-            </div>
+      <div className="space-y-6 pb-16 font-sans">
+        {/* ─── Page Title & Action Bar ─── */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111827] tracking-tight">
+              Purchases
+            </h1>
+            <p className="text-sm text-[#64748B] mt-1">
+              Track acquired auction inventory from Japan yard clearing to Ports of Auckland delivery.
+            </p>
+          </div>
 
-            {/* Quick Metrics */}
-            <div className="flex items-center gap-3 sm:gap-4 shrink-0 bg-white/[0.04] p-3 sm:p-4 rounded-xl border border-white/[0.08]">
-              <div className="text-left px-3 border-r border-white/10">
-                <div className="text-xs text-white/50">Purchased Units</div>
-                <div className="text-xl font-bold text-white font-mono">{purchases.length} Vehicles</div>
-              </div>
-              <div className="text-left px-3 border-r border-white/10">
-                <div className="text-xs text-blue-300">In Transit</div>
-                <div className="text-xl font-bold text-blue-400 font-mono">1 At Sea</div>
-              </div>
-              <div className="text-left px-3">
-                <div className="text-xs text-emerald-400">At Port</div>
-                <div className="text-xl font-bold text-emerald-400 font-mono">1 In Clearing</div>
-              </div>
+          <Link
+            href="/browse-vehicles"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#1E3A5F] hover:bg-[#162C48] text-white text-xs font-bold shadow-sm transition-all self-start sm:self-auto"
+          >
+            <Plus size={15} />
+            <span>Browse More Vehicles</span>
+          </Link>
+        </div>
+
+        {/* ─── Quick Metric Cards ─── */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="bg-white p-4 rounded-2xl border border-[#E5E7EB] shadow-2xs">
+            <span className="text-xs font-semibold text-[#64748B]">Purchased Vehicles</span>
+            <div className="text-2xl font-extrabold text-[#111827] mt-1 font-mono">
+              {purchases.length}
+            </div>
+          </div>
+          <div className="bg-white p-4 rounded-2xl border border-[#E5E7EB] shadow-2xs">
+            <span className="text-xs font-semibold text-blue-600">On RoRo Vessel</span>
+            <div className="text-2xl font-extrabold text-blue-700 mt-1 font-mono">
+              1 In Transit
+            </div>
+          </div>
+          <div className="bg-white p-4 rounded-2xl border border-[#E5E7EB] shadow-2xs">
+            <span className="text-xs font-semibold text-emerald-600">Port of Auckland</span>
+            <div className="text-2xl font-extrabold text-emerald-700 mt-1 font-mono">
+              1 In Clearing
             </div>
           </div>
         </div>
@@ -89,46 +98,46 @@ export default function PurchasesPage() {
             return (
               <div
                 key={purchase.id}
-                className="bg-white rounded-2xl border border-[#E8ECF0] shadow-subtle p-6 space-y-6"
+                className="bg-white rounded-2xl border border-[#E5E7EB] shadow-2xs p-6 space-y-6"
               >
-                {/* Vehicle Header & Quick Badges */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[#E8ECF0]">
+                {/* Vehicle Header */}
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[#F1F5F9]">
                   <div className="flex items-center gap-4">
                     <img
                       src={photoUrl}
                       alt=""
-                      className="w-16 h-12 rounded-xl object-cover border border-[#E8ECF0]"
+                      className="w-20 h-14 rounded-xl object-cover border border-[#E5E7EB]"
                     />
                     <div>
                       <div className="flex items-center gap-2">
-                        <h3 className="text-base font-bold text-[#111C2D]">
+                        <h3 className="text-base font-bold text-[#111827]">
                           {purchase.year} {purchase.make} {purchase.model}
                         </h3>
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-[#475569]">
                           Order #{purchase.id}
                         </span>
                       </div>
-                      <div className="text-xs text-[#536471] font-mono mt-0.5">
-                        Chassis: {purchase.vehicleChassis} · {purchase.kms.toLocaleString()} km · {purchase.color}
+                      <div className="text-xs text-[#64748B] font-mono mt-0.5">
+                        Chassis: {purchase.vehicleChassis} · {purchase.kms.toLocaleString()} km
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-4 text-right">
+                  <div className="flex items-center gap-6 text-right">
                     <div>
-                      <div className="text-[10px] font-bold text-[#8899A6] uppercase tracking-wider">
+                      <div className="text-[10px] font-semibold text-[#94A3B8] uppercase tracking-wider">
                         Total Landed Cost
                       </div>
-                      <div className="text-lg font-extrabold text-[#C8102E] font-mono">
-                        ${purchase.totalLandedNzd.toLocaleString()} NZD
+                      <div className="text-lg font-extrabold text-[#111827] font-mono">
+                        NZ${purchase.totalLandedNzd.toLocaleString()}
                       </div>
                     </div>
-                    <div className="border-l border-[#E8ECF0] pl-4 text-left">
-                      <div className="text-[10px] font-bold text-[#8899A6] uppercase tracking-wider">
+                    <div className="border-l border-[#E5E7EB] pl-6 text-left">
+                      <div className="text-[10px] font-semibold text-[#94A3B8] uppercase tracking-wider">
                         Vessel / ETA
                       </div>
-                      <div className="text-xs font-bold text-[#111C2D] flex items-center gap-1">
-                        <Ship size={13} className="text-blue-600" />
+                      <div className="text-xs font-bold text-[#111827] flex items-center gap-1.5 mt-0.5">
+                        <Ship size={14} className="text-[#1E3A5F]" />
                         {purchase.etaDate}
                       </div>
                     </div>
@@ -138,92 +147,60 @@ export default function PurchasesPage() {
                 {/* 5-Step Progress Stepper */}
                 <div className="py-2">
                   <div className="grid grid-cols-5 gap-2 relative">
-                    {/* Connecting Bar */}
-                    <div className="absolute top-4 left-[10%] right-[10%] h-1 bg-[#E8ECF0] -z-0">
-                      <div
-                        className="h-full bg-emerald-500 transition-all duration-500"
-                        style={{
-                          width: `${((purchase.currentStage - 1) / (STAGES.length - 1)) * 100}%`,
-                        }}
-                      />
-                    </div>
-
-                    {STAGES.map((stage) => {
-                      const isCompleted = stage.step < purchase.currentStage;
-                      const isCurrent = stage.step === purchase.currentStage;
+                    {STAGES.map((s) => {
+                      const isComplete = s.step < purchase.currentStep;
+                      const isCurrent = s.step === purchase.currentStep;
 
                       return (
-                        <div key={stage.step} className="text-center relative z-10 flex flex-col items-center">
+                        <div key={s.step} className="flex flex-col items-center text-center">
                           <div
-                            className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-all ${
-                              isCompleted
-                                ? "bg-emerald-500 text-white shadow-md shadow-emerald-500/30"
+                            className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs transition-all z-10 ${
+                              isComplete
+                                ? "bg-emerald-600 text-white"
                                 : isCurrent
-                                ? "bg-[#C8102E] text-white ring-4 ring-red-100 shadow-md"
-                                : "bg-[#F0F2F5] text-[#8899A6]"
+                                ? "bg-[#1E3A5F] text-white ring-4 ring-[#1E3A5F]/15"
+                                : "bg-slate-100 text-[#94A3B8] border border-slate-200"
                             }`}
                           >
-                            {isCompleted ? <CheckCircle2 size={16} /> : stage.step}
+                            {isComplete ? <CheckCircle2 size={16} /> : s.step}
                           </div>
-                          <div className="text-xs font-bold text-[#111C2D] mt-2">
-                            {stage.title}
-                          </div>
-                          <div className="text-[10px] text-[#8899A6] hidden sm:block mt-0.5">
-                            {stage.subtitle}
-                          </div>
+                          <span
+                            className={`text-xs font-bold mt-2 ${
+                              isCurrent
+                                ? "text-[#1E3A5F]"
+                                : isComplete
+                                ? "text-[#111827]"
+                                : "text-[#94A3B8]"
+                            }`}
+                          >
+                            {s.title}
+                          </span>
+                          <span className="text-[10px] text-[#64748B] mt-0.5 hidden sm:block">
+                            {s.subtitle}
+                          </span>
                         </div>
                       );
                     })}
                   </div>
                 </div>
 
-                {/* Logistics Detail Box */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 p-4 bg-[#F7F9FA] rounded-xl border border-[#E8ECF0] text-xs">
-                  <div>
-                    <span className="text-[#8899A6] block text-[10px] font-bold uppercase">
-                      Current Logistics Stage
+                {/* Bottom Details Bar */}
+                <div className="pt-3 border-t border-[#F1F5F9] flex flex-wrap items-center justify-between gap-3 text-xs">
+                  <div className="flex items-center gap-3 text-[#64748B]">
+                    <span className="flex items-center gap-1">
+                      <Anchor size={13} className="text-[#1E3A5F]" /> Ports of Auckland
                     </span>
-                    <span className="font-semibold text-[#111C2D] mt-0.5 block flex items-center gap-1.5">
-                      <Clock size={12} className="text-blue-600" />
-                      {purchase.stageStatus}
+                    <span>·</span>
+                    <span className="flex items-center gap-1">
+                      <ShieldCheck size={13} className="text-emerald-600" /> JEVIC Pre-Inspected
                     </span>
-                  </div>
-
-                  <div>
-                    <span className="text-[#8899A6] block text-[10px] font-bold uppercase">
-                      Vessel & Ports
-                    </span>
-                    <span className="font-semibold text-[#111C2D] mt-0.5 block">
-                      {purchase.vesselName} ({purchase.departurePort} → {purchase.destinationPort})
-                    </span>
-                  </div>
-
-                  <div>
-                    <span className="text-[#8899A6] block text-[10px] font-bold uppercase">
-                      NZ Compliance Certificate
-                    </span>
-                    <span className="font-mono font-semibold text-emerald-700 mt-0.5 block">
-                      {purchase.vinComplianceNumber || "Pending Port Arrival"}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Document Downloads */}
-                <div className="flex items-center justify-between pt-2">
-                  <div className="flex items-center gap-2">
-                    <button className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#E8ECF0] hover:bg-[#F0F2F5] text-xs font-semibold text-[#536471]">
-                      <FileText size={13} /> Landed Invoice (PDF)
-                    </button>
-                    <button className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#E8ECF0] hover:bg-[#F0F2F5] text-xs font-semibold text-[#536471]">
-                      <ShieldCheck size={13} /> JEVIC Odometer Cert
-                    </button>
                   </div>
 
                   <Link
                     href={`/vehicles/${encodeURIComponent(purchase.vehicleChassis)}`}
-                    className="text-xs font-bold text-[#C8102E] hover:underline flex items-center gap-1"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E3A5F] hover:underline"
                   >
-                    View Original Japan Auction Lot <ExternalLink size={12} />
+                    View Vehicle Record <ArrowRight size={13} />
                   </Link>
                 </div>
               </div>
