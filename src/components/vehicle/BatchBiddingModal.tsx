@@ -330,7 +330,7 @@ export default function BatchBiddingModal({
             </div>
           </form>
         ) : (
-          /* ─── Success Confirmation View ─── */}
+          /* ─── Success Confirmation View ─── */
           <div className="p-8 sm:p-12 text-center space-y-5 my-auto">
             <div className="w-16 h-16 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-lg shadow-emerald-600/20">
               <CheckCircle2 size={32} />

@@ -328,7 +328,7 @@ export const SUPPLY_DEMAND_GAP: SupplyGapItem[] = [
     make: 'Toyota',
     segment: 'SUV',
     badge: '1.8L G LED Hybrid',
-    image: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=600&q=80',
+    image: '/vehicles/c-hr.jpg',
     demandUnits: 162,
     currentStockUnits: 57,
     coveragePct: 35,
@@ -345,7 +345,7 @@ export const SUPPLY_DEMAND_GAP: SupplyGapItem[] = [
     make: 'Honda',
     segment: 'SUV',
     badge: '1.5L e:HEV / Hybrid Z',
-    image: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=600&q=80',
+    image: '/vehicles/c-hr.jpg',
     demandUnits: 139,
     currentStockUnits: 42,
     coveragePct: 30,
@@ -362,7 +362,7 @@ export const SUPPLY_DEMAND_GAP: SupplyGapItem[] = [
     make: 'Toyota',
     segment: 'Compact',
     badge: '1.5L S / G Package',
-    image: 'https://images.unsplash.com/photo-1590362891991-f776e747a588?auto=format&fit=crop&w=600&q=80',
+    image: '/vehicles/aqua.jpg',
     demandUnits: 184,
     currentStockUnits: 88,
     coveragePct: 48,
@@ -379,7 +379,7 @@ export const SUPPLY_DEMAND_GAP: SupplyGapItem[] = [
     make: 'Mazda',
     segment: 'SUV',
     badge: '2.5L / 2.2D L-Package AWD',
-    image: 'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=600&q=80',
+    image: '/vehicles/cx3.jpg',
     demandUnits: 112,
     currentStockUnits: 45,
     coveragePct: 40,
@@ -396,7 +396,7 @@ export const SUPPLY_DEMAND_GAP: SupplyGapItem[] = [
     make: 'Nissan',
     segment: 'Compact',
     badge: '1.2L e-POWER X / Medalist',
-    image: 'https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&w=600&q=80',
+    image: '/vehicles/note.jpg',
     demandUnits: 98,
     currentStockUnits: 34,
     coveragePct: 35,
@@ -413,7 +413,7 @@ export const SUPPLY_DEMAND_GAP: SupplyGapItem[] = [
     make: 'Toyota',
     segment: 'Sedan/Wagon',
     badge: '1.8L S Touring / A Premium',
-    image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80',
+    image: '/vehicles/prius-5d.jpg',
     demandUnits: 148,
     currentStockUnits: 102,
     coveragePct: 69,
@@ -430,7 +430,7 @@ export const SUPPLY_DEMAND_GAP: SupplyGapItem[] = [
     make: 'Honda',
     segment: 'Compact',
     badge: '1.5L e:HEV Home / Ness',
-    image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=600&q=80',
+    image: '/vehicles/aqua.jpg',
     demandUnits: 125,
     currentStockUnits: 94,
     coveragePct: 75,
@@ -447,7 +447,7 @@ export const SUPPLY_DEMAND_GAP: SupplyGapItem[] = [
     make: 'Suzuki',
     segment: 'Compact',
     badge: '1.2L DualJet / Hybrid RS',
-    image: 'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=600&q=80',
+    image: '/vehicles/swift.jpg',
     demandUnits: 79,
     currentStockUnits: 62,
     coveragePct: 78,
@@ -464,7 +464,7 @@ export const SUPPLY_DEMAND_GAP: SupplyGapItem[] = [
     make: 'Toyota',
     segment: 'Sedan/Wagon',
     badge: '1.5L Hybrid G Edition',
-    image: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=600&q=80',
+    image: '/vehicles/corolla-touring.jpg',
     demandUnits: 86,
     currentStockUnits: 92,
     coveragePct: 107,
@@ -481,7 +481,7 @@ export const SUPPLY_DEMAND_GAP: SupplyGapItem[] = [
     make: 'Mazda',
     segment: 'Sedan/Wagon',
     badge: '20S Proactive Touring',
-    image: 'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=600&q=80',
+    image: '/vehicles/mazda3.jpg',
     demandUnits: 65,
     currentStockUnits: 88,
     coveragePct: 135,
@@ -511,7 +511,7 @@ export const UPCOMING_AUCTION_MATCHES: AuctionMatchVehicle[] = [
     fobPriceNzd: 18400,
     fobPriceJpy: 1680000,
     estLandedNzd: 22350,
-    image: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=600&q=80',
+    image: '/vehicles/c-hr.jpg',
     matchedDealersCount: 14,
     matchedDealers: [
       {
@@ -581,7 +581,7 @@ export const UPCOMING_AUCTION_MATCHES: AuctionMatchVehicle[] = [
     fobPriceNzd: 16800,
     fobPriceJpy: 1530000,
     estLandedNzd: 20600,
-    image: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=600&q=80',
+    image: '/vehicles/c-hr.jpg',
     matchedDealersCount: 12,
     matchedDealers: [
       {
@@ -631,7 +631,7 @@ export const UPCOMING_AUCTION_MATCHES: AuctionMatchVehicle[] = [
     fobPriceNzd: 14200,
     fobPriceJpy: 1295000,
     estLandedNzd: 17750,
-    image: 'https://images.unsplash.com/photo-1590362891991-f776e747a588?auto=format&fit=crop&w=600&q=80',
+    image: '/vehicles/aqua.jpg',
     matchedDealersCount: 18,
     matchedDealers: [
       {
@@ -681,7 +681,7 @@ export const UPCOMING_AUCTION_MATCHES: AuctionMatchVehicle[] = [
     fobPriceNzd: 19500,
     fobPriceJpy: 1780000,
     estLandedNzd: 23800,
-    image: 'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=600&q=80',
+    image: '/vehicles/cx3.jpg',
     matchedDealersCount: 9,
     matchedDealers: [
       {
@@ -721,7 +721,7 @@ export const UPCOMING_AUCTION_MATCHES: AuctionMatchVehicle[] = [
     fobPriceNzd: 12900,
     fobPriceJpy: 1180000,
     estLandedNzd: 16100,
-    image: 'https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&w=600&q=80',
+    image: '/vehicles/note.jpg',
     matchedDealersCount: 11,
     matchedDealers: [
       {
@@ -761,7 +761,7 @@ export const UPCOMING_AUCTION_MATCHES: AuctionMatchVehicle[] = [
     fobPriceNzd: 34500,
     fobPriceJpy: 3150000,
     estLandedNzd: 41200,
-    image: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=600&q=80',
+    image: '/vehicles/lexus_nx.jpg',
     matchedDealersCount: 7,
     matchedDealers: [
       {

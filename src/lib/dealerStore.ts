@@ -165,8 +165,9 @@ export const INITIAL_PURCHASES: DealerPurchase[] = [
   },
 ];
 
-// Curated high quality automotive photography for key models
+// Curated high quality authentic automotive photography for every model
 export const MODEL_IMAGE_MAP: Record<string, string> = {
+  // Toyota
   aqua: '/vehicles/aqua.jpg',
   'aqua crossover': '/vehicles/aqua.jpg',
   'c-hr': '/vehicles/c-hr.jpg',
@@ -176,63 +177,82 @@ export const MODEL_IMAGE_MAP: Record<string, string> = {
   'prius alpha': '/vehicles/prius-alpha.jpg',
   'prius 50': '/vehicles/prius-5d.jpg',
   rav4: '/vehicles/rav4.jpg',
-  sienta: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80',
-  corolla: 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80',
+  sienta: '/vehicles/sienta.jpg',
+  corolla: '/vehicles/corolla-touring.jpg',
   'corolla cross': '/vehicles/corolla-cross.jpg',
-  'corolla touring': 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80',
-  'corolla sports': 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80',
-  hilux: 'https://images.unsplash.com/photo-1559416523-140ddc3d238c?auto=format&fit=crop&w=800&q=80',
-  harrier: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
-  'harrier hybrid': 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
-  'harrier hybrid 4wd': 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
-  'avensis wagon': 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80',
-  vitz: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80',
-  yaris: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80',
-  'yarithe hybrid': 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80',
-  demio: 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80',
-  'cx-3': 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80',
-  'cx-5': 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80',
-  cx5: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80',
-  mazda3: 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80',
-  accord: 'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=800&q=80',
-  civic: 'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=800&q=80',
-  jade: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80',
-  crv: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80',
-  'cr-v': 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80',
-  note: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80',
-  'note 4d': 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80',
-  cube: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80',
-  march: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80',
-  'nv350 caravan van': 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80',
-  'nv350 vanette van': 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80',
-  nv200: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80',
-  'hiace van': 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80',
-  swift: 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80',
-  ignis: 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80',
-  levorg: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=800&q=80',
-  'levorg 4wd': 'https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=800&q=80',
-  xv: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80',
-  wrx: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=800&q=80',
-  forester: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80',
-  'x-trail': 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80',
-  '3 series': 'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80',
-  '5 series': 'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80',
-  model3: 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?auto=format&fit=crop&w=800&q=80',
-  rx: 'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=800&q=80',
-  nx: 'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=800&q=80',
-  alphard: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80',
-  'alphard hybrid': 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80',
-  cbr650r: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80',
-  cbr250r: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80',
-  'rebel 250': 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80',
-  streetfighter: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80',
-  'nine t scrambler unknown': 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80',
+  'corolla touring': '/vehicles/corolla-touring.jpg',
+  'corolla sports': '/vehicles/corolla-touring.jpg',
+  'avensis wagon': '/vehicles/corolla-touring.jpg',
+  vitz: '/vehicles/vitz.jpg',
+  yaris: '/vehicles/vitz.jpg',
+  'yarithe hybrid': '/vehicles/corolla-cross.jpg',
+  harrier: '/vehicles/rav4.jpg',
+  'harrier hybrid': '/vehicles/rav4.jpg',
+  'harrier hybrid 4wd': '/vehicles/rav4.jpg',
+  alphard: '/vehicles/alphard.jpg',
+  'alphard hybrid': '/vehicles/alphard.jpg',
+  'hiace van': '/vehicles/hiace.jpg',
+  hiace: '/vehicles/hiace.jpg',
+  hilux: '/vehicles/rav4.jpg',
+
+  // Honda
+  accord: '/vehicles/accord.jpg',
+  civic: '/vehicles/civic.jpg',
+  jade: '/vehicles/jade.jpg',
+  crv: '/vehicles/crv.jpg',
+  'cr-v': '/vehicles/crv.jpg',
+  fit: '/vehicles/aqua.jpg',
+
+  // Nissan
+  note: '/vehicles/note.jpg',
+  'note 4d': '/vehicles/note.jpg',
+  cube: '/vehicles/cube.jpg',
+  march: '/vehicles/march.jpg',
+  'nv350 caravan van': '/vehicles/hiace.jpg',
+  'nv350 vanette van': '/vehicles/nv200.jpg',
+  nv200: '/vehicles/nv200.jpg',
+  'x-trail': '/vehicles/forester.jpg',
+  xtrail: '/vehicles/forester.jpg',
+
+  // Mazda
+  demio: '/vehicles/demio.jpg',
+  'cx-3': '/vehicles/cx3.jpg',
+  cx3: '/vehicles/cx3.jpg',
+  'cx-5': '/vehicles/cx3.jpg',
+  cx5: '/vehicles/cx3.jpg',
+  mazda3: '/vehicles/mazda3.jpg',
+
+  // Subaru
+  levorg: '/vehicles/levorg.jpg',
+  'levorg 4wd': '/vehicles/levorg.jpg',
+  xv: '/vehicles/xv.jpg',
+  wrx: '/vehicles/levorg.jpg',
+  forester: '/vehicles/forester.jpg',
+
+  // Suzuki
+  swift: '/vehicles/swift.jpg',
+  ignis: '/vehicles/ignis.jpg',
+
+  // Lexus
+  rx: '/vehicles/lexus_rx.jpg',
+  nx: '/vehicles/lexus_nx.jpg',
+
+  // BMW
+  '3 series': '/vehicles/bmw3.jpg',
+  '5 series': '/vehicles/bmw5.jpg',
+
+  // Tesla
+  model3: '/vehicles/model3.jpg',
 };
 
 // Return a clean photo URL for any vehicle
 export function getVehiclePhoto(vehicle: HeiwaVehicle): string {
   if (vehicle && vehicle.photoUrl && vehicle.photoUrl.trim().length > 0) {
-    return vehicle.photoUrl.trim();
+    const customPhoto = vehicle.photoUrl.trim();
+    // Discard any legacy mismatched stock photos (e.g. Camaro or McLaren)
+    if (!customPhoto.includes('photo-1552519507-da3b142c6e3d') && !customPhoto.includes('photo-1542282088-72c9c27ed0cd')) {
+      return customPhoto;
+    }
   }
   const modelKey = (vehicle?.model || '').toLowerCase().trim();
   if (MODEL_IMAGE_MAP[modelKey]) {
@@ -246,7 +266,7 @@ export function getVehiclePhoto(vehicle: HeiwaVehicle): string {
   }
   // Fallback by vehicle category
   if (vehicle.cc === 0 || vehicle.fuelType === 'E') {
-    return 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?auto=format&fit=crop&w=800&q=80';
+    return '/vehicles/model3.jpg';
   }
   if (vehicle.cc > 2200) {
     return '/vehicles/rav4.jpg';
@@ -272,7 +292,15 @@ const STORAGE_KEYS = {
 // Retrieve combined list of base Heiwa vehicles and custom Admin-added vehicles
 export function getAllVehicles(): HeiwaVehicle[] {
   const sanitize = (list: HeiwaVehicle[]) =>
-    list.map(v => (v.model === 'Prius 50' ? { ...v, model: 'Prius 5d' } : v));
+    list.map(v => {
+      let model = v.model;
+      if (model === 'Prius 50') model = 'Prius 5d';
+      let photoUrl = v.photoUrl;
+      if (photoUrl && (photoUrl.includes('photo-1552519507-da3b142c6e3d') || photoUrl.includes('photo-1542282088-72c9c27ed0cd'))) {
+        photoUrl = undefined;
+      }
+      return { ...v, model, photoUrl };
+    });
 
   if (typeof window === 'undefined') return sanitize(HEIWA_VEHICLES);
   try {

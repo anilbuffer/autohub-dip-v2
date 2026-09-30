@@ -194,9 +194,11 @@ export const VEHICLES: Vehicle[] = [
     color: "Two-Tone Black / Pearl",
     vin: "ZYX10-2098411",
     dealer: "Auckland Auto Group",
-    image: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=1000&q=80",
+    image: "/vehicles/c-hr.jpg",
     gallery: [
-      "https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=1000&q=80"
+      "/vehicles/c-hr.jpg",
+      "/vehicles/aqua.jpg",
+      "/vehicles/prius-5d.jpg"
     ],
     aiAnalysis: {
       summary: "High-demand compact crossover. Desirable two-tone roof package with genuine LED headlights and leather-trimmed cabin. Highly liquid inventory.",
@@ -249,9 +251,10 @@ export const VEHICLES: Vehicle[] = [
     color: "Soul Red Crystal",
     vin: "BP5P-1049821",
     dealer: "Auckland Auto Group",
-    image: "https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=1000&q=80",
+    image: "/vehicles/mazda3.jpg",
     gallery: [
-      "https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=1000&q=80"
+      "/vehicles/mazda3.jpg",
+      "/vehicles/demio.jpg"
     ],
     aiAnalysis: {
       summary: "Next-gen BP chassis with award-winning Soul Red Crystal paintwork. Premium cabin materials, heads-up display, and Bose sound package.",
@@ -303,9 +306,10 @@ export const VEHICLES: Vehicle[] = [
     color: "Gun Metallic Grey",
     vin: "HE12-384910",
     dealer: "Christchurch Cars",
-    image: "https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&w=1000&q=80",
+    image: "/vehicles/note.jpg",
     gallery: [
-      "https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&w=1000&q=80"
+      "/vehicles/note.jpg",
+      "/vehicles/aqua.jpg"
     ],
     aiAnalysis: {
       summary: "Budget-conscious city commuter with electric drive feel. Lower auction grade (3.5) reflects interior wear and slight scratch on rear passenger arch.",
@@ -357,9 +361,10 @@ export const VEHICLES: Vehicle[] = [
     color: "Titanium Silver Metallic",
     vin: "AYZ15-1049281",
     dealer: "Auckland Auto Group",
-    image: "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1000&q=80",
+    image: "/vehicles/lexus_nx.jpg",
     gallery: [
-      "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1000&q=80"
+      "/vehicles/lexus_nx.jpg",
+      "/vehicles/lexus_rx.jpg"
     ],
     aiAnalysis: {
       summary: "Luxury segment flagship opportunity. F-Sport grade with genuine low kms, sunroof, red leather accents, and Mark Levinson surround audio.",
