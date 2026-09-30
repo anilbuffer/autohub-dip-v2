@@ -91,7 +91,7 @@ export default function VehicleDetailPage() {
       <AppLayout>
         <div className="py-16 text-center space-y-4">
           <Car size={48} className="mx-auto text-[#AAB8C2]" />
-          <h2 className="text-lg font-bold text-[#0F1419]">Vehicle Not Found</h2>
+          <h2 className="text-lg font-bold text-[#111C2D]">Vehicle Not Found</h2>
           <p className="text-xs text-[#536471]">
             The vehicle with ID &quot;{decodeURIComponent(id)}&quot; could not be found in active Heiwa auction stock.
           </p>
@@ -141,7 +141,7 @@ export default function VehicleDetailPage() {
         <div className="flex items-center justify-between">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-xs font-semibold text-[#536471] hover:text-[#0F1419] bg-white border border-[#E8ECF0] px-3.5 py-2 rounded-xl transition-colors shadow-xs"
+            className="inline-flex items-center gap-2 text-xs font-semibold text-[#536471] hover:text-[#111C2D] bg-white border border-[#E8ECF0] px-3.5 py-2 rounded-xl transition-colors shadow-xs"
           >
             <ArrowLeft size={14} /> Back to Browse Vehicles
           </Link>
@@ -152,7 +152,7 @@ export default function VehicleDetailPage() {
               className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all ${
                 isWatchlisted
                   ? "bg-rose-50 text-rose-700 border-rose-200 shadow-xs"
-                  : "bg-white text-[#536471] border-[#E8ECF0] hover:bg-[#F0F2F5] hover:text-[#0F1419]"
+                  : "bg-white text-[#536471] border-[#E8ECF0] hover:bg-[#F0F2F5] hover:text-[#111C2D]"
               }`}
             >
               <Heart size={14} className={isWatchlisted ? "fill-rose-600 text-rose-600" : ""} />
@@ -189,7 +189,7 @@ export default function VehicleDetailPage() {
                   </span>
                 </div>
                 {vehicle.ac && (
-                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-[#0F1419] px-2 py-0.5 rounded text-[11px] font-bold">
+                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-[#111C2D] px-2 py-0.5 rounded text-[11px] font-bold">
                     {vehicle.ac}
                   </div>
                 )}
@@ -205,7 +205,7 @@ export default function VehicleDetailPage() {
                   <ShieldCheck size={14} className="text-emerald-600" />
                   JEVIC Odometer Certified
                 </span>
-                <span className="font-semibold text-[#0F1419]">Verified Japan Stock</span>
+                <span className="font-semibold text-[#111C2D]">Verified Japan Stock</span>
               </div>
             </div>
 
@@ -218,24 +218,24 @@ export default function VehicleDetailPage() {
                   <span className="text-[#C8102E]">AUCTION LOT ACTIVE</span>
                 </div>
 
-                <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0F1419] tracking-tight">
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111C2D] tracking-tight">
                   {vehicle.year} {vehicle.make} {vehicle.model} {vehicle.grade}
                 </h1>
 
                 {/* Key Spec Badges */}
                 <div className="flex flex-wrap items-center gap-2.5 mt-3">
-                  <div className="px-3 py-1.5 rounded-lg bg-[#F7F9FA] border border-[#E8ECF0] text-xs font-semibold text-[#0F1419] flex items-center gap-1.5">
+                  <div className="px-3 py-1.5 rounded-lg bg-[#F7F9FA] border border-[#E8ECF0] text-xs font-semibold text-[#111C2D] flex items-center gap-1.5">
                     <Gauge size={13} className="text-[#8899A6]" />
                     <span className="font-mono">{vehicle.kms.toLocaleString()} km</span>
                   </div>
-                  <div className="px-3 py-1.5 rounded-lg bg-[#F7F9FA] border border-[#E8ECF0] text-xs font-semibold text-[#0F1419] flex items-center gap-1.5">
+                  <div className="px-3 py-1.5 rounded-lg bg-[#F7F9FA] border border-[#E8ECF0] text-xs font-semibold text-[#111C2D] flex items-center gap-1.5">
                     <Fuel size={13} className="text-emerald-600" />
                     <span>{vehicle.fuelType === "H" ? "Hybrid" : vehicle.fuelType === "D" ? "Diesel" : vehicle.fuelType === "E" ? "EV" : "Petrol"}</span>
                   </div>
-                  <div className="px-3 py-1.5 rounded-lg bg-[#F7F9FA] border border-[#E8ECF0] text-xs font-semibold text-[#0F1419]">
+                  <div className="px-3 py-1.5 rounded-lg bg-[#F7F9FA] border border-[#E8ECF0] text-xs font-semibold text-[#111C2D]">
                     {vehicle.cc > 0 ? `${vehicle.cc}cc Engine` : "Electric Motor"}
                   </div>
-                  <div className="px-3 py-1.5 rounded-lg bg-[#F7F9FA] border border-[#E8ECF0] text-xs font-semibold text-[#0F1419]">
+                  <div className="px-3 py-1.5 rounded-lg bg-[#F7F9FA] border border-[#E8ECF0] text-xs font-semibold text-[#111C2D]">
                     {vehicle.trans === "FAT" ? "Floor Automatic" : vehicle.trans === "DAT" ? "Direct AT" : vehicle.trans}
                   </div>
                 </div>
@@ -261,7 +261,7 @@ export default function VehicleDetailPage() {
                   <div className="text-[10px] font-bold text-[#8899A6] uppercase tracking-wider">
                     Avg NZ Market Retail
                   </div>
-                  <div className="text-xl font-extrabold text-[#0F1419] font-mono mt-0.5">
+                  <div className="text-xl font-extrabold text-[#111C2D] font-mono mt-0.5">
                     ${avgNzPrice.toLocaleString()} NZD
                   </div>
                   <div className="text-[11px] text-[#536471] mt-0.5">
@@ -295,7 +295,7 @@ export default function VehicleDetailPage() {
 
                 <button
                   onClick={handleToggleWatchlist}
-                  className="p-3 bg-white border border-[#E8ECF0] hover:bg-[#F0F2F5] text-[#0F1419] rounded-xl transition-colors"
+                  className="p-3 bg-white border border-[#E8ECF0] hover:bg-[#F0F2F5] text-[#111C2D] rounded-xl transition-colors"
                   title="Toggle Watchlist"
                 >
                   <Heart size={18} className={isWatchlisted ? "fill-rose-600 text-rose-600" : "text-[#536471]"} />
@@ -312,7 +312,7 @@ export default function VehicleDetailPage() {
             className={`flex items-center gap-2 px-5 py-3 text-xs sm:text-sm font-bold border-b-2 transition-all ${
               activeTab === "nz_market"
                 ? "border-[#C8102E] text-[#C8102E]"
-                : "border-transparent text-[#536471] hover:text-[#0F1419]"
+                : "border-transparent text-[#536471] hover:text-[#111C2D]"
             }`}
           >
             <TrendingUp size={16} />
@@ -324,7 +324,7 @@ export default function VehicleDetailPage() {
             className={`flex items-center gap-2 px-5 py-3 text-xs sm:text-sm font-bold border-b-2 transition-all ${
               activeTab === "landed_cost"
                 ? "border-[#C8102E] text-[#C8102E]"
-                : "border-transparent text-[#536471] hover:text-[#0F1419]"
+                : "border-transparent text-[#536471] hover:text-[#111C2D]"
             }`}
           >
             <DollarSign size={16} />
@@ -336,7 +336,7 @@ export default function VehicleDetailPage() {
             className={`flex items-center gap-2 px-5 py-3 text-xs sm:text-sm font-bold border-b-2 transition-all ${
               activeTab === "specs"
                 ? "border-[#C8102E] text-[#C8102E]"
-                : "border-transparent text-[#536471] hover:text-[#0F1419]"
+                : "border-transparent text-[#536471] hover:text-[#111C2D]"
             }`}
           >
             <ShieldCheck size={16} />
@@ -353,7 +353,7 @@ export default function VehicleDetailPage() {
                 <div className="text-[11px] font-bold text-[#8899A6] uppercase tracking-wider">
                   NZ Market Range
                 </div>
-                <div className="text-lg font-extrabold text-[#0F1419] font-mono mt-1">
+                <div className="text-lg font-extrabold text-[#111C2D] font-mono mt-1">
                   ${lowestNzPrice.toLocaleString()} - ${highestNzPrice.toLocaleString()}
                 </div>
                 <div className="text-xs text-[#536471] mt-1">
@@ -377,7 +377,7 @@ export default function VehicleDetailPage() {
                 <div className="text-[11px] font-bold text-[#8899A6] uppercase tracking-wider">
                   Market Liquidity
                 </div>
-                <div className="text-lg font-extrabold text-[#0F1419] font-mono mt-1">
+                <div className="text-lg font-extrabold text-[#111C2D] font-mono mt-1">
                   {avgDaysListed} Days
                 </div>
                 <div className="text-xs text-emerald-600 font-semibold mt-1">
@@ -402,7 +402,7 @@ export default function VehicleDetailPage() {
             <div className="bg-white rounded-2xl border border-[#E8ECF0] shadow-subtle overflow-hidden">
               <div className="p-5 border-b border-[#E8ECF0] flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#F7F9FA]">
                 <div>
-                  <h3 className="text-sm font-bold text-[#0F1419]">
+                  <h3 className="text-sm font-bold text-[#111C2D]">
                     Similar NZ Market Listings (Trade Me Motors, Turners, AutoTrader)
                   </h3>
                   <p className="text-xs text-[#536471] mt-0.5">
@@ -434,11 +434,11 @@ export default function VehicleDetailPage() {
 
                       return (
                         <tr key={idx} className="hover:bg-[#F7F9FA] transition-colors">
-                          <td className="py-3.5 px-5 font-semibold text-[#0F1419] flex items-center gap-2">
+                          <td className="py-3.5 px-5 font-semibold text-[#111C2D] flex items-center gap-2">
                             <span className="w-2 h-2 rounded-full bg-blue-500" />
                             {comp.source}
                           </td>
-                          <td className="py-3.5 px-4 font-bold text-[#0F1419]">
+                          <td className="py-3.5 px-4 font-bold text-[#111C2D]">
                             {comp.title}
                           </td>
                           <td className="py-3.5 px-4 font-mono text-[#536471]">
@@ -454,7 +454,7 @@ export default function VehicleDetailPage() {
                               {comp.daysListed} days
                             </span>
                           </td>
-                          <td className="py-3.5 px-5 text-right font-mono font-bold text-[#0F1419]">
+                          <td className="py-3.5 px-5 text-right font-mono font-bold text-[#111C2D]">
                             ${comp.price.toLocaleString()} NZD
                           </td>
                           <td className="py-3.5 px-5 text-right">
@@ -498,7 +498,7 @@ export default function VehicleDetailPage() {
                   </div>
                   <div className="text-right">
                     <span className="block text-[10px] text-[#8899A6] font-sans">Avg NZ Dealer Price</span>
-                    <span className="font-bold text-[#0F1419]">${avgNzPrice.toLocaleString()} NZD</span>
+                    <span className="font-bold text-[#111C2D]">${avgNzPrice.toLocaleString()} NZD</span>
                   </div>
                 </div>
               </div>
@@ -510,7 +510,7 @@ export default function VehicleDetailPage() {
         {activeTab === "landed_cost" && (
           <div className="bg-white rounded-2xl border border-[#E8ECF0] shadow-subtle p-6 space-y-6">
             <div>
-              <h3 className="text-base font-bold text-[#0F1419]">
+              <h3 className="text-base font-bold text-[#111C2D]">
                 AutoHub Landed Cost Transparency Formula
               </h3>
               <p className="text-xs text-[#536471] mt-0.5">
@@ -530,7 +530,7 @@ export default function VehicleDetailPage() {
                 </thead>
                 <tbody className="divide-y divide-[#E8ECF0]">
                   <tr>
-                    <td className="py-3 px-4 font-semibold text-[#0F1419]">
+                    <td className="py-3 px-4 font-semibold text-[#111C2D]">
                       Japan FOB Auction Purchase Price
                     </td>
                     <td className="py-3 px-4 text-[#536471]">
@@ -539,59 +539,59 @@ export default function VehicleDetailPage() {
                     <td className="py-3 px-4 text-right font-mono text-[#536471]">
                       ¥{vehicle.priceFob.toLocaleString()}
                     </td>
-                    <td className="py-3 px-4 text-right font-mono font-bold text-[#0F1419]">
+                    <td className="py-3 px-4 text-right font-mono font-bold text-[#111C2D]">
                       ${landed.fobNzd.toLocaleString()} NZD
                     </td>
                   </tr>
 
                   <tr>
-                    <td className="py-3 px-4 font-semibold text-[#0F1419]">
+                    <td className="py-3 px-4 font-semibold text-[#111C2D]">
                       Ocean RoRo Freight & Transit Insurance
                     </td>
                     <td className="py-3 px-4 text-[#536471]">
                       Yokohama / Nagoya to Ports of Auckland
                     </td>
                     <td className="py-3 px-4 text-right font-mono text-[#8899A6]">-</td>
-                    <td className="py-3 px-4 text-right font-mono text-[#0F1419]">
+                    <td className="py-3 px-4 text-right font-mono text-[#111C2D]">
                       ${landed.freight.toLocaleString()} NZD
                     </td>
                   </tr>
 
                   <tr>
-                    <td className="py-3 px-4 font-semibold text-[#0F1419]">
+                    <td className="py-3 px-4 font-semibold text-[#111C2D]">
                       NZ MAF Bio-Security & Entry Compliance
                     </td>
                     <td className="py-3 px-4 text-[#536471]">
                       JEVIC inspection, heat treatment & NZTA entry compliance
                     </td>
                     <td className="py-3 px-4 text-right font-mono text-[#8899A6]">-</td>
-                    <td className="py-3 px-4 text-right font-mono text-[#0F1419]">
+                    <td className="py-3 px-4 text-right font-mono text-[#111C2D]">
                       ${landed.compliance.toLocaleString()} NZD
                     </td>
                   </tr>
 
                   <tr>
-                    <td className="py-3 px-4 font-semibold text-[#0F1419]">
+                    <td className="py-3 px-4 font-semibold text-[#111C2D]">
                       Port Logistics & Document Clearing
                     </td>
                     <td className="py-3 px-4 text-[#536471]">
                       Wharfage, customs EDI dispatch & documentation
                     </td>
                     <td className="py-3 px-4 text-right font-mono text-[#8899A6]">-</td>
-                    <td className="py-3 px-4 text-right font-mono text-[#0F1419]">
+                    <td className="py-3 px-4 text-right font-mono text-[#111C2D]">
                       ${landed.portFees.toLocaleString()} NZD
                     </td>
                   </tr>
 
                   <tr className="bg-[#F7F9FA]">
-                    <td className="py-3 px-4 font-bold text-[#0F1419]">
+                    <td className="py-3 px-4 font-bold text-[#111C2D]">
                       GST (15% on CIF + Compliance)
                     </td>
                     <td className="py-3 px-4 text-[#536471]">
                       Inland Revenue GST payable at border (Claimable on GST return)
                     </td>
                     <td className="py-3 px-4 text-right font-mono text-[#8899A6]">-</td>
-                    <td className="py-3 px-4 text-right font-mono font-bold text-[#0F1419]">
+                    <td className="py-3 px-4 text-right font-mono font-bold text-[#111C2D]">
                       ${landed.gst.toLocaleString()} NZD
                     </td>
                   </tr>
@@ -619,7 +619,7 @@ export default function VehicleDetailPage() {
         {/* ─── TAB 3: INSPECTION & SPECS ─── */}
         {activeTab === "specs" && (
           <div className="bg-white rounded-2xl border border-[#E8ECF0] shadow-subtle p-6 space-y-6">
-            <h3 className="text-base font-bold text-[#0F1419]">
+            <h3 className="text-base font-bold text-[#111C2D]">
               Heiwa Japan Vehicle Inspection Data
             </h3>
 
@@ -630,19 +630,19 @@ export default function VehicleDetailPage() {
                 </span>
                 <div className="flex justify-between text-xs py-1 border-b border-[#E8ECF0]">
                   <span className="text-[#536471]">Chassis ID:</span>
-                  <span className="font-mono font-bold text-[#0F1419]">{vehicle.chassis}</span>
+                  <span className="font-mono font-bold text-[#111C2D]">{vehicle.chassis}</span>
                 </div>
                 <div className="flex justify-between text-xs py-1 border-b border-[#E8ECF0]">
                   <span className="text-[#536471]">Engine Displacement:</span>
-                  <span className="font-bold text-[#0F1419]">{vehicle.cc > 0 ? `${vehicle.cc} cc` : "Electric"}</span>
+                  <span className="font-bold text-[#111C2D]">{vehicle.cc > 0 ? `${vehicle.cc} cc` : "Electric"}</span>
                 </div>
                 <div className="flex justify-between text-xs py-1 border-b border-[#E8ECF0]">
                   <span className="text-[#536471]">Transmission:</span>
-                  <span className="font-bold text-[#0F1419]">{vehicle.trans}</span>
+                  <span className="font-bold text-[#111C2D]">{vehicle.trans}</span>
                 </div>
                 <div className="flex justify-between text-xs py-1 border-b border-[#E8ECF0]">
                   <span className="text-[#536471]">Fuel Type:</span>
-                  <span className="font-bold text-[#0F1419]">
+                  <span className="font-bold text-[#111C2D]">
                     {vehicle.fuelType === "H" ? "Hybrid" : vehicle.fuelType === "D" ? "Diesel" : vehicle.fuelType === "E" ? "Electric" : "Petrol"}
                   </span>
                 </div>
@@ -660,15 +660,15 @@ export default function VehicleDetailPage() {
                 </div>
                 <div className="flex justify-between text-xs py-1 border-b border-[#E8ECF0]">
                   <span className="text-[#536471]">A/C & Interior Condition:</span>
-                  <span className="font-bold text-[#0F1419]">{vehicle.ac || "Clean Grade B"}</span>
+                  <span className="font-bold text-[#111C2D]">{vehicle.ac || "Clean Grade B"}</span>
                 </div>
                 <div className="flex justify-between text-xs py-1 border-b border-[#E8ECF0]">
                   <span className="text-[#536471]">Equipment & Features:</span>
-                  <span className="font-mono text-[#0F1419] uppercase">{vehicle.equip || "PS, PW, ABS, Airbags"}</span>
+                  <span className="font-mono text-[#111C2D] uppercase">{vehicle.equip || "PS, PW, ABS, Airbags"}</span>
                 </div>
                 <div className="flex justify-between text-xs py-1 border-b border-[#E8ECF0]">
                   <span className="text-[#536471]">Verified Odometer:</span>
-                  <span className="font-bold font-mono text-[#0F1419]">{vehicle.kms.toLocaleString()} km</span>
+                  <span className="font-bold font-mono text-[#111C2D]">{vehicle.kms.toLocaleString()} km</span>
                 </div>
               </div>
             </div>
@@ -684,7 +684,7 @@ export default function VehicleDetailPage() {
                   <span className="text-[10px] font-bold uppercase tracking-wider text-[#8899A6]">
                     Direct Japan Auction Bidding
                   </span>
-                  <h3 className="text-lg font-bold text-[#0F1419]">
+                  <h3 className="text-lg font-bold text-[#111C2D]">
                     {vehicle.year} {vehicle.make} {vehicle.model}
                   </h3>
                   <p className="text-xs text-[#536471] font-mono mt-0.5">
@@ -693,7 +693,7 @@ export default function VehicleDetailPage() {
                 </div>
                 <button
                   onClick={() => setBidModalOpen(false)}
-                  className="text-[#8899A6] hover:text-[#0F1419] p-1 rounded-lg hover:bg-gray-100"
+                  className="text-[#8899A6] hover:text-[#111C2D] p-1 rounded-lg hover:bg-gray-100"
                 >
                   ✕
                 </button>
@@ -742,7 +742,7 @@ export default function VehicleDetailPage() {
                         step={10000}
                         value={bidAmountJpy}
                         onChange={(e) => setBidAmountJpy(parseInt(e.target.value) || 0)}
-                        className="w-full pl-8 pr-4 py-3 bg-white border border-[#CCD6DD] rounded-xl font-mono font-bold text-base text-[#0F1419] focus:outline-none focus:border-[#C8102E] focus:ring-2 focus:ring-[#C8102E]/10"
+                        className="w-full pl-8 pr-4 py-3 bg-white border border-[#CCD6DD] rounded-xl font-mono font-bold text-base text-[#111C2D] focus:outline-none focus:border-[#C8102E] focus:ring-2 focus:ring-[#C8102E]/10"
                       />
                     </div>
                   </div>

@@ -465,8 +465,8 @@ export default function DealerChatAssistant({
           isExpanded ? "w-[580px]" : "w-[440px]"
         } max-w-[94vw] bg-white shadow-[-12px_0_40px_rgba(0,0,0,0.22)] border-l border-slate-200/90 flex flex-col animate-in slide-in-from-right duration-300`}
       >
-        {/* Top Header */}
-        <div className="p-4 bg-gradient-to-r from-[#0B1322] via-[#101C33] to-[#1B2A4A] text-white shrink-0 border-b border-[#1B2A4A]/80 shadow-sm">
+        {/* Top Header — Light Navy Theme */}
+        <div className="p-4 bg-gradient-to-r from-[#182C48] via-[#14243B] to-[#101C2E] text-white shrink-0 border-b border-[#1E3A5F]/60 shadow-sm">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-xl bg-[#B30D12] flex items-center justify-center font-bold text-white shadow-md shadow-[#B30D12]/30 shrink-0">
@@ -571,7 +571,7 @@ export default function DealerChatAssistant({
             <div
               className={`group relative max-w-[92%] p-3.5 rounded-2xl text-xs leading-relaxed transition-all shadow-xs ${
                 msg.sender === "user"
-                  ? "bg-[#0B1322] text-white rounded-tr-none font-medium border border-[#1B2A4A]"
+                  ? "bg-[#1E3A5F] text-white rounded-tr-none font-medium border border-[#2B4E7D]"
                   : "bg-white text-slate-800 rounded-tl-none border border-slate-200/90 shadow-sm"
               }`}
             >
@@ -921,7 +921,7 @@ function SheetGlossaryWidget() {
         <button
           onClick={() => setActiveTab("marks")}
           className={`px-2.5 py-1 rounded text-[11px] font-bold transition-colors ${
-            activeTab === "marks" ? "bg-[#0B1322] text-white" : "bg-white text-slate-600 border border-slate-200"
+            activeTab === "marks" ? "bg-[#1E3A5F] text-white" : "bg-white text-slate-600 border border-slate-200"
           }`}
         >
           Inspection Marks (A1, W2, U1)
@@ -929,7 +929,7 @@ function SheetGlossaryWidget() {
         <button
           onClick={() => setActiveTab("grades")}
           className={`px-2.5 py-1 rounded text-[11px] font-bold transition-colors ${
-            activeTab === "grades" ? "bg-[#0B1322] text-white" : "bg-white text-slate-600 border border-slate-200"
+            activeTab === "grades" ? "bg-[#1E3A5F] text-white" : "bg-white text-slate-600 border border-slate-200"
           }`}
         >
           Auction Grades (5, 4.5, 4.0, R)

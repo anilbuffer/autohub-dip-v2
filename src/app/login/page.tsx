@@ -35,18 +35,18 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex font-sans">
       
-      {/* ─── Left — Brand panel ─── */}
-      <div className="hidden lg:flex lg:w-[500px] xl:w-[540px] flex-col justify-between bg-[#0F1419] text-white p-12 relative overflow-hidden">
+      {/* ─── Left — Brand panel (Light Navy Theme) ─── */}
+      <div className="hidden lg:flex lg:w-[500px] xl:w-[540px] flex-col justify-between bg-gradient-to-b from-[#182C48] via-[#14243B] to-[#101C2E] border-r border-[#1E3A5F]/40 text-white p-12 relative overflow-hidden">
         
         {/* Subtle decorative elements */}
-        <div className="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-[#C8102E]/[0.06] blur-3xl" />
-        <div className="absolute -left-16 -bottom-16 w-72 h-72 rounded-full bg-[#C8102E]/[0.04] blur-3xl" />
-        <div className="absolute top-1/2 right-1/3 w-32 h-32 rounded-full bg-[#C8102E]/[0.03] blur-2xl" />
+        <div className="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-[#1E3A5F]/40 blur-3xl" />
+        <div className="absolute -left-16 -bottom-16 w-72 h-72 rounded-full bg-[#C8102E]/[0.08] blur-3xl" />
+        <div className="absolute top-1/2 right-1/3 w-32 h-32 rounded-full bg-[#2B5885]/20 blur-2xl" />
 
         {/* Logo & brand */}
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-[#C8102E] flex items-center justify-center shadow-lg shadow-red-900/40">
+            <div className="w-10 h-10 rounded-xl bg-[#C8102E] flex items-center justify-center shadow-lg shadow-red-950/40">
               <img 
                 src="/autohub-logo.jpg" 
                 alt="AutoHub" 
@@ -55,7 +55,7 @@ export default function LoginPage() {
             </div>
             <div>
               <span className="text-[16px] font-bold tracking-wide block leading-none">AutoHub</span>
-              <span className="text-[11px] text-white/40 font-medium tracking-widest uppercase">
+              <span className="text-[11px] text-[#9AB9D5] font-semibold tracking-widest uppercase">
                 Dealer Intelligence Platform
               </span>
             </div>
@@ -67,9 +67,9 @@ export default function LoginPage() {
           <div>
             <h1 className="text-4xl font-extrabold leading-snug tracking-tight text-white">
               Source smarter from<br />
-              <span className="text-white/40">Japan to New Zealand.</span>
+              <span className="text-[#9AB9D5]">Japan to New Zealand.</span>
             </h1>
-            <p className="text-[15px] text-white/45 leading-relaxed max-w-sm mt-4">
+            <p className="text-[15px] text-[#BACDD8] leading-relaxed max-w-sm mt-4">
               Create your wish list, match against live Heiwa auction inventory, 
               and compare landed costs with NZ retail pricing — all in one place.
             </p>
@@ -83,27 +83,27 @@ export default function LoginPage() {
               { icon: BarChart3, step: "3", label: "Compare against NZ market" },
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-3.5 group">
-                <div className="w-10 h-10 rounded-xl bg-white/[0.05] flex items-center justify-center flex-shrink-0 group-hover:bg-white/[0.08] transition-colors">
+                <div className="w-10 h-10 rounded-xl bg-white/[0.08] flex items-center justify-center flex-shrink-0 group-hover:bg-white/[0.12] transition-colors border border-white/10">
                   <item.icon size={18} className="text-[#C8102E]" />
                 </div>
                 <div className="flex items-center gap-2.5">
-                  <span className="text-[10px] font-bold bg-[#C8102E]/20 text-[#FF6B78] px-2 py-0.5 rounded-md">{item.step}</span>
-                  <span className="text-[14px] text-white/60 font-medium">{item.label}</span>
+                  <span className="text-[10px] font-bold bg-[#C8102E]/20 text-[#FF6B78] px-2 py-0.5 rounded-md border border-[#C8102E]/30">{item.step}</span>
+                  <span className="text-[14px] text-white/80 font-medium">{item.label}</span>
                 </div>
-                <ChevronRight size={14} className="text-white/15 ml-auto" />
+                <ChevronRight size={14} className="text-white/20 ml-auto" />
               </div>
             ))}
           </div>
         </div>
 
         {/* Footer */}
-        <div className="relative z-10 text-[11px] text-white/25 font-medium">
+        <div className="relative z-10 text-[11px] text-[#9AB9D5] font-medium">
           © {new Date().getFullYear()} AutoHub New Zealand. All rights reserved.
         </div>
       </div>
 
       {/* ─── Right — Login form ─── */}
-      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-[#FAFBFC]">
+      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-[#F8FAFC]">
         <div className="w-full max-w-[400px]">
 
           {/* Mobile logo */}
@@ -116,24 +116,24 @@ export default function LoginPage() {
               />
             </div>
             <div>
-              <span className="text-[15px] font-bold text-[#0F1419] block leading-none">AutoHub</span>
-              <span className="text-[10px] text-[#AAB8C2] uppercase tracking-wider font-medium">Dealer Intelligence Platform</span>
+              <span className="text-[15px] font-bold text-[#111C2D] block leading-none">AutoHub</span>
+              <span className="text-[10px] text-[#94A3B8] uppercase tracking-wider font-medium">Dealer Intelligence Platform</span>
             </div>
           </div>
 
           {/* Heading */}
           <div className="mb-8">
-            <h2 className="text-2xl font-extrabold text-[#0F1419] tracking-tight">
+            <h2 className="text-2xl font-extrabold text-[#111C2D] tracking-tight">
               Sign in
             </h2>
-            <p className="text-[14px] text-[#536471] mt-1.5">
+            <p className="text-[14px] text-[#475569] mt-1.5">
               Enter your credentials or use the demo account.
             </p>
           </div>
 
           {/* Demo access */}
           <div className="mb-7">
-            <span className="text-[10px] font-bold text-[#AAB8C2] uppercase tracking-[0.12em] block mb-2.5">
+            <span className="text-[10px] font-bold text-[#94A3B8] uppercase tracking-[0.12em] block mb-2.5">
               Quick Access
             </span>
             <button
@@ -141,28 +141,28 @@ export default function LoginPage() {
               type="button"
               onClick={loginAsDemo}
               disabled={loading}
-              className="w-full flex items-center gap-4 p-4 rounded-2xl border-2 border-[#E8ECF0] hover:border-[#C8102E]/20 bg-white hover:bg-[#FFF0F1]/50 transition-all text-left group disabled:opacity-50 shadow-subtle hover:shadow-card"
+              className="w-full flex items-center gap-4 p-4 rounded-2xl border-2 border-[#E2E8F0] hover:border-[#1E3A5F]/30 bg-white hover:bg-[#F0F4F9]/60 transition-all text-left group disabled:opacity-50 shadow-subtle hover:shadow-card"
             >
               <div className="w-11 h-11 rounded-xl bg-emerald-50 flex items-center justify-center flex-shrink-0 border border-emerald-100">
                 <Building2 size={18} className="text-emerald-600" />
               </div>
               <div className="min-w-0 flex-1">
-                <div className="text-[14px] font-bold text-[#0F1419]">Demo Dealer Account</div>
-                <div className="text-[12px] text-[#8899A6] mt-0.5">
+                <div className="text-[14px] font-bold text-[#111C2D]">Demo Dealer Account</div>
+                <div className="text-[12px] text-[#64748B] mt-0.5">
                   {loading ? 'Signing in…' : 'Auckland Auto Group · David Miller'}
                 </div>
               </div>
-              <ArrowRight size={16} className="text-[#D1D5DB] group-hover:text-[#C8102E] group-hover:translate-x-1 transition-all" />
+              <ArrowRight size={16} className="text-[#CBD5E1] group-hover:text-[#1E3A5F] group-hover:translate-x-1 transition-all" />
             </button>
           </div>
 
           {/* Divider */}
           <div className="relative my-7">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-[#E8ECF0]"></div>
+              <div className="w-full border-t border-[#E2E8F0]"></div>
             </div>
             <div className="relative flex justify-center">
-              <span className="bg-[#FAFBFC] px-4 text-[11px] text-[#AAB8C2] uppercase tracking-wider font-bold">
+              <span className="bg-[#F8FAFC] px-4 text-[11px] text-[#94A3B8] uppercase tracking-wider font-bold">
                 or sign in with email
               </span>
             </div>

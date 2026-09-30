@@ -110,7 +110,7 @@ export default function DataSourceModal({ isOpen, onClose }: DataSourceModalProp
           </div>
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-[#1B2A4A] hover:bg-[#0B1322] text-white rounded-xl font-bold text-xs transition-colors self-end sm:self-auto"
+            className="px-4 py-2 bg-[#1E3A5F] hover:bg-[#162C48] text-white rounded-xl font-bold text-xs transition-colors self-end sm:self-auto"
           >
             Understood
           </button>

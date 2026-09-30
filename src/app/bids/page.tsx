@@ -79,8 +79,8 @@ export default function MyBidsPage() {
   return (
     <AppLayout>
       <div className="space-y-6 pb-16">
-        {/* ─── Hero Header ─── */}
-        <div className="bg-[#0F1419] text-white rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+        {/* ─── Hero Header — Light Navy Theme ─── */}
+        <div className="bg-gradient-to-r from-[#182C48] via-[#15253D] to-[#111E32] text-white rounded-2xl p-6 sm:p-8 shadow-elevated relative overflow-hidden border border-[#25426B]/50">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 relative z-10">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white/90 text-xs font-semibold mb-3 border border-white/10">
@@ -115,13 +115,13 @@ export default function MyBidsPage() {
 
         {/* ─── Filter Tabs & Actions ─── */}
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-          <div className="flex items-center gap-2 p-1 bg-white border border-[#E8ECF0] rounded-xl shadow-xs">
+          <div className="flex items-center gap-2 p-1 bg-white border border-[#E2E8F0] rounded-xl shadow-xs">
             <button
               onClick={() => setActiveFilter("all")}
               className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
                 activeFilter === "all"
-                  ? "bg-[#0F1419] text-white"
-                  : "text-[#536471] hover:text-[#0F1419]"
+                  ? "bg-[#1E3A5F] text-white shadow-xs"
+                  : "text-[#475569] hover:text-[#111C2D]"
               }`}
             >
               All Bids ({bids.length})
@@ -130,8 +130,8 @@ export default function MyBidsPage() {
               onClick={() => setActiveFilter("active")}
               className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
                 activeFilter === "active"
-                  ? "bg-[#0F1419] text-white"
-                  : "text-[#536471] hover:text-[#0F1419]"
+                  ? "bg-[#1E3A5F] text-white shadow-xs"
+                  : "text-[#475569] hover:text-[#111C2D]"
               }`}
             >
               Active Bids ({activeBids.length})
@@ -140,8 +140,8 @@ export default function MyBidsPage() {
               onClick={() => setActiveFilter("won")}
               className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
                 activeFilter === "won"
-                  ? "bg-[#0F1419] text-white"
-                  : "text-[#536471] hover:text-[#0F1419]"
+                  ? "bg-[#1E3A5F] text-white shadow-xs"
+                  : "text-[#475569] hover:text-[#111C2D]"
               }`}
             >
               Won at Auction ({wonBids.length})
@@ -160,13 +160,13 @@ export default function MyBidsPage() {
         {displayedBids.length === 0 ? (
           <div className="bg-white rounded-2xl p-12 text-center border border-[#E8ECF0] shadow-subtle">
             <Gavel size={44} className="mx-auto text-[#AAB8C2] mb-3" />
-            <h3 className="text-base font-bold text-[#0F1419]">No Bids In This View</h3>
-            <p className="text-xs text-[#536471] max-w-sm mx-auto mt-1 mb-5">
+            <h3 className="text-base font-bold text-[#111C2D]">No Bids In This View</h3>
+            <p className="text-xs text-[#475569] max-w-sm mx-auto mt-1 mb-5">
               Explore current Japan auction stock to find matching inventory and submit bids.
             </p>
             <Link
               href="/"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0F1419] text-white text-xs font-bold hover:bg-black transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#1E3A5F] text-white text-xs font-bold hover:bg-[#162C48] transition-colors"
             >
               <Car size={14} /> Browse Heiwa Stock
             </Link>
@@ -230,7 +230,7 @@ export default function MyBidsPage() {
                     {/* Card Content */}
                     <div className="p-5 space-y-3">
                       <div>
-                        <h3 className="text-base font-bold text-[#0F1419]">
+                        <h3 className="text-base font-bold text-[#111C2D]">
                           {bid.year} {bid.make} {bid.model}
                         </h3>
                         <div className="text-xs text-[#536471] font-mono mt-0.5">
@@ -244,7 +244,7 @@ export default function MyBidsPage() {
                           <span className="text-[11px] font-bold text-[#8899A6] uppercase tracking-wider">
                             Your Max Bid (FOB)
                           </span>
-                          <span className="text-sm font-bold font-mono text-[#0F1419]">
+                          <span className="text-sm font-bold font-mono text-[#111C2D]">
                             ¥{bid.bidFobJpy.toLocaleString()}
                           </span>
                         </div>
@@ -269,7 +269,7 @@ export default function MyBidsPage() {
                             setEditingBid(bid);
                             setNewBidAmount(bid.bidFobJpy + 20000);
                           }}
-                          className="flex-1 py-2 bg-[#0F1419] hover:bg-black text-white text-xs font-bold rounded-xl transition-colors"
+                          className="flex-1 py-2 bg-[#1E3A5F] hover:bg-[#162C48] text-white text-xs font-bold rounded-xl transition-colors"
                         >
                           Modify Bid
                         </button>
@@ -305,13 +305,13 @@ export default function MyBidsPage() {
                   <span className="text-[10px] font-bold text-[#8899A6] uppercase tracking-wider">
                     Adjust Max Auction Bid
                   </span>
-                  <h3 className="text-base font-bold text-[#0F1419]">
+                  <h3 className="text-base font-bold text-[#111C2D]">
                     {editingBid.year} {editingBid.make} {editingBid.model}
                   </h3>
                 </div>
                 <button
                   onClick={() => setEditingBid(null)}
-                  className="text-[#8899A6] hover:text-[#0F1419]"
+                  className="text-[#8899A6] hover:text-[#111C2D]"
                 >
                   ✕
                 </button>
@@ -328,7 +328,7 @@ export default function MyBidsPage() {
                     step={10000}
                     value={newBidAmount}
                     onChange={(e) => setNewBidAmount(parseInt(e.target.value) || 0)}
-                    className="w-full pl-8 pr-4 py-2.5 bg-white border border-[#CCD6DD] rounded-xl font-mono font-bold text-sm text-[#0F1419] focus:outline-none focus:border-[#C8102E]"
+                    className="w-full pl-8 pr-4 py-2.5 bg-white border border-[#CCD6DD] rounded-xl font-mono font-bold text-sm text-[#111C2D] focus:outline-none focus:border-[#C8102E]"
                   />
                 </div>
                 <div className="text-xs text-[#536471]">

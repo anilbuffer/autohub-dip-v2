@@ -17,8 +17,8 @@ export default function MatchesRedirectPage() {
     <AppLayout>
       <div className="py-20 text-center space-y-4">
         <Sparkles size={36} className="mx-auto text-[#C8102E] animate-pulse" />
-        <h2 className="text-base font-bold text-[#0F1419]">Loading Wishlist Matches...</h2>
-        <p className="text-xs text-[#536471]">
+        <h2 className="text-base font-bold text-[#111C2D]">Loading Wishlist Matches...</h2>
+        <p className="text-xs text-[#475569]">
           Redirecting to Browse Vehicles with your active Wishlist filter applied.
         </p>
         <Link

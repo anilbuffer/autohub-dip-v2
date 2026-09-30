@@ -42,8 +42,8 @@ export default function PurchasesPage() {
   return (
     <AppLayout>
       <div className="space-y-6 pb-16">
-        {/* ─── Hero Header ─── */}
-        <div className="bg-[#0F1419] text-white rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+        {/* ─── Hero Header — Light Navy Theme ─── */}
+        <div className="bg-gradient-to-r from-[#182C48] via-[#15253D] to-[#111E32] text-white rounded-2xl p-6 sm:p-8 shadow-elevated relative overflow-hidden border border-[#25426B]/50">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 relative z-10">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white/90 text-xs font-semibold mb-3 border border-white/10">
@@ -101,7 +101,7 @@ export default function PurchasesPage() {
                     />
                     <div>
                       <div className="flex items-center gap-2">
-                        <h3 className="text-base font-bold text-[#0F1419]">
+                        <h3 className="text-base font-bold text-[#111C2D]">
                           {purchase.year} {purchase.make} {purchase.model}
                         </h3>
                         <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
@@ -127,7 +127,7 @@ export default function PurchasesPage() {
                       <div className="text-[10px] font-bold text-[#8899A6] uppercase tracking-wider">
                         Vessel / ETA
                       </div>
-                      <div className="text-xs font-bold text-[#0F1419] flex items-center gap-1">
+                      <div className="text-xs font-bold text-[#111C2D] flex items-center gap-1">
                         <Ship size={13} className="text-blue-600" />
                         {purchase.etaDate}
                       </div>
@@ -165,7 +165,7 @@ export default function PurchasesPage() {
                           >
                             {isCompleted ? <CheckCircle2 size={16} /> : stage.step}
                           </div>
-                          <div className="text-xs font-bold text-[#0F1419] mt-2">
+                          <div className="text-xs font-bold text-[#111C2D] mt-2">
                             {stage.title}
                           </div>
                           <div className="text-[10px] text-[#8899A6] hidden sm:block mt-0.5">
@@ -183,7 +183,7 @@ export default function PurchasesPage() {
                     <span className="text-[#8899A6] block text-[10px] font-bold uppercase">
                       Current Logistics Stage
                     </span>
-                    <span className="font-semibold text-[#0F1419] mt-0.5 block flex items-center gap-1.5">
+                    <span className="font-semibold text-[#111C2D] mt-0.5 block flex items-center gap-1.5">
                       <Clock size={12} className="text-blue-600" />
                       {purchase.stageStatus}
                     </span>
@@ -193,7 +193,7 @@ export default function PurchasesPage() {
                     <span className="text-[#8899A6] block text-[10px] font-bold uppercase">
                       Vessel & Ports
                     </span>
-                    <span className="font-semibold text-[#0F1419] mt-0.5 block">
+                    <span className="font-semibold text-[#111C2D] mt-0.5 block">
                       {purchase.vesselName} ({purchase.departurePort} → {purchase.destinationPort})
                     </span>
                   </div>

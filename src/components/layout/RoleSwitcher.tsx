@@ -14,8 +14,8 @@ export default function RoleSwitcher({ variant = 'light' }: RoleSwitcherProps) {
   const isAdmin = pathname.startsWith('/admin');
 
   return (
-    <div className="flex items-center gap-1 bg-[#F0F2F5] p-1 rounded-xl border border-[#E8ECF0]">
-      <span className="text-[10px] font-bold text-[#AAB8C2] pl-2 pr-1 uppercase tracking-wider hidden sm:inline select-none">
+    <div className="flex items-center gap-1 bg-[#F1F5F9] p-1 rounded-xl border border-[#E2E8F0]">
+      <span className="text-[10px] font-bold text-[#94A3B8] pl-2 pr-1 uppercase tracking-wider hidden sm:inline select-none">
         View:
       </span>
 
@@ -24,14 +24,14 @@ export default function RoleSwitcher({ variant = 'light' }: RoleSwitcherProps) {
         href="/"
         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-semibold transition-all select-none ${
           !isAdmin
-            ? 'bg-white text-[#0F1419] shadow-sm border border-[#E8ECF0]'
-            : 'text-[#8899A6] hover:text-[#536471] hover:bg-white/50'
+            ? 'bg-white text-[#111C2D] shadow-sm border border-[#E2E8F0]'
+            : 'text-[#64748B] hover:text-[#111C2D] hover:bg-white/60'
         }`}
         title="Switch to Dealer Portal View"
       >
         <Building2 
           size={14} 
-          className={!isAdmin ? 'text-emerald-600' : 'text-[#AAB8C2]'} 
+          className={!isAdmin ? 'text-emerald-600' : 'text-[#94A3B8]'} 
         />
         <span>Dealer</span>
         {!isAdmin && (
@@ -44,14 +44,14 @@ export default function RoleSwitcher({ variant = 'light' }: RoleSwitcherProps) {
         href="/admin"
         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-semibold transition-all select-none ${
           isAdmin
-            ? 'bg-[#0F1419] text-white shadow-sm'
-            : 'text-[#8899A6] hover:text-[#536471] hover:bg-white/50'
+            ? 'bg-[#1E3A5F] text-white shadow-sm'
+            : 'text-[#64748B] hover:text-[#111C2D] hover:bg-white/60'
         }`}
         title="Switch to Autohub / Heiwa Admin Command Center"
       >
         <ShieldCheck 
           size={14} 
-          className={isAdmin ? 'text-blue-300' : 'text-[#AAB8C2]'} 
+          className={isAdmin ? 'text-blue-300' : 'text-[#94A3B8]'} 
         />
         <span>Admin</span>
         {isAdmin && (

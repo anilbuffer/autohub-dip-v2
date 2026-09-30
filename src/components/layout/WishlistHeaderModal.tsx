@@ -56,7 +56,7 @@ export function WishlistButton({ onClick }: { onClick: () => void }) {
       className={`relative flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-[12px] font-semibold transition-all duration-200 border ${
         criteriaCount > 0
           ? 'bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100 shadow-sm'
-          : 'bg-[#F7F9FA] text-[#536471] border-[#E8ECF0] hover:bg-[#F0F2F5] hover:text-[#0F1419]'
+          : 'bg-[#F7F9FA] text-[#536471] border-[#E8ECF0] hover:bg-[#F0F2F5] hover:text-[#111C2D]'
       }`}
       title="Manage Buying Wish List Criteria"
     >
@@ -165,7 +165,7 @@ export default function WishlistHeaderModal({ isOpen, onClose, onApply }: Wishli
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-base font-bold text-[#0F1419]">My Buying Wish List</h3>
+                <h3 className="text-base font-bold text-[#111C2D]">My Buying Wish List</h3>
                 <span className="text-[11px] font-semibold text-rose-700 bg-rose-100/80 px-2 py-0.5 rounded-full">
                   Step 1 of Journey
                 </span>
@@ -177,24 +177,24 @@ export default function WishlistHeaderModal({ isOpen, onClose, onApply }: Wishli
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-[#8899A6] hover:text-[#0F1419] hover:bg-[#F0F2F5] rounded-xl transition-colors"
+            className="p-2 text-[#8899A6] hover:text-[#111C2D] hover:bg-[#F0F2F5] rounded-xl transition-colors"
           >
             <X size={18} />
           </button>
         </div>
 
         {/* Live Match Counter Strip */}
-        <div className="px-6 py-3 bg-[#0F1419] text-white flex items-center justify-between">
+        <div className="px-6 py-3 bg-gradient-to-r from-[#182C48] via-[#14243B] to-[#101C2E] text-white flex items-center justify-between border-y border-[#1E3A5F]/50">
           <div className="flex items-center gap-2">
             <Sparkles size={14} className="text-amber-400" />
-            <span className="text-[12px] text-white/80 font-medium">Matching against Heiwa CSV Stock:</span>
+            <span className="text-[12px] text-white/90 font-medium">Matching against Heiwa CSV Stock:</span>
             <span className="text-[12px] font-bold text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2 py-0.5 rounded-md font-mono">
               {matchCount} Vehicles Available
             </span>
           </div>
           <button
             onClick={handleApplyToBrowse}
-            className="text-[11px] font-semibold text-white/70 hover:text-white flex items-center gap-1 underline underline-offset-2 transition-colors"
+            className="text-[11px] font-semibold text-blue-200 hover:text-white flex items-center gap-1 underline underline-offset-2 transition-colors"
           >
             View matches in Browse <ArrowRight size={12} />
           </button>
@@ -205,7 +205,7 @@ export default function WishlistHeaderModal({ isOpen, onClose, onApply }: Wishli
           {criteria.length === 0 ? (
             <div className="text-center py-10 border-2 border-dashed border-[#E8ECF0] rounded-xl p-8">
               <Car size={36} className="mx-auto text-[#AAB8C2] mb-3" />
-              <h4 className="text-sm font-semibold text-[#0F1419]">No Wishlist Criteria Set</h4>
+              <h4 className="text-sm font-semibold text-[#111C2D]">No Wishlist Criteria Set</h4>
               <p className="text-xs text-[#536471] max-w-sm mx-auto mt-1 mb-4">
                 Add criteria like Make, Model, Year, Mileage, and Budget to get instant matches from Japan auctions.
               </p>
@@ -226,7 +226,7 @@ export default function WishlistHeaderModal({ isOpen, onClose, onApply }: Wishli
                 >
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-[11px] font-bold text-[#8899A6] uppercase tracking-wider flex items-center gap-1.5">
-                      <span className="w-4 h-4 rounded-full bg-white border border-[#E8ECF0] flex items-center justify-center text-[9px] text-[#0F1419]">
+                      <span className="w-4 h-4 rounded-full bg-white border border-[#E8ECF0] flex items-center justify-center text-[9px] text-[#111C2D]">
                         {idx + 1}
                       </span>
                       Vehicle Target
@@ -247,7 +247,7 @@ export default function WishlistHeaderModal({ isOpen, onClose, onApply }: Wishli
                       <select
                         value={item.make}
                         onChange={e => updateCriteriaRow(item.id, 'make', e.target.value)}
-                        className="w-full bg-white border border-[#E8ECF0] rounded-lg px-2.5 py-2 text-xs font-medium text-[#0F1419] focus:outline-none focus:border-[#C8102E] focus:ring-1 focus:ring-[#C8102E]"
+                        className="w-full bg-white border border-[#E8ECF0] rounded-lg px-2.5 py-2 text-xs font-medium text-[#111C2D] focus:outline-none focus:border-[#C8102E] focus:ring-1 focus:ring-[#C8102E]"
                       >
                         <option value="">Any Make</option>
                         {makes.map(m => (
@@ -262,7 +262,7 @@ export default function WishlistHeaderModal({ isOpen, onClose, onApply }: Wishli
                       <select
                         value={item.model}
                         onChange={e => updateCriteriaRow(item.id, 'model', e.target.value)}
-                        className="w-full bg-white border border-[#E8ECF0] rounded-lg px-2.5 py-2 text-xs font-medium text-[#0F1419] focus:outline-none focus:border-[#C8102E] focus:ring-1 focus:ring-[#C8102E]"
+                        className="w-full bg-white border border-[#E8ECF0] rounded-lg px-2.5 py-2 text-xs font-medium text-[#111C2D] focus:outline-none focus:border-[#C8102E] focus:ring-1 focus:ring-[#C8102E]"
                         disabled={!item.make}
                       >
                         <option value="">All Models ({item.make || 'Select Make'})</option>
@@ -302,7 +302,7 @@ export default function WishlistHeaderModal({ isOpen, onClose, onApply }: Wishli
                       <select
                         value={item.maxKms}
                         onChange={e => updateCriteriaRow(item.id, 'maxKms', parseInt(e.target.value))}
-                        className="w-full bg-white border border-[#E8ECF0] rounded-lg px-2.5 py-2 text-xs font-medium text-[#0F1419] focus:outline-none focus:border-[#C8102E]"
+                        className="w-full bg-white border border-[#E8ECF0] rounded-lg px-2.5 py-2 text-xs font-medium text-[#111C2D] focus:outline-none focus:border-[#C8102E]"
                       >
                         <option value={40000}>Under 40,000 km</option>
                         <option value={60000}>Under 60,000 km</option>
@@ -319,7 +319,7 @@ export default function WishlistHeaderModal({ isOpen, onClose, onApply }: Wishli
                         <label className="block text-[11px] font-semibold text-[#536471]">
                           Max Landed Budget (NZD)
                         </label>
-                        <span className="text-xs font-bold text-[#0F1419] font-mono">
+                        <span className="text-xs font-bold text-[#111C2D] font-mono">
                           ${item.maxBudget.toLocaleString()} NZD
                         </span>
                       </div>
@@ -347,7 +347,7 @@ export default function WishlistHeaderModal({ isOpen, onClose, onApply }: Wishli
           {criteria.length < 6 && (
             <button
               onClick={addCriteriaRow}
-              className="w-full py-2.5 border border-dashed border-[#CCD6DD] rounded-xl text-xs font-semibold text-[#536471] hover:text-[#0F1419] hover:border-[#8899A6] hover:bg-[#F7F9FA] transition-all flex items-center justify-center gap-1.5"
+              className="w-full py-2.5 border border-dashed border-[#CCD6DD] rounded-xl text-xs font-semibold text-[#536471] hover:text-[#111C2D] hover:border-[#8899A6] hover:bg-[#F7F9FA] transition-all flex items-center justify-center gap-1.5"
             >
               <Plus size={14} /> Add Another Vehicle Criteria
             </button>
@@ -376,7 +376,7 @@ export default function WishlistHeaderModal({ isOpen, onClose, onApply }: Wishli
           <div className="flex items-center gap-2.5">
             <button
               onClick={handleSave}
-              className="px-4 py-2 rounded-xl text-xs font-semibold text-[#0F1419] bg-white border border-[#E8ECF0] hover:bg-[#F0F2F5] transition-colors shadow-xs"
+              className="px-4 py-2 rounded-xl text-xs font-semibold text-[#111C2D] bg-white border border-[#E8ECF0] hover:bg-[#F0F2F5] transition-colors shadow-xs"
             >
               Save Criteria
             </button>

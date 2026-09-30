@@ -200,8 +200,8 @@ function BrowseVehiclesContent() {
 
   return (
     <div className="space-y-6 pb-12">
-      {/* ─── Hero Banner & Journey Header ─── */}
-      <div className="bg-[#0F1419] text-white rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+      {/* ─── Hero Banner & Journey Header — Light Navy Theme ─── */}
+      <div className="bg-gradient-to-r from-[#182C48] via-[#15253D] to-[#111E32] text-white rounded-2xl p-6 sm:p-8 shadow-elevated relative overflow-hidden border border-[#25426B]/50">
         {/* Subtle background glow */}
         <div className="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-[#C8102E]/15 blur-3xl pointer-events-none" />
         <div className="absolute right-1/4 -bottom-20 w-60 h-60 rounded-full bg-blue-500/10 blur-3xl pointer-events-none" />
@@ -262,8 +262,8 @@ function BrowseVehiclesContent() {
                 onClick={() => setActiveTab("all")}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
                   activeTab === "all"
-                    ? "bg-white text-[#0F1419] shadow-md"
-                    : "text-white/60 hover:text-white hover:bg-white/[0.04]"
+                    ? "bg-white text-[#111C2D] shadow-md"
+                    : "text-white/70 hover:text-white hover:bg-white/[0.04]"
                 }`}
               >
                 <Car size={14} />
@@ -303,12 +303,12 @@ function BrowseVehiclesContent() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search make, model, chassis, lot ID (e.g. Aqua, C-HR, ZYX10)..."
-              className="w-full pl-10 pr-4 py-2.5 bg-[#F7F9FA] border border-[#E8ECF0] rounded-xl text-xs sm:text-sm font-medium text-[#0F1419] placeholder:text-[#AAB8C2] focus:bg-white focus:border-[#C8102E] focus:ring-2 focus:ring-[#C8102E]/10 outline-none transition-all"
+              className="w-full pl-10 pr-4 py-2.5 bg-[#F7F9FA] border border-[#E8ECF0] rounded-xl text-xs sm:text-sm font-medium text-[#111C2D] placeholder:text-[#AAB8C2] focus:bg-white focus:border-[#C8102E] focus:ring-2 focus:ring-[#C8102E]/10 outline-none transition-all"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#8899A6] hover:text-[#0F1419]"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#8899A6] hover:text-[#111C2D]"
               >
                 Clear
               </button>
@@ -322,7 +322,7 @@ function BrowseVehiclesContent() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as any)}
-                className="bg-transparent font-semibold text-[#0F1419] outline-none cursor-pointer text-xs"
+                className="bg-transparent font-semibold text-[#111C2D] outline-none cursor-pointer text-xs"
               >
                 <option value="landed_asc">Landed Cost: Low to High</option>
                 <option value="landed_desc">Landed Cost: High to Low</option>
@@ -337,7 +337,7 @@ function BrowseVehiclesContent() {
               <button
                 onClick={() => setViewMode("grid")}
                 className={`p-1.5 rounded-lg transition-colors ${
-                  viewMode === "grid" ? "bg-white text-[#0F1419] shadow-xs" : "text-[#8899A6] hover:text-[#0F1419]"
+                  viewMode === "grid" ? "bg-white text-[#111C2D] shadow-xs" : "text-[#8899A6] hover:text-[#111C2D]"
                 }`}
                 title="Grid View"
               >
@@ -346,7 +346,7 @@ function BrowseVehiclesContent() {
               <button
                 onClick={() => setViewMode("table")}
                 className={`p-1.5 rounded-lg transition-colors ${
-                  viewMode === "table" ? "bg-white text-[#0F1419] shadow-xs" : "text-[#8899A6] hover:text-[#0F1419]"
+                  viewMode === "table" ? "bg-white text-[#111C2D] shadow-xs" : "text-[#8899A6] hover:text-[#111C2D]"
                 }`}
                 title="Table View"
               >
@@ -369,7 +369,7 @@ function BrowseVehiclesContent() {
                 setSelectedMake(e.target.value);
                 setSelectedModel("all");
               }}
-              className="w-full bg-[#F7F9FA] border border-[#E8ECF0] rounded-lg px-2.5 py-1.5 text-xs font-semibold text-[#0F1419] outline-none focus:border-[#C8102E]"
+              className="w-full bg-[#F7F9FA] border border-[#E8ECF0] rounded-lg px-2.5 py-1.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#C8102E]"
             >
               <option value="all">All Makes</option>
               {makes.map((m) => (
@@ -387,7 +387,7 @@ function BrowseVehiclesContent() {
               value={selectedModel}
               onChange={(e) => setSelectedModel(e.target.value)}
               disabled={selectedMake === "all"}
-              className="w-full bg-[#F7F9FA] border border-[#E8ECF0] rounded-lg px-2.5 py-1.5 text-xs font-semibold text-[#0F1419] outline-none focus:border-[#C8102E] disabled:opacity-50"
+              className="w-full bg-[#F7F9FA] border border-[#E8ECF0] rounded-lg px-2.5 py-1.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#C8102E] disabled:opacity-50"
             >
               <option value="all">{selectedMake === "all" ? "Select Make first" : `All ${selectedMake} Models`}</option>
               {availableModels.map((mod) => (
@@ -404,7 +404,7 @@ function BrowseVehiclesContent() {
             <select
               value={selectedFuel}
               onChange={(e) => setSelectedFuel(e.target.value)}
-              className="w-full bg-[#F7F9FA] border border-[#E8ECF0] rounded-lg px-2.5 py-1.5 text-xs font-semibold text-[#0F1419] outline-none focus:border-[#C8102E]"
+              className="w-full bg-[#F7F9FA] border border-[#E8ECF0] rounded-lg px-2.5 py-1.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#C8102E]"
             >
               <option value="all">All Powertrains</option>
               <option value="hybrid">Hybrid Only</option>
@@ -422,7 +422,7 @@ function BrowseVehiclesContent() {
             <select
               value={maxKms}
               onChange={(e) => setMaxKms(parseInt(e.target.value))}
-              className="w-full bg-[#F7F9FA] border border-[#E8ECF0] rounded-lg px-2.5 py-1.5 text-xs font-semibold text-[#0F1419] outline-none focus:border-[#C8102E]"
+              className="w-full bg-[#F7F9FA] border border-[#E8ECF0] rounded-lg px-2.5 py-1.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#C8102E]"
             >
               <option value={50000}>Under 50,000 km</option>
               <option value={80000}>Under 80,000 km</option>
@@ -440,7 +440,7 @@ function BrowseVehiclesContent() {
             <select
               value={maxBudget}
               onChange={(e) => setMaxBudget(parseInt(e.target.value))}
-              className="w-full bg-[#F7F9FA] border border-[#E8ECF0] rounded-lg px-2.5 py-1.5 text-xs font-semibold text-[#0F1419] outline-none focus:border-[#C8102E]"
+              className="w-full bg-[#F7F9FA] border border-[#E8ECF0] rounded-lg px-2.5 py-1.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#C8102E]"
             >
               <option value={12000}>Under $12,000 NZD</option>
               <option value={18000}>Under $18,000 NZD</option>
@@ -455,7 +455,7 @@ function BrowseVehiclesContent() {
       {/* ─── Results Counter & Status Bar ─── */}
       <div className="flex items-center justify-between text-xs text-[#536471] px-1">
         <div>
-          Showing <span className="font-bold text-[#0F1419]">{displayedVehicles.length}</span> matching vehicles
+          Showing <span className="font-bold text-[#111C2D]">{displayedVehicles.length}</span> matching vehicles
           {activeTab === "wishlist" && (
             <span className="ml-1 text-rose-700 font-semibold bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">
               Matched against your Wish List
@@ -483,7 +483,7 @@ function BrowseVehiclesContent() {
       {displayedVehicles.length === 0 ? (
         <div className="bg-white rounded-2xl p-12 text-center border border-[#E8ECF0] shadow-subtle">
           <Car size={48} className="mx-auto text-[#AAB8C2] mb-4" />
-          <h3 className="text-base font-bold text-[#0F1419]">No Vehicles Found</h3>
+          <h3 className="text-base font-bold text-[#111C2D]">No Vehicles Found</h3>
           <p className="text-xs text-[#536471] max-w-md mx-auto mt-1 mb-5">
             {activeTab === "wishlist"
               ? "None of the currently listed Japan auction stock strictly meets your wish list parameters. Try broadening your criteria or switch to All Heiwa Stock."
@@ -493,7 +493,7 @@ function BrowseVehiclesContent() {
             {activeTab === "wishlist" && (
               <button
                 onClick={() => setActiveTab("all")}
-                className="px-4 py-2 rounded-xl bg-[#0F1419] text-white text-xs font-semibold hover:bg-black transition-colors"
+                className="px-4 py-2 rounded-xl bg-[#1E3A5F] hover:bg-[#162C48] text-white text-xs font-semibold transition-colors"
               >
                 Browse All Heiwa Stock ({allCarVehicles.length})
               </button>
@@ -506,7 +506,7 @@ function BrowseVehiclesContent() {
                 setMaxBudget(50000);
                 setSearchQuery("");
               }}
-              className="px-4 py-2 rounded-xl bg-[#F0F2F5] text-[#0F1419] text-xs font-semibold hover:bg-[#E8ECF0] transition-colors"
+              className="px-4 py-2 rounded-xl bg-[#F0F2F5] text-[#111C2D] text-xs font-semibold hover:bg-[#E8ECF0] transition-colors"
             >
               Reset Filters
             </button>
@@ -579,7 +579,7 @@ function BrowseVehiclesContent() {
                   <div>
                     {/* Vehicle Title */}
                     <div className="flex items-start justify-between gap-2 mb-1.5">
-                      <h3 className="text-base font-bold text-[#0F1419] group-hover:text-[#C8102E] transition-colors leading-snug">
+                      <h3 className="text-base font-bold text-[#111C2D] group-hover:text-[#C8102E] transition-colors leading-snug">
                         {vehicle.year} {vehicle.make} {vehicle.model}
                       </h3>
                       {vehicle.grade && (
@@ -625,7 +625,7 @@ function BrowseVehiclesContent() {
                           <TrendingUp size={11} className="text-emerald-600" />
                           Est. NZ Retail:
                         </span>
-                        <span className="text-xs font-bold text-[#0F1419] font-mono">
+                        <span className="text-xs font-bold text-[#111C2D] font-mono">
                           ${nzRetail.retailPrice.toLocaleString()}
                         </span>
                       </div>
@@ -644,7 +644,7 @@ function BrowseVehiclesContent() {
                   <div className="flex items-center gap-2 pt-2 border-t border-[#F0F2F5]">
                     <Link
                       href={`/vehicles/${uniqueId}`}
-                      className="flex-1 py-2.5 px-3 rounded-xl bg-[#0F1419] hover:bg-black text-white text-xs font-bold text-center transition-all flex items-center justify-center gap-1.5 group-hover:bg-[#C8102E] shadow-sm"
+                      className="flex-1 py-2.5 px-3 rounded-xl bg-[#1E3A5F] hover:bg-[#162C48] text-white text-xs font-bold text-center transition-all flex items-center justify-center gap-1.5 group-hover:bg-[#C8102E] shadow-sm"
                     >
                       <span>View Details & NZ Market</span>
                       <ArrowRight size={13} />
@@ -652,7 +652,7 @@ function BrowseVehiclesContent() {
 
                     <button
                       onClick={(e) => openQuickBid(e, vehicle)}
-                      className="px-3 py-2.5 rounded-xl border border-[#E8ECF0] hover:bg-[#F0F2F5] text-[#0F1419] text-xs font-semibold transition-colors"
+                      className="px-3 py-2.5 rounded-xl border border-[#E2E8F0] hover:bg-[#F1F5F9] text-[#111C2D] text-xs font-semibold transition-colors"
                       title="Quick Auction Bid"
                     >
                       Bid
@@ -704,7 +704,7 @@ function BrowseVehiclesContent() {
                           <div>
                             <Link
                               href={`/vehicles/${uniqueId}`}
-                              className="font-bold text-[#0F1419] hover:text-[#C8102E] text-xs block leading-tight"
+                              className="font-bold text-[#111C2D] hover:text-[#C8102E] text-xs block leading-tight"
                             >
                               {vehicle.year} {vehicle.make} {vehicle.model}
                             </Link>
@@ -717,14 +717,14 @@ function BrowseVehiclesContent() {
 
                       {/* Grade & Specs */}
                       <td className="py-3.5 px-4">
-                        <div className="font-semibold text-[#0F1419]">{vehicle.grade || "Standard"}</div>
+                        <div className="font-semibold text-[#111C2D]">{vehicle.grade || "Standard"}</div>
                         <div className="text-[10px] text-[#8899A6]">
                           {vehicle.cc > 0 ? `${vehicle.cc}cc` : "EV"} · {vehicle.fuelType === "H" ? "Hybrid" : "Petrol"}
                         </div>
                       </td>
 
                       {/* Mileage */}
-                      <td className="py-3.5 px-4 font-mono font-medium text-[#0F1419]">
+                      <td className="py-3.5 px-4 font-mono font-medium text-[#111C2D]">
                         {vehicle.kms.toLocaleString()} km
                       </td>
 
@@ -739,7 +739,7 @@ function BrowseVehiclesContent() {
                       </td>
 
                       {/* Est NZ Retail */}
-                      <td className="py-3.5 px-4 text-right font-mono font-semibold text-[#0F1419]">
+                      <td className="py-3.5 px-4 text-right font-mono font-semibold text-[#111C2D]">
                         ${nzRetail.retailPrice.toLocaleString()}
                       </td>
 
@@ -758,7 +758,7 @@ function BrowseVehiclesContent() {
                             className={`p-1.5 rounded-lg border transition-colors ${
                               isWatchlisted
                                 ? "bg-rose-50 border-rose-200 text-rose-600"
-                                : "border-[#E8ECF0] text-[#8899A6] hover:text-[#0F1419]"
+                                : "border-[#E8ECF0] text-[#8899A6] hover:text-[#111C2D]"
                             }`}
                             title="Watchlist"
                           >
@@ -766,7 +766,7 @@ function BrowseVehiclesContent() {
                           </button>
                           <Link
                             href={`/vehicles/${uniqueId}`}
-                            className="px-2.5 py-1.5 rounded-lg bg-[#0F1419] hover:bg-[#C8102E] text-white text-[11px] font-bold transition-colors"
+                            className="px-2.5 py-1.5 rounded-lg bg-[#1E3A5F] hover:bg-[#C8102E] text-white text-[11px] font-bold transition-colors"
                           >
                             Details
                           </Link>
@@ -790,7 +790,7 @@ function BrowseVehiclesContent() {
                 <span className="text-[10px] font-bold uppercase tracking-wider text-[#8899A6]">
                   Heiwa Japan Auction Bid
                 </span>
-                <h3 className="text-base font-bold text-[#0F1419]">
+                <h3 className="text-base font-bold text-[#111C2D]">
                   {quickBidVehicle.year} {quickBidVehicle.make} {quickBidVehicle.model}
                 </h3>
                 <p className="text-xs text-[#536471] font-mono mt-0.5">
@@ -799,7 +799,7 @@ function BrowseVehiclesContent() {
               </div>
               <button
                 onClick={() => setQuickBidVehicle(null)}
-                className="text-[#8899A6] hover:text-[#0F1419]"
+                className="text-[#8899A6] hover:text-[#111C2D]"
               >
                 ✕
               </button>
@@ -841,7 +841,7 @@ function BrowseVehiclesContent() {
                       step={10000}
                       value={quickBidAmount}
                       onChange={(e) => setQuickBidAmount(parseInt(e.target.value) || 0)}
-                      className="w-full pl-8 pr-4 py-2.5 bg-white border border-[#CCD6DD] rounded-xl font-mono font-bold text-sm text-[#0F1419] focus:outline-none focus:border-[#C8102E]"
+                      className="w-full pl-8 pr-4 py-2.5 bg-white border border-[#CCD6DD] rounded-xl font-mono font-bold text-sm text-[#111C2D] focus:outline-none focus:border-[#C8102E]"
                     />
                   </div>
                 </div>

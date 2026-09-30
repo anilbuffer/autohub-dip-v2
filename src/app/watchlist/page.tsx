@@ -61,8 +61,8 @@ export default function MyWatchlistPage() {
   return (
     <AppLayout>
       <div className="space-y-6 pb-16">
-        {/* ─── Hero Header ─── */}
-        <div className="bg-[#0F1419] text-white rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+        {/* ─── Hero Header — Light Navy Theme ─── */}
+        <div className="bg-gradient-to-r from-[#182C48] via-[#15253D] to-[#111E32] text-white rounded-2xl p-6 sm:p-8 shadow-elevated relative overflow-hidden border border-[#25426B]/50">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 relative z-10">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white/90 text-xs font-semibold mb-3 border border-white/10">
@@ -101,15 +101,15 @@ export default function MyWatchlistPage() {
 
         {/* ─── Vehicles Grid ─── */}
         {savedVehicles.length === 0 ? (
-          <div className="bg-white rounded-2xl p-12 text-center border border-[#E8ECF0] shadow-subtle">
-            <Heart size={44} className="mx-auto text-[#AAB8C2] mb-3" />
-            <h3 className="text-base font-bold text-[#0F1419]">Your Watchlist is Empty</h3>
-            <p className="text-xs text-[#536471] max-w-sm mx-auto mt-1 mb-5">
+          <div className="bg-white rounded-2xl p-12 text-center border border-[#E2E8F0] shadow-subtle">
+            <Heart size={44} className="mx-auto text-[#94A3B8] mb-3" />
+            <h3 className="text-base font-bold text-[#111C2D]">Your Watchlist is Empty</h3>
+            <p className="text-xs text-[#475569] max-w-sm mx-auto mt-1 mb-5">
               Click the heart icon on any vehicle card in &quot;Browse Vehicles&quot; to bookmark it for fast monitoring.
             </p>
             <Link
               href="/"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0F1419] text-white text-xs font-bold hover:bg-black transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#1E3A5F] text-white text-xs font-bold hover:bg-[#162C48] transition-colors"
             >
               <Car size={14} /> Browse Heiwa Stock
             </Link>
@@ -165,7 +165,7 @@ export default function MyWatchlistPage() {
                     {/* Content */}
                     <div className="p-5 space-y-3">
                       <div>
-                        <h3 className="text-base font-bold text-[#0F1419]">
+                        <h3 className="text-base font-bold text-[#111C2D]">
                           {vehicle.year} {vehicle.make} {vehicle.model}
                         </h3>
                         <div className="text-xs text-[#536471] mt-0.5">
@@ -197,7 +197,7 @@ export default function MyWatchlistPage() {
                   <div className="p-4 bg-[#FAFBFC] border-t border-[#E8ECF0] flex items-center gap-2">
                     <Link
                       href={`/vehicles/${uniqueId}`}
-                      className="flex-1 py-2.5 bg-[#0F1419] hover:bg-[#C8102E] text-white text-xs font-bold rounded-xl text-center transition-colors flex items-center justify-center gap-1.5 shadow-sm"
+                      className="flex-1 py-2.5 bg-[#1E3A5F] hover:bg-[#C8102E] text-white text-xs font-bold rounded-xl text-center transition-colors flex items-center justify-center gap-1.5 shadow-sm"
                     >
                       <span>View Details & NZ Market</span>
                       <ArrowRight size={13} />

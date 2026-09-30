@@ -40,7 +40,7 @@ export default function AiWeeklyBriefCard({ onNotifyToast }: AiWeeklyBriefCardPr
   };
 
   return (
-    <div className="relative rounded-3xl bg-gradient-to-br from-[#0B1322] via-[#0F1B33] to-[#16274B] text-white p-6 sm:p-8 border border-[#233863] shadow-xl overflow-hidden group">
+    <div className="relative rounded-3xl bg-gradient-to-br from-[#182C48] via-[#14243B] to-[#101C2E] text-white p-6 sm:p-8 border border-[#1E3A5F]/60 shadow-xl overflow-hidden group">
       {/* Subtle background glow effect */}
       <div className="absolute -right-24 -top-24 w-80 h-80 rounded-full bg-gradient-to-bl from-[#B30D12]/20 via-blue-500/10 to-transparent blur-3xl pointer-events-none"></div>
       <div className="absolute -left-20 -bottom-20 w-60 h-60 rounded-full bg-blue-600/10 blur-3xl pointer-events-none"></div>
@@ -72,7 +72,7 @@ export default function AiWeeklyBriefCard({ onNotifyToast }: AiWeeklyBriefCardPr
         {/* Language Switcher & Actions */}
         <div className="flex flex-wrap items-center gap-2.5 self-start lg:self-center">
           {/* Japanese / English Toggle */}
-          <div className="flex items-center p-1 rounded-xl bg-[#080E1A] border border-[#233863] text-xs font-bold shadow-inner">
+          <div className="flex items-center p-1 rounded-xl bg-[#0E1B2C]/70 border border-[#1E3A5F]/60 text-xs font-bold shadow-inner">
             <button
               onClick={() => setLang('en')}
               className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${

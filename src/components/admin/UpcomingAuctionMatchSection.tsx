@@ -162,7 +162,7 @@ export default function UpcomingAuctionMatchSection({ onNotifyToast }: UpcomingA
                       className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
                         isNotified
                           ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                          : 'bg-[#1B2A4A] hover:bg-[#0B1322] text-white shadow-xs'
+                          : 'bg-[#1E3A5F] hover:bg-[#162C48] text-white shadow-xs'
                       }`}
                     >
                       {isNotified ? (
