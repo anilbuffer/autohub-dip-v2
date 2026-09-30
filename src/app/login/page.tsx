@@ -10,6 +10,7 @@ import {
   Heart,
   Search,
   BarChart3,
+  ChevronRight,
 } from "lucide-react";
 
 export default function LoginPage() {
@@ -34,26 +35,27 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex font-sans">
       
-      {/* Left — Brand panel */}
-      <div className="hidden lg:flex lg:w-[480px] xl:w-[520px] flex-col justify-between bg-[#10100E] text-white p-10 relative overflow-hidden">
+      {/* ─── Left — Brand panel ─── */}
+      <div className="hidden lg:flex lg:w-[500px] xl:w-[540px] flex-col justify-between bg-[#0F1419] text-white p-12 relative overflow-hidden">
         
-        {/* Subtle decorative element */}
-        <div className="absolute -right-24 -top-24 w-80 h-80 rounded-full bg-[#DF2B44]/[0.06]" />
-        <div className="absolute -left-16 -bottom-16 w-64 h-64 rounded-full bg-[#DF2B44]/[0.04]" />
+        {/* Subtle decorative elements */}
+        <div className="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-[#C8102E]/[0.06] blur-3xl" />
+        <div className="absolute -left-16 -bottom-16 w-72 h-72 rounded-full bg-[#C8102E]/[0.04] blur-3xl" />
+        <div className="absolute top-1/2 right-1/3 w-32 h-32 rounded-full bg-[#C8102E]/[0.03] blur-2xl" />
 
         {/* Logo & brand */}
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-9 h-9 rounded-lg bg-[#DF2B44] flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-[#C8102E] flex items-center justify-center shadow-lg shadow-red-900/40">
               <img 
                 src="/autohub-logo.jpg" 
                 alt="AutoHub" 
-                className="w-7 h-7 rounded object-cover"
+                className="w-8 h-8 rounded-lg object-cover"
               />
             </div>
             <div>
-              <span className="text-base font-bold tracking-wide block leading-none">AutoHub</span>
-              <span className="text-[11px] text-neutral-400 font-medium tracking-wide">
+              <span className="text-[16px] font-bold tracking-wide block leading-none">AutoHub</span>
+              <span className="text-[11px] text-white/40 font-medium tracking-widest uppercase">
                 Dealer Intelligence Platform
               </span>
             </div>
@@ -61,74 +63,77 @@ export default function LoginPage() {
         </div>
 
         {/* Headline */}
-        <div className="relative z-10 space-y-6 my-auto">
-          <h1 className="text-3xl font-bold leading-snug tracking-tight text-white">
-            Source smarter from<br />
-            <span className="text-neutral-400">Japan to New Zealand.</span>
-          </h1>
-          <p className="text-sm text-neutral-400 leading-relaxed max-w-sm">
-            Create your wish list, match against live Heiwa auction inventory, 
-            and compare landed costs with NZ retail pricing — all in one place.
-          </p>
+        <div className="relative z-10 space-y-8 my-auto">
+          <div>
+            <h1 className="text-4xl font-extrabold leading-snug tracking-tight text-white">
+              Source smarter from<br />
+              <span className="text-white/40">Japan to New Zealand.</span>
+            </h1>
+            <p className="text-[15px] text-white/45 leading-relaxed max-w-sm mt-4">
+              Create your wish list, match against live Heiwa auction inventory, 
+              and compare landed costs with NZ retail pricing — all in one place.
+            </p>
+          </div>
 
           {/* 3-step journey preview */}
-          <div className="space-y-3 pt-2">
+          <div className="space-y-3">
             {[
               { icon: Heart, step: "1", label: "Set your wish list criteria" },
               { icon: Search, step: "2", label: "View matched Heiwa vehicles" },
               { icon: BarChart3, step: "3", label: "Compare against NZ market" },
             ].map((item, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-white/[0.06] flex items-center justify-center flex-shrink-0">
-                  <item.icon size={16} className="text-[#DF2B44]" />
+              <div key={i} className="flex items-center gap-3.5 group">
+                <div className="w-10 h-10 rounded-xl bg-white/[0.05] flex items-center justify-center flex-shrink-0 group-hover:bg-white/[0.08] transition-colors">
+                  <item.icon size={18} className="text-[#C8102E]" />
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-bold bg-[#DF2B44]/20 text-[#DF2B44] px-1.5 py-0.5 rounded">{item.step}</span>
-                  <span className="text-sm text-neutral-300">{item.label}</span>
+                <div className="flex items-center gap-2.5">
+                  <span className="text-[10px] font-bold bg-[#C8102E]/20 text-[#FF6B78] px-2 py-0.5 rounded-md">{item.step}</span>
+                  <span className="text-[14px] text-white/60 font-medium">{item.label}</span>
                 </div>
+                <ChevronRight size={14} className="text-white/15 ml-auto" />
               </div>
             ))}
           </div>
         </div>
 
         {/* Footer */}
-        <div className="relative z-10 text-[11px] text-neutral-500">
+        <div className="relative z-10 text-[11px] text-white/25 font-medium">
           © {new Date().getFullYear()} AutoHub New Zealand. All rights reserved.
         </div>
       </div>
 
-      {/* Right — Login form */}
-      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-white">
-        <div className="w-full max-w-sm">
+      {/* ─── Right — Login form ─── */}
+      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-[#FAFBFC]">
+        <div className="w-full max-w-[400px]">
 
           {/* Mobile logo */}
-          <div className="flex items-center gap-2.5 lg:hidden mb-8">
-            <div className="w-8 h-8 rounded-lg bg-[#DF2B44] flex items-center justify-center">
+          <div className="flex items-center gap-3 lg:hidden mb-10">
+            <div className="w-9 h-9 rounded-xl bg-[#C8102E] flex items-center justify-center shadow-md shadow-red-900/20">
               <img 
                 src="/autohub-logo.jpg" 
                 alt="AutoHub" 
-                className="w-6 h-6 rounded object-cover"
+                className="w-7 h-7 rounded-lg object-cover"
               />
             </div>
             <div>
-              <span className="text-sm font-bold text-[#10100E] block leading-none">AutoHub</span>
-              <span className="text-[10px] text-neutral-400">Dealer Intelligence Platform</span>
+              <span className="text-[15px] font-bold text-[#0F1419] block leading-none">AutoHub</span>
+              <span className="text-[10px] text-[#AAB8C2] uppercase tracking-wider font-medium">Dealer Intelligence Platform</span>
             </div>
           </div>
 
           {/* Heading */}
           <div className="mb-8">
-            <h2 className="text-xl font-bold text-[#10100E] tracking-tight">
+            <h2 className="text-2xl font-extrabold text-[#0F1419] tracking-tight">
               Sign in
             </h2>
-            <p className="text-sm text-neutral-500 mt-1">
+            <p className="text-[14px] text-[#536471] mt-1.5">
               Enter your credentials or use the demo account.
             </p>
           </div>
 
           {/* Demo access */}
-          <div className="mb-6">
-            <span className="text-[11px] font-medium text-neutral-400 uppercase tracking-wider block mb-2">
+          <div className="mb-7">
+            <span className="text-[10px] font-bold text-[#AAB8C2] uppercase tracking-[0.12em] block mb-2.5">
               Quick Access
             </span>
             <button
@@ -136,41 +141,41 @@ export default function LoginPage() {
               type="button"
               onClick={loginAsDemo}
               disabled={loading}
-              className="w-full flex items-center gap-3 p-3.5 rounded-xl border border-neutral-200 hover:border-[#DF2B44]/30 bg-white hover:bg-[#DF2B44]/[0.02] transition-all text-left group disabled:opacity-50"
+              className="w-full flex items-center gap-4 p-4 rounded-2xl border-2 border-[#E8ECF0] hover:border-[#C8102E]/20 bg-white hover:bg-[#FFF0F1]/50 transition-all text-left group disabled:opacity-50 shadow-subtle hover:shadow-card"
             >
-              <div className="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0">
-                <Building2 size={16} className="text-emerald-600" />
+              <div className="w-11 h-11 rounded-xl bg-emerald-50 flex items-center justify-center flex-shrink-0 border border-emerald-100">
+                <Building2 size={18} className="text-emerald-600" />
               </div>
               <div className="min-w-0 flex-1">
-                <div className="text-[13px] font-semibold text-[#10100E]">Demo Dealer Account</div>
-                <div className="text-[11px] text-neutral-400">
+                <div className="text-[14px] font-bold text-[#0F1419]">Demo Dealer Account</div>
+                <div className="text-[12px] text-[#8899A6] mt-0.5">
                   {loading ? 'Signing in…' : 'Auckland Auto Group · David Miller'}
                 </div>
               </div>
-              <ArrowRight size={14} className="text-neutral-300 group-hover:text-[#DF2B44] transition-colors" />
+              <ArrowRight size={16} className="text-[#D1D5DB] group-hover:text-[#C8102E] group-hover:translate-x-1 transition-all" />
             </button>
           </div>
 
           {/* Divider */}
-          <div className="relative my-6">
+          <div className="relative my-7">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-neutral-200"></div>
+              <div className="w-full border-t border-[#E8ECF0]"></div>
             </div>
             <div className="relative flex justify-center">
-              <span className="bg-white px-3 text-[11px] text-neutral-400 uppercase tracking-wider">
+              <span className="bg-[#FAFBFC] px-4 text-[11px] text-[#AAB8C2] uppercase tracking-wider font-bold">
                 or sign in with email
               </span>
             </div>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleLogin} className="space-y-5">
             <div>
-              <label htmlFor="email-input" className="text-xs font-medium text-neutral-600 block mb-1.5">
+              <label htmlFor="email-input" className="text-[12px] font-semibold text-[#536471] block mb-2">
                 Email
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" size={16} />
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#AAB8C2]" size={16} />
                 <input 
                   id="email-input"
                   type="email" 
@@ -178,22 +183,22 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@dealership.co.nz"
-                  className="w-full pl-10 pr-4 py-2.5 bg-neutral-50 border border-neutral-200 rounded-lg text-sm outline-none focus:bg-white focus:border-[#DF2B44] focus:ring-2 focus:ring-[#DF2B44]/10 transition-all placeholder:text-neutral-400"
+                  className="w-full pl-11 pr-4 py-3 bg-white border border-[#E8ECF0] rounded-xl text-[14px] outline-none focus:bg-white focus:border-[#C8102E]/40 focus:ring-2 focus:ring-[#C8102E]/10 transition-all placeholder:text-[#AAB8C2] font-medium hover:border-[#D1D5DB]"
                 />
               </div>
             </div>
 
             <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label htmlFor="password-input" className="text-xs font-medium text-neutral-600">
+              <div className="flex items-center justify-between mb-2">
+                <label htmlFor="password-input" className="text-[12px] font-semibold text-[#536471]">
                   Password
                 </label>
-                <a href="#" className="text-[11px] font-medium text-[#DF2B44] hover:text-[#DF2B44]/80 transition-colors">
+                <a href="#" className="text-[12px] font-semibold text-[#C8102E] hover:text-[#A30D24] transition-colors">
                   Forgot password?
                 </a>
               </div>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" size={16} />
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-[#AAB8C2]" size={16} />
                 <input 
                   id="password-input"
                   type="password" 
@@ -201,7 +206,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-10 pr-4 py-2.5 bg-neutral-50 border border-neutral-200 rounded-lg text-sm outline-none focus:bg-white focus:border-[#DF2B44] focus:ring-2 focus:ring-[#DF2B44]/10 transition-all placeholder:text-neutral-400"
+                  className="w-full pl-11 pr-4 py-3 bg-white border border-[#E8ECF0] rounded-xl text-[14px] outline-none focus:bg-white focus:border-[#C8102E]/40 focus:ring-2 focus:ring-[#C8102E]/10 transition-all placeholder:text-[#AAB8C2] font-medium hover:border-[#D1D5DB]"
                 />
               </div>
             </div>
@@ -210,24 +215,24 @@ export default function LoginPage() {
               id="sign-in-button"
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 bg-[#DF2B44] hover:bg-[#c91f38] text-white font-medium text-sm rounded-lg transition-colors flex items-center justify-center gap-2 mt-2 disabled:opacity-60"
+              className="w-full py-3.5 bg-[#C8102E] hover:bg-[#A30D24] text-white font-bold text-[15px] rounded-xl transition-all flex items-center justify-center gap-2.5 mt-3 disabled:opacity-60 shadow-md shadow-red-900/20 hover:shadow-lg hover:shadow-red-900/30"
             >
               {loading ? (
                 <>
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   Signing in…
                 </>
               ) : (
                 <>
                   Sign in
-                  <ArrowRight size={15} />
+                  <ArrowRight size={16} />
                 </>
               )}
             </button>
           </form>
 
           {/* Footer note */}
-          <p className="mt-8 text-center text-[11px] text-neutral-400">
+          <p className="mt-10 text-center text-[11px] text-[#AAB8C2] font-medium">
             Secure access · AutoHub Dealer Intelligence Platform
           </p>
 
