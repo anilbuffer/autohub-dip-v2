@@ -37,6 +37,7 @@ import {
   getNZComparables,
   NZComparable,
   LANDED_COST_CONSTANTS,
+  getVehicleConditionScore,
 } from "@/lib/heiwaData";
 import {
   findHeiwaVehicle,
@@ -156,6 +157,7 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
 
   // Exact NZ Market Retail Indicator matching the card
   const avgNzPrice = nzRetail.retailPrice;
+  const conditionScore = getVehicleConditionScore(vehicle);
 
   const lowestNzPrice =
     comparables.length > 0
@@ -233,8 +235,9 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
                   <span className="bg-[#0F1B2E]/90 backdrop-blur-xs text-white px-2.5 py-1 rounded-md text-xs font-bold font-mono">
                     Stockid #{vehicle.stockId}
                   </span>
-                  <span className="bg-emerald-600 text-white px-2.5 py-1 rounded-md text-xs font-bold">
-                    Grade {vehicle.grade || "4.0"}
+                  <span className="bg-white/95 backdrop-blur-xs text-[#111C2D] border border-slate-200 px-2.5 py-1 rounded-md text-xs font-bold shadow-xs flex items-center gap-1">
+                    <ShieldCheck size={12} className="text-emerald-600" />
+                    Condition {conditionScore}/10
                   </span>
                 </div>
                 {vehicle.ac && (
@@ -269,9 +272,11 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
                   <span className="text-[#E11D48] font-bold">AUCTION STOCKID ACTIVE</span>
                 </div>
 
-                <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111C2D] tracking-tight">
-                  {vehicle.year} {vehicle.make} {vehicle.model} {vehicle.grade}
-                </h1>
+                <div className="flex flex-wrap items-center gap-3">
+                  <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111C2D] tracking-tight">
+                    {vehicle.year} {vehicle.make} {vehicle.model} {vehicle.grade}
+                  </h1>
+                </div>
 
                 {/* Key Spec Badges: kms, fuel, cc, trans, ac, equip as in CSV file */}
                 <div className="flex flex-wrap items-center gap-2.5 mt-3">
@@ -352,6 +357,15 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
                       </span>
                     </div>
                   )}
+
+                  {/* Condition Score (1-10) */}
+                  <div
+                    title={`Auction Condition Score: ${getVehicleConditionScore(vehicle)}/10`}
+                    className="px-3 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-xs font-bold text-emerald-800 flex items-center gap-1.5 shadow-2xs"
+                  >
+                    <ShieldCheck size={13} className="text-emerald-600" />
+                    <span>Condition: {getVehicleConditionScore(vehicle)}/10</span>
+                  </div>
                 </div>
               </div>
 
@@ -873,6 +887,12 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
                       <span className="text-[#536471]">Overall Auction Grade:</span>
                       <span className="font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">
                         Grade {vehicle.grade || "4.0"}
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-xs py-1 border-b border-[#E8ECF0]">
+                      <span className="text-[#536471]">Condition Score (1–10):</span>
+                      <span className="font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">
+                        {getVehicleConditionScore(vehicle)} / 10
                       </span>
                     </div>
                     <div className="flex justify-between text-xs py-1 border-b border-[#E8ECF0]">

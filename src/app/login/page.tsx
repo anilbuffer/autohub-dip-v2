@@ -79,9 +79,6 @@ export default function LoginPage() {
                 <span className="text-[19px] font-extrabold tracking-tight text-white block leading-none">
                   AutoHub
                 </span>
-                <span className="text-[9px] px-2 py-0.5 rounded font-extrabold bg-rose-500/20 text-rose-300 border border-rose-500/30 uppercase tracking-wide">
-                  DIP v2
-                </span>
               </div>
               <span className="text-[10px] text-[#60A5FA] font-bold tracking-[0.16em] uppercase mt-1 block">
                 DEALER INTELLIGENCE PLATFORM
@@ -108,64 +105,11 @@ export default function LoginPage() {
               and calculate landed FOB-to-NZD cost margins in real-time.
             </p>
           </div>
-
-          {/* Dual Panel Highlights Feature Cards */}
-          <div className="space-y-3 max-w-md">
-            <div className="p-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] hover:border-white/[0.15] transition-all backdrop-blur-xs flex items-start gap-3">
-              <div className="w-8 h-8 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center shrink-0 mt-0.5">
-                <Building2 size={16} className="text-emerald-400" />
-              </div>
-              <div className="text-[12.5px]">
-                <div className="font-bold text-white flex items-center gap-2">
-                  <span>Dealer Workspace</span>
-                  <span className="text-[10px] text-emerald-400 font-semibold bg-emerald-500/10 px-1.5 py-0.2 rounded">NZ Dealers</span>
-                </div>
-                <div className="text-[#94A3B8] mt-0.5">
-                  Browse 24,000+ Japanese auction lots, manage bids, watchlist & landed cost profitability.
-                </div>
-              </div>
-            </div>
-
-            <div className="p-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] hover:border-white/[0.15] transition-all backdrop-blur-xs flex items-start gap-3">
-              <div className="w-8 h-8 rounded-lg bg-blue-500/15 border border-blue-500/30 flex items-center justify-center shrink-0 mt-0.5">
-                <ShieldCheck size={16} className="text-blue-400" />
-              </div>
-              <div className="text-[12.5px]">
-                <div className="font-bold text-white flex items-center gap-2">
-                  <span>AutoHub Admin Operations</span>
-                  <span className="text-[10px] text-blue-300 font-semibold bg-blue-500/10 px-1.5 py-0.2 rounded">Ops Command</span>
-                </div>
-                <div className="text-[#94A3B8] mt-0.5">
-                  Live Heiwa sync, cross-dealer wishlist matching dispatch, and operational KPI command center.
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Real-time stats row */}
-          <div className="pt-2 grid grid-cols-3 gap-3 border-t border-white/[0.08] max-w-md">
-            <div>
-              <div className="text-[18px] font-extrabold text-white">24,800+</div>
-              <div className="text-[11px] text-[#64748B]">Live Auction Lots</div>
-            </div>
-            <div>
-              <div className="text-[18px] font-extrabold text-white">98.6%</div>
-              <div className="text-[11px] text-[#64748B]">Match Accuracy</div>
-            </div>
-            <div>
-              <div className="text-[18px] font-extrabold text-white">NZD / JPY</div>
-              <div className="text-[11px] text-[#64748B]">Live FX Rate</div>
-            </div>
-          </div>
         </div>
 
         {/* 3. Footer */}
         <div className="relative z-10 flex items-center justify-between text-[11px] text-[#64748B] font-medium border-t border-white/[0.08] pt-4">
           <span>© {new Date().getFullYear()} AutoHub New Zealand Ltd.</span>
-          <span className="flex items-center gap-1.5 text-emerald-400">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            Systems Operational
-          </span>
         </div>
       </div>
 
@@ -220,11 +164,10 @@ export default function LoginPage() {
                 type="button"
                 onClick={() => quickLogin("dealer")}
                 disabled={loading}
-                className={`flex flex-col text-left p-3.5 rounded-2xl border transition-all relative group cursor-pointer disabled:opacity-60 ${
-                  activeTab === "dealer"
-                    ? "border-emerald-500/50 bg-emerald-50/40 shadow-sm ring-2 ring-emerald-500/20"
-                    : "border-slate-200 hover:border-emerald-300 bg-white hover:bg-emerald-50/20 shadow-xs"
-                }`}
+                className={`flex flex-col text-left p-3.5 rounded-2xl border transition-all relative group cursor-pointer disabled:opacity-60 ${activeTab === "dealer"
+                  ? "border-emerald-500/50 bg-emerald-50/40 shadow-sm ring-2 ring-emerald-500/20"
+                  : "border-slate-200 hover:border-emerald-300 bg-white hover:bg-emerald-50/20 shadow-xs"
+                  }`}
               >
                 <div className="flex items-center justify-between w-full mb-2.5">
                   <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
@@ -240,10 +183,6 @@ export default function LoginPage() {
                 <div className="text-[11.5px] text-[#64748B] mt-0.5 truncate">
                   David Miller · Dealer
                 </div>
-                <div className="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-semibold text-emerald-600">
-                  <span>Enter Dealer Portal</span>
-                  <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
-                </div>
               </button>
 
               {/* Quick Launch: Admin Console */}
@@ -252,11 +191,10 @@ export default function LoginPage() {
                 type="button"
                 onClick={() => quickLogin("admin")}
                 disabled={loading}
-                className={`flex flex-col text-left p-3.5 rounded-2xl border transition-all relative group cursor-pointer disabled:opacity-60 ${
-                  activeTab === "admin"
-                    ? "border-[#1E3A5F] bg-blue-50/40 shadow-sm ring-2 ring-blue-500/20"
-                    : "border-slate-200 hover:border-[#1E3A5F]/40 bg-white hover:bg-blue-50/20 shadow-xs"
-                }`}
+                className={`flex flex-col text-left p-3.5 rounded-2xl border transition-all relative group cursor-pointer disabled:opacity-60 ${activeTab === "admin"
+                  ? "border-[#1E3A5F] bg-blue-50/40 shadow-sm ring-2 ring-blue-500/20"
+                  : "border-slate-200 hover:border-[#1E3A5F]/40 bg-white hover:bg-blue-50/20 shadow-xs"
+                  }`}
               >
                 <div className="flex items-center justify-between w-full mb-2.5">
                   <div className="w-9 h-9 rounded-xl bg-blue-100 text-[#1E3A5F] flex items-center justify-center font-bold">
@@ -272,10 +210,6 @@ export default function LoginPage() {
                 <div className="text-[11.5px] text-[#64748B] mt-0.5 truncate">
                   Command Center · Admin
                 </div>
-                <div className="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-semibold text-[#1E3A5F]">
-                  <span>Enter Admin Console</span>
-                  <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
-                </div>
               </button>
             </div>
           </div>
@@ -289,11 +223,10 @@ export default function LoginPage() {
                   setActiveTab("dealer");
                   if (email === "admin@autohub.co.nz") setEmail("dealer@autohub.co.nz");
                 }}
-                className={`flex-1 py-2 rounded-lg text-[12.5px] font-bold transition-all flex items-center justify-center gap-2 ${
-                  activeTab === "dealer"
-                    ? "bg-white text-[#0A1322] shadow-xs border border-slate-200/80"
-                    : "text-[#64748B] hover:text-[#0A1322]"
-                }`}
+                className={`flex-1 py-2 rounded-lg text-[12.5px] font-bold transition-all flex items-center justify-center gap-2 ${activeTab === "dealer"
+                  ? "bg-white text-[#0A1322] shadow-xs border border-slate-200/80"
+                  : "text-[#64748B] hover:text-[#0A1322]"
+                  }`}
               >
                 <Building2 size={15} className={activeTab === "dealer" ? "text-emerald-600" : "text-[#94A3B8]"} />
                 <span>Dealer Login</span>
@@ -305,11 +238,10 @@ export default function LoginPage() {
                   setActiveTab("admin");
                   if (email === "dealer@autohub.co.nz") setEmail("admin@autohub.co.nz");
                 }}
-                className={`flex-1 py-2 rounded-lg text-[12.5px] font-bold transition-all flex items-center justify-center gap-2 ${
-                  activeTab === "admin"
-                    ? "bg-[#1E3A5F] text-white shadow-xs"
-                    : "text-[#64748B] hover:text-[#0A1322]"
-                }`}
+                className={`flex-1 py-2 rounded-lg text-[12.5px] font-bold transition-all flex items-center justify-center gap-2 ${activeTab === "admin"
+                  ? "bg-[#1E3A5F] text-white shadow-xs"
+                  : "text-[#64748B] hover:text-[#0A1322]"
+                  }`}
               >
                 <ShieldCheck size={15} className={activeTab === "admin" ? "text-blue-300" : "text-[#94A3B8]"} />
                 <span>Admin Operations</span>
@@ -369,27 +301,16 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Destination Panel Preview Notice */}
-            <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between text-[11.5px] text-[#475569]">
-              <span className="flex items-center gap-1.5">
-                <CheckCircle2 size={13} className={activeTab === "admin" ? "text-blue-600" : "text-emerald-600"} />
-                <span>Redirects to:</span>
-              </span>
-              <span className="font-bold text-[#0A1322]">
-                {activeTab === "admin" ? "AutoHub Admin Command (/admin)" : "Dealer Portal (/browse-vehicles)"}
-              </span>
-            </div>
 
             {/* Submit Button */}
             <button
               id="sign-in-button"
               type="submit"
               disabled={loading}
-              className={`w-full py-3 text-white font-bold text-[14.5px] rounded-xl transition-all flex items-center justify-center gap-2 mt-2 shadow-md disabled:opacity-70 cursor-pointer ${
-                activeTab === "admin"
-                  ? "bg-[#1E3A5F] hover:bg-[#152842] shadow-blue-950/20"
-                  : "bg-[#E11D48] hover:bg-[#BE123C] shadow-rose-950/20"
-              }`}
+              className={`w-full py-3 text-white font-bold text-[14.5px] rounded-xl transition-all flex items-center justify-center gap-2 mt-2 shadow-md disabled:opacity-70 cursor-pointer ${activeTab === "admin"
+                ? "bg-[#1E3A5F] hover:bg-[#152842] shadow-blue-950/20"
+                : "bg-[#E11D48] hover:bg-[#BE123C] shadow-rose-950/20"
+                }`}
             >
               {loading ? (
                 <>

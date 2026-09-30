@@ -208,3 +208,29 @@ export function getNZComparables(make: string, model: string, year: number, kms:
   
   return comparables;
 }
+
+// Calculate a standardized 1-10 vehicle condition score based on auction grade and specs
+export function getVehicleConditionScore(v: HeiwaVehicle): number {
+  if (v.ac) {
+    const parsed = parseFloat(v.ac);
+    if (!isNaN(parsed)) {
+      if (parsed >= 5.0) return 10;
+      if (parsed >= 4.5) return 9;
+      if (parsed >= 4.0) return 8;
+      if (parsed >= 3.5) return 7;
+      if (parsed >= 3.0) return 6;
+      if (parsed >= 2.5) return 5;
+      if (parsed >= 2.0) return 4;
+      if (parsed >= 1.0) return 2;
+    }
+  }
+  if (v.condition === "A2") return 7;
+
+  let score = 7;
+  if (v.year >= 2022 && v.kms < 40000) score = 9;
+  else if (v.year >= 2020 && v.kms < 70000) score = 8;
+  else if (v.year >= 2017 && v.kms < 95000) score = 7;
+  else if (v.kms > 110000 || v.year <= 2014) score = 6;
+  return Math.min(10, Math.max(1, score));
+}
+

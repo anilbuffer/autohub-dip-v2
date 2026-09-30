@@ -29,6 +29,7 @@ import {
   HEIWA_VEHICLES,
   HeiwaVehicle,
   calculateLandedCost,
+  getVehicleConditionScore,
 } from "@/lib/heiwaData";
 import {
   getAllVehicles,
@@ -72,6 +73,7 @@ function BrowseVehiclesContent() {
   const [selectedModel, setSelectedModel] = useState<string>("all");
   const [selectedYear, setSelectedYear] = useState<string>("all");
   const [selectedFuel, setSelectedFuel] = useState<string>("all");
+  const [selectedCondition, setSelectedCondition] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   // Sort & View States
@@ -154,6 +156,10 @@ function BrowseVehiclesContent() {
     } else if (filter === "all" || tab === "all") {
       setActiveScope("all");
     }
+    const cond = searchParams.get("condition");
+    if (cond) {
+      setSelectedCondition(cond);
+    }
     const q = searchParams.get("search");
     if (q !== null && q !== undefined) {
       setSearchQuery(q);
@@ -177,6 +183,9 @@ function BrowseVehiclesContent() {
   const selectedVehiclesObjects = useMemo(() => {
     return allCars.filter((v) => selectedChassis.includes(v.chassis));
   }, [allCars, selectedChassis]);
+
+  // Primary criteria representation for summary strip
+  const primaryCriteria = wishlistCriteria.find((c) => c.make.trim() !== "") || wishlistCriteria[0];
 
   // Unique list of makes
   const makes = useMemo(() => {
@@ -215,6 +224,11 @@ function BrowseVehiclesContent() {
         if (selectedFuel === "E" && v.fuelType !== "E" && v.cc !== 0) return false;
         if (selectedFuel === "P" && v.fuelType !== "P" && v.fuelType !== "") return false;
       }
+      if (selectedCondition !== "all") {
+        const minCond = parseInt(selectedCondition);
+        const score = getVehicleConditionScore(v);
+        if (score < minCond) return false;
+      }
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase().trim();
         const matchesText =
@@ -227,7 +241,7 @@ function BrowseVehiclesContent() {
       }
       return true;
     });
-  }, [allCars, matchedWishlistVehicles, activeScope, selectedMake, selectedModel, selectedYear, selectedFuel, searchQuery]);
+  }, [allCars, matchedWishlistVehicles, activeScope, selectedMake, selectedModel, selectedYear, selectedFuel, selectedCondition, searchQuery]);
 
   // Sorting
   const sortedVehicles = useMemo(() => {
@@ -245,6 +259,9 @@ function BrowseVehiclesContent() {
         const bScore = bWishlist + bMargin + (bGrade * 500) + ((b.year - 2010) * 100) - (b.kms / 200);
         return bScore - aScore;
       });
+    }
+    if (sortBy === "condition_desc") {
+      return list.sort((a, b) => getVehicleConditionScore(b) - getVehicleConditionScore(a));
     }
     if (sortBy === "price_asc") {
       return list.sort((a, b) => a.priceFob - b.priceFob);
@@ -284,6 +301,7 @@ function BrowseVehiclesContent() {
     setSelectedModel("all");
     setSelectedYear("all");
     setSelectedFuel("all");
+    setSelectedCondition("all");
     setSearchQuery("");
     setCurrentPage(1);
   };
@@ -325,7 +343,7 @@ function BrowseVehiclesContent() {
               }`}
           >
             <Heart size={15} className={activeScope === "wishlist" ? "fill-white" : "text-[#E11D48]"} />
-            <span>Matching Wishlist ({matchedWishlistVehicles.length})</span>
+            <span>Matching Vehicles ({matchedWishlistVehicles.length})</span>
           </button>
           <button
             onClick={() => {
@@ -348,9 +366,71 @@ function BrowseVehiclesContent() {
         </div>
       </div>
 
+      {/* ─── Active Wishlist Requirements Strip (Shown under Matching Vehicles tab) ─── */}
+      {activeScope === "wishlist" && (
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-soft p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="flex items-center gap-3.5">
+            <div className="w-10 h-10 rounded-xl bg-rose-50 text-[#E11D48] border border-rose-100 flex items-center justify-center shrink-0">
+              <Heart size={20} className="fill-[#E11D48]" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#E11D48]">
+                  Active Wishlist Requirements
+                </span>
+                <span className="text-[11px] text-[#64748B]">
+                  · Live matching Japan auction inventory
+                </span>
+              </div>
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-[#111C2D] mt-1">
+                <span>
+                  <strong className="text-[#64748B] font-normal">Make:</strong>{" "}
+                  {primaryCriteria?.make || "Toyota"}
+                </span>
+                <span className="text-[#CBD5E1]">•</span>
+                <span>
+                  <strong className="text-[#64748B] font-normal">Model:</strong>{" "}
+                  {primaryCriteria?.model || "Aqua / C-HR"}
+                </span>
+                <span className="text-[#CBD5E1]">•</span>
+                <span>
+                  <strong className="text-[#64748B] font-normal">Year:</strong>{" "}
+                  {primaryCriteria?.yearFrom && primaryCriteria.yearFrom > 2013
+                    ? `${primaryCriteria.yearFrom} or newer`
+                    : "2014 or newer"}
+                </span>
+                <span className="text-[#CBD5E1]">•</span>
+                <span>
+                  <strong className="text-[#64748B] font-normal">Kilometres:</strong>{" "}
+                  {primaryCriteria?.maxKms && primaryCriteria.maxKms < 100000
+                    ? `Under ${primaryCriteria.maxKms.toLocaleString("en-US")} km`
+                    : "Under 90,000 km"}
+                </span>
+                <span className="text-[#CBD5E1]">•</span>
+                <span>
+                  <strong className="text-[#64748B] font-normal">Budget:</strong>{" "}
+                  {primaryCriteria?.maxBudget
+                    ? `Up to NZ$${primaryCriteria.maxBudget.toLocaleString("en-US")}`
+                    : "Up to NZ$25,000"}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setWishlistModalOpen(true)}
+            className="px-4 py-2 bg-[#F8FAFC] hover:bg-[#F1F5F9] text-[#111C2D] border border-[#CBD5E1] rounded-xl text-xs font-bold transition-all shadow-2xs hover:border-[#94A3B8] shrink-0 flex items-center gap-2 cursor-pointer"
+          >
+            <SlidersHorizontal size={14} />
+            <span>Edit Wishlist</span>
+          </button>
+        </div>
+      )}
+
       {/* ─── Filter Bar (Included in both All Stock and Wishlist modes) ─── */}
       <form onSubmit={handleSearchSubmit} className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/90 shadow-soft hover:shadow-soft-md transition-shadow">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5 items-end">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5 items-end">
           {/* Make */}
           <div>
             <label className="block text-[12px] font-semibold text-[#475569] mb-1.5">
@@ -453,6 +533,36 @@ function BrowseVehiclesContent() {
             </div>
           </div>
 
+          {/* Condition (1-10) */}
+          <div>
+            <label className="block text-[12px] font-semibold text-[#475569] mb-1.5">
+              Condition
+            </label>
+            <div className="relative">
+              <select
+                value={selectedCondition}
+                onChange={(e) => {
+                  setSelectedCondition(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl px-3 py-2.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#E11D48] focus:ring-1 focus:ring-[#E11D48] appearance-none pr-8 cursor-pointer"
+              >
+                <option value="all">Any Condition</option>
+                <option value="10">10 / 10 (Pristine / Mint)</option>
+                <option value="9">9+ / 10 (Excellent)</option>
+                <option value="8">8+ / 10 (Very Good)</option>
+                <option value="7">7+ / 10 (Good)</option>
+                <option value="6">6+ / 10 (Fair)</option>
+                <option value="5">5+ / 10 (Average)</option>
+                <option value="4">4+ / 10 (Moderate)</option>
+                <option value="3">3+ / 10 (Needs Work)</option>
+                <option value="2">2+ / 10 (Rough)</option>
+                <option value="1">1+ / 10 (Project)</option>
+              </select>
+              <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none" />
+            </div>
+          </div>
+
           {/* Search Button */}
           <div>
             <button
@@ -474,7 +584,7 @@ function BrowseVehiclesContent() {
               ? `${totalItems} Matching Vehicles`
               : `${totalItems} Vehicles Available`}
           </span>
-          {(selectedMake !== "all" || selectedModel !== "all" || selectedYear !== "all" || selectedFuel !== "all" || searchQuery) && (
+          {(selectedMake !== "all" || selectedModel !== "all" || selectedYear !== "all" || selectedFuel !== "all" || selectedCondition !== "all" || searchQuery) && (
             <button
               onClick={resetFilters}
               className="ml-3 text-xs text-[#E11D48] hover:underline font-semibold"
@@ -498,6 +608,7 @@ function BrowseVehiclesContent() {
                 className="bg-white border border-[#CBD5E1] rounded-xl px-3 py-1.5 text-xs font-semibold text-[#111C2D] outline-none focus:border-[#E11D48] pr-7 cursor-pointer shadow-2xs"
               >
                 <option value="best_match">Best Match</option>
+                <option value="condition_desc">Condition: High to Low</option>
                 <option value="price_asc">Price: Low to High</option>
                 <option value="price_desc">Price: High to Low</option>
                 <option value="year_desc">Year: Newest First</option>
@@ -622,9 +733,14 @@ function BrowseVehiclesContent() {
                 {/* ─── Simplified Details ─── */}
                 <div className="p-5 flex-1 flex flex-col justify-between">
                   <div>
-                    <span className="text-[11px] text-[#94A3B8] font-mono font-semibold block mb-1">
-                      Stockid #{vehicle.stockId}
-                    </span>
+                    <div className="flex items-center justify-between gap-2 mb-1">
+                      <span className="text-[11px] text-[#94A3B8] font-mono font-semibold">
+                        Stockid #{vehicle.stockId}
+                      </span>
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                        Condition {getVehicleConditionScore(vehicle)}/10
+                      </span>
+                    </div>
 
                     {/* Title */}
                     <Link href={`/vehicles/${uniqueId}`} className="hover:text-[#E11D48] transition-colors block">
@@ -741,9 +857,14 @@ function BrowseVehiclesContent() {
                     <p className="text-xs text-[#64748B] mt-1 font-medium">
                       {formatSpecsLine(vehicle)}
                     </p>
-                    <span className="text-[11px] text-[#94A3B8] font-mono mt-0.5 block">
-                      Stockid #{vehicle.stockId}
-                    </span>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-[11px] text-[#94A3B8] font-mono">
+                        Stockid #{vehicle.stockId}
+                      </span>
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                        Condition {getVehicleConditionScore(vehicle)}/10
+                      </span>
+                    </div>
                   </div>
                 </div>
 
