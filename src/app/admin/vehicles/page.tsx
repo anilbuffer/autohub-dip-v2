@@ -588,7 +588,8 @@ export default function AdminVehiclesPage() {
                       </td>
                     </tr>
                   );
-                })}
+                })
+              )}
               </tbody>
             </table>
           </div>

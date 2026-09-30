@@ -348,31 +348,6 @@ function BrowseVehiclesContent() {
               {filteredVehicles.length} vehicles currently match your requirements.
             </p>
           </div>
-
-          {/* Neutral summary strip */}
-          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200/80">
-              <span className="text-sm font-bold text-[#111C2D]">
-                Vehicles matching your wishlist
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#E11D48] text-white self-start sm:self-auto shadow-xs">
-                {filteredVehicles.length} matching vehicles
-              </span>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-y-1 gap-x-3.5 pt-3 text-xs font-medium text-slate-700">
-              <span className="font-bold text-[#111C2D]">
-                {primaryCriteria?.make || "Toyota"} {primaryCriteria?.model || "C-HR"}
-              </span>
-              <span className="text-slate-300">·</span>
-              <span>2022+</span>
-              <span className="text-slate-300">·</span>
-              <span>Under 60,000 km</span>
-              <span className="text-slate-300">·</span>
-              <span>Budget up to NZ$30,000</span>
-            </div>
-          </div>
-        </div>
       ) : (
         /* Standard Filter Bar when in All Auction Stock mode */
         <form onSubmit={handleSearchSubmit} className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/90 shadow-soft hover:shadow-soft-md transition-shadow">
