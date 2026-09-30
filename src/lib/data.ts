@@ -79,11 +79,11 @@ export const VEHICLES: Vehicle[] = [
     color: "Pearl White",
     vin: "NHP10-2184910",
     dealer: "Auckland Auto Group",
-    image: "https://images.unsplash.com/photo-1590362891991-f776e747a588?auto=format&fit=crop&w=1000&q=80",
+    image: "/vehicles/aqua.jpg",
     gallery: [
-      "https://images.unsplash.com/photo-1590362891991-f776e747a588?auto=format&fit=crop&w=1000&q=80",
-      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1000&q=80",
-      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1000&q=80",
+      "/vehicles/aqua.jpg",
+      "/vehicles/prius-5d.jpg",
+      "/vehicles/c-hr.jpg",
     ],
     aiAnalysis: {
       summary: "Prime dealer opportunity. Grade 4.5 auction report shows pristine battery health, genuine 58k km, and zero structural remarks. NZ demand in Auckland metro has median turn rate of under 18 days.",
@@ -138,10 +138,10 @@ export const VEHICLES: Vehicle[] = [
     color: "Platinum Silver",
     vin: "GR3-1029482",
     dealer: "Hamilton Motors",
-    image: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1000&q=80",
+    image: "/vehicles/aqua.jpg",
     gallery: [
-      "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1000&q=80",
-      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1000&q=80"
+      "/vehicles/aqua.jpg",
+      "/vehicles/c-hr.jpg"
     ],
     aiAnalysis: {
       summary: "Modern 4th-generation Fit with dual-motor e:HEV powertrain. Exceptional fuel economy and Honda SENSING safety suite. Consistently sells at high retail retention.",

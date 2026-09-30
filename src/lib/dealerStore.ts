@@ -249,9 +249,9 @@ export function getVehiclePhoto(vehicle: HeiwaVehicle): string {
     return 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?auto=format&fit=crop&w=800&q=80';
   }
   if (vehicle.cc > 2200) {
-    return 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80';
+    return '/vehicles/rav4.jpg';
   }
-  return 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80';
+  return '/vehicles/aqua.jpg';
 }
 
 // Check if a vehicle is a car (exclude bikes)

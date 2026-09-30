@@ -15,6 +15,10 @@ import {
   List,
   Sparkles,
   ArrowRight,
+  Gavel,
+  Check,
+  CheckSquare,
+  AlertCircle,
 } from "lucide-react";
 import {
   HEIWA_VEHICLES,
@@ -34,6 +38,7 @@ import {
   DEFAULT_WISHLIST,
 } from "@/lib/dealerStore";
 import WishlistHeaderModal from "@/components/layout/WishlistHeaderModal";
+import BatchBiddingModal from "@/components/vehicle/BatchBiddingModal";
 
 // Format single clean specs line: e.g. "72,456 km · Hybrid · Automatic · Grade 4.5"
 function formatSpecsLine(v: HeiwaVehicle): string {
@@ -72,6 +77,26 @@ function BrowseVehiclesContent() {
 
   // Watchlist synchronization
   const [watchlistIds, setWatchlistIds] = useState<string[]>([]);
+
+  // Batch bidding selection (submit bids for up to 4 cars together)
+  const [selectedChassis, setSelectedChassis] = useState<string[]>([]);
+  const [batchModalOpen, setBatchModalOpen] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const handleToggleSelectVehicle = (e: React.MouseEvent, chassis: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (selectedChassis.includes(chassis)) {
+      setSelectedChassis(selectedChassis.filter((c) => c !== chassis));
+    } else {
+      if (selectedChassis.length >= 4) {
+        setToastMessage("You can select up to 4 cars to submit bids together.");
+        setTimeout(() => setToastMessage(null), 3500);
+        return;
+      }
+      setSelectedChassis([...selectedChassis, chassis]);
+    }
+  };
 
   const refreshWishlistCriteria = () => {
     try {
@@ -131,6 +156,11 @@ function BrowseVehiclesContent() {
   const matchedWishlistVehicles = useMemo(() => {
     return matchVehiclesAgainstWishlist(allCars, wishlistCriteria);
   }, [allCars, wishlistCriteria]);
+
+  // Selected vehicles for batch bidding (up to 4 cars)
+  const selectedVehiclesObjects = useMemo(() => {
+    return allCars.filter((v) => selectedChassis.includes(v.chassis));
+  }, [allCars, selectedChassis]);
 
   // Primary criteria representation for summary card
   const primaryCriteria = wishlistCriteria.find((c) => c.make.trim() !== "") || wishlistCriteria[0];
@@ -551,12 +581,17 @@ function BrowseVehiclesContent() {
             const landed = calculateLandedCost(vehicle.priceFob);
             const estimatedNz = getEstimatedNZRetailPrice(vehicle);
             const isWatchlisted = watchlistIds.includes(vehicle.chassis);
+            const isSelected = selectedChassis.includes(vehicle.chassis);
             const uniqueId = encodeURIComponent(vehicle.chassis);
 
             return (
               <div
                 key={vehicle.chassis + vehicle.stockId + index}
-                className="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-soft hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between group"
+                className={`bg-white rounded-2xl overflow-hidden shadow-soft hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between group border relative ${
+                  isSelected
+                    ? "border-[#E11D48] ring-2 ring-[#E11D48]/30 shadow-md shadow-rose-950/10"
+                    : "border-slate-200/90"
+                }`}
               >
                 {/* ─── Clean Image Container ─── */}
                 <div className="relative aspect-[16/10] w-full bg-[#F1F5F9] overflow-hidden">
@@ -567,10 +602,39 @@ function BrowseVehiclesContent() {
                     loading="lazy"
                   />
 
+                  {/* Batch Bid Select Checkbox (Top Left - Up to 4 cars) */}
+                  <button
+                    type="button"
+                    onClick={(e) => handleToggleSelectVehicle(e, vehicle.chassis)}
+                    className={`absolute top-3 left-3 z-10 h-8 px-2.5 rounded-xl flex items-center gap-1.5 transition-all cursor-pointer shadow-md backdrop-blur-md ${
+                      isSelected
+                        ? "bg-[#E11D48] text-white ring-2 ring-white scale-102"
+                        : "bg-black/50 text-white/90 hover:text-white hover:bg-black/70 border border-white/20"
+                    }`}
+                    title={
+                      isSelected
+                        ? "Selected for batch bidding (click to remove)"
+                        : selectedChassis.length >= 4
+                        ? "Maximum 4 vehicles can be selected for batch bid"
+                        : "Select to place bid together (up to 4 cars)"
+                    }
+                  >
+                    <div
+                      className={`w-3.5 h-3.5 rounded flex items-center justify-center border transition-all ${
+                        isSelected ? "bg-white text-[#E11D48] border-white" : "border-white/70"
+                      }`}
+                    >
+                      {isSelected && <Check size={11} strokeWidth={3.5} />}
+                    </div>
+                    <span className="text-[11px] font-bold">
+                      {isSelected ? "Selected" : "Select"}
+                    </span>
+                  </button>
+
                   {/* Minimal Watchlist Button (Top Right) */}
                   <button
                     onClick={(e) => handleToggleWatchlist(e, vehicle)}
-                    className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-xs shadow-xs flex items-center justify-center text-[#64748B] hover:text-[#E11D48] transition-colors"
+                    className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-xs shadow-xs flex items-center justify-center text-[#64748B] hover:text-[#E11D48] transition-colors z-10"
                     title={isWatchlisted ? "Remove from Watchlist" : "Add to Watchlist"}
                   >
                     <Heart
@@ -615,13 +679,27 @@ function BrowseVehiclesContent() {
                     </div>
                   </div>
 
-                  {/* Primary Action Button */}
-                  <div className="mt-3.5">
+                  {/* Action Buttons: Bid & Details */}
+                  <div className="mt-3.5 flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={(e) => handleToggleSelectVehicle(e, vehicle.chassis)}
+                      className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer border ${
+                        isSelected
+                          ? "bg-rose-50 text-[#E11D48] border-rose-200 hover:bg-rose-100"
+                          : "bg-slate-100 hover:bg-slate-200 text-[#0A1322] border-slate-200/80"
+                      }`}
+                    >
+                      <Gavel size={13} className={isSelected ? "text-[#E11D48]" : "text-slate-600"} />
+                      <span>{isSelected ? "Selected (Bid)" : "Select to Bid"}</span>
+                    </button>
+
                     <Link
                       href={`/vehicles/${uniqueId}`}
-                      className="w-full py-2.5 bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-semibold rounded-xl transition-all shadow-xs hover:shadow-md flex items-center justify-center gap-1.5"
+                      className="px-3.5 py-2.5 bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-semibold rounded-xl transition-all shadow-xs hover:shadow-md flex items-center justify-center gap-1 shrink-0"
+                      title="View Vehicle Specs & Landed Cost Breakdown"
                     >
-                      <span>View Details</span>
+                      <span>Details</span>
                       <ArrowRight size={13} />
                     </Link>
                   </div>
@@ -638,14 +716,37 @@ function BrowseVehiclesContent() {
             const landed = calculateLandedCost(vehicle.priceFob);
             const estimatedNz = getEstimatedNZRetailPrice(vehicle);
             const isWatchlisted = watchlistIds.includes(vehicle.chassis);
+            const isSelected = selectedChassis.includes(vehicle.chassis);
             const uniqueId = encodeURIComponent(vehicle.chassis);
 
             return (
               <div
                 key={vehicle.chassis + vehicle.stockId + index}
-                className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-[#F8FAFC] transition-colors"
+                className={`p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors ${
+                  isSelected ? "bg-rose-50/40" : "hover:bg-[#F8FAFC]"
+                }`}
               >
-                <div className="flex items-center gap-4 min-w-0">
+                <div className="flex items-center gap-3.5 min-w-0">
+                  {/* Select Checkbox */}
+                  <button
+                    type="button"
+                    onClick={(e) => handleToggleSelectVehicle(e, vehicle.chassis)}
+                    className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all cursor-pointer shrink-0 border ${
+                      isSelected
+                        ? "bg-[#E11D48] text-white border-[#E11D48] shadow-xs"
+                        : "bg-slate-100 text-slate-400 hover:text-slate-700 hover:bg-slate-200 border-slate-200"
+                    }`}
+                    title={
+                      isSelected
+                        ? "Selected for batch bidding"
+                        : selectedChassis.length >= 4
+                        ? "Maximum 4 vehicles can be selected"
+                        : "Select to bid with batch (up to 4 cars)"
+                    }
+                  >
+                    {isSelected ? <Check size={15} strokeWidth={3} /> : <div className="w-3.5 h-3.5 rounded-xs border-2 border-slate-400" />}
+                  </button>
+
                   <div className="relative w-28 h-20 rounded-xl overflow-hidden bg-slate-100 shrink-0">
                     <img
                       src={photoUrl}
@@ -772,6 +873,74 @@ function BrowseVehiclesContent() {
           </div>
         </div>
       )}
+
+      {/* ─── Floating Toast Notification ─── */}
+      {toastMessage && (
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-[#0A1322] text-white px-5 py-3 rounded-2xl shadow-2xl border border-white/20 flex items-center gap-2.5 text-xs font-bold animate-in fade-in slide-in-from-top-4 duration-200">
+          <AlertCircle size={16} className="text-amber-400 shrink-0" />
+          <span>{toastMessage}</span>
+        </div>
+      )}
+
+      {/* ─── Floating Multi-Car Batch Bidding Action Dock (Up to 4 Cars) ─── */}
+      {selectedChassis.length > 0 && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 w-[95%] max-w-2xl bg-[#0A1322]/95 backdrop-blur-md border border-[#1B2A42] text-white p-3.5 sm:p-4 rounded-2xl shadow-2xl flex items-center justify-between gap-4 animate-in slide-in-from-bottom-8 duration-300 ring-1 ring-white/10">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="flex -space-x-2.5 overflow-hidden shrink-0">
+              {selectedVehiclesObjects.filter(Boolean).map((sv) => (
+                <img
+                  key={sv.chassis}
+                  src={getVehiclePhoto(sv)}
+                  alt={sv.model}
+                  className="inline-block w-10 h-10 rounded-xl ring-2 ring-[#0A1322] object-cover bg-slate-800"
+                  title={`${sv.year} ${sv.make} ${sv.model}`}
+                />
+              ))}
+            </div>
+            <div className="min-w-0">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-extrabold text-white">
+                  {selectedChassis.length} of 4 Cars Selected
+                </span>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                  Ready to Bid
+                </span>
+              </div>
+              <p className="text-[11.5px] text-slate-400 truncate">
+                Submit auction proxy bids together to USS & Heiwa Japan
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            <button
+              type="button"
+              onClick={() => setSelectedChassis([])}
+              className="text-xs font-semibold text-slate-400 hover:text-white px-2 py-1 transition-colors cursor-pointer"
+            >
+              Clear
+            </button>
+            <button
+              type="button"
+              onClick={() => setBatchModalOpen(true)}
+              className="px-4 py-2.5 bg-gradient-to-r from-[#E11D48] to-[#BE123C] hover:from-[#BE123C] hover:to-[#9F1239] text-white text-xs font-bold rounded-xl shadow-lg shadow-rose-950/40 flex items-center gap-2 transition-all hover:scale-102 cursor-pointer"
+            >
+              <Gavel size={15} />
+              <span>Place Batch Bids ({selectedChassis.length})</span>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ─── Batch Bidding Modal (Up to 4 Cars Together) ─── */}
+      <BatchBiddingModal
+        isOpen={batchModalOpen}
+        vehicles={selectedVehiclesObjects}
+        onClose={() => setBatchModalOpen(false)}
+        onSuccess={() => {
+          setSelectedChassis([]);
+        }}
+      />
 
       {/* Wishlist Header Modal accessible directly from Edit Wishlist buttons */}
       <WishlistHeaderModal
