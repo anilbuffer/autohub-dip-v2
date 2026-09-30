@@ -9,7 +9,6 @@ import {
   Heart,
   FileText,
   User,
-  HelpCircle,
   Search,
   Bell,
   ChevronDown,
@@ -270,14 +269,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     >
                       <User size={14} />
                       <span>Dealership Profile</span>
-                    </Link>
-                    <Link
-                      href="/help"
-                      onClick={() => setProfileDropdownOpen(false)}
-                      className="flex items-center gap-2 px-4 py-2 text-[#374151] hover:bg-slate-50"
-                    >
-                      <HelpCircle size={14} />
-                      <span>Help & Documentation</span>
                     </Link>
                     <div className="border-t border-[#F1F5F9] my-1" />
                     <Link

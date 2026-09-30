@@ -148,7 +148,7 @@ export default function WishlistHeaderModal({ isOpen, onClose, onApply }: Wishli
       onApply();
     }
     onClose();
-    router.push('/?filter=wishlist');
+    router.push('/browse-vehicles?filter=wishlist');
   };
 
   return (

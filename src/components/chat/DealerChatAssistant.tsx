@@ -317,7 +317,7 @@ export default function DealerChatAssistant({
         suggestedPrompts: [
           "What is the GST calculation formula?",
           "How does JPY fluctuation affect margin?",
-          "Top Arbitrage Picks Today"
+          "Top Sourcing Opportunities Today"
         ]
       };
     }
@@ -349,7 +349,7 @@ export default function DealerChatAssistant({
         suggestedPrompts: [
           "How long does bio-security wash take?",
           "Calculate Landed Cost with Freight",
-          "Top Arbitrage Picks Today"
+          "Top Sourcing Opportunities Today"
         ]
       };
     }

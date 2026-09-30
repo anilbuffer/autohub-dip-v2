@@ -289,18 +289,20 @@ export function notifyStoreChange() {
 export function getStoredWishlistCriteria(): WishListCriteria[] {
   if (typeof window === 'undefined') return DEFAULT_WISHLIST;
   try {
-    const raw = localStorage.getItem(STORAGE_KEYS.WISHLIST);
-    if (!raw) {
-      // Check legacy key
-      const legacy = localStorage.getItem('autohub_wishlist');
-      if (legacy) {
-        const parsed = JSON.parse(legacy);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-      }
-      return DEFAULT_WISHLIST;
-    }
+    const raw = localStorage.getItem(STORAGE_KEYS.WISHLIST) || localStorage.getItem('autohub_wishlist');
+    if (!raw) return DEFAULT_WISHLIST;
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) && parsed.length > 0 ? parsed : DEFAULT_WISHLIST;
+    if (!Array.isArray(parsed) || parsed.length === 0) return DEFAULT_WISHLIST;
+    const sanitized = parsed.map((item, idx) => ({
+      id: item?.id || `crit-${idx + 1}`,
+      make: item?.make && item.make.trim() !== '' ? item.make : 'Toyota',
+      model: typeof item?.model === 'string' && item.model.trim() !== '' ? item.model : 'Aqua / C-HR',
+      yearFrom: typeof item?.yearFrom === 'number' && !isNaN(item.yearFrom) ? item.yearFrom : 2013,
+      yearTo: typeof item?.yearTo === 'number' && !isNaN(item.yearTo) && item.yearTo > 0 ? item.yearTo : 2026,
+      maxKms: typeof item?.maxKms === 'number' && !isNaN(item.maxKms) && item.maxKms > 0 ? item.maxKms : 100000,
+      maxBudget: typeof item?.maxBudget === 'number' && !isNaN(item.maxBudget) && item.maxBudget > 0 ? item.maxBudget : 25000,
+    }));
+    return sanitized.length > 0 ? sanitized : DEFAULT_WISHLIST;
   } catch {
     return DEFAULT_WISHLIST;
   }
@@ -318,7 +320,8 @@ export function matchVehiclesAgainstWishlist(
   vehicles: HeiwaVehicle[],
   criteriaList: WishListCriteria[]
 ): HeiwaVehicle[] {
-  const activeCriteria = criteriaList.filter(c => c.make.trim() !== '');
+  const activeCriteria = (criteriaList && criteriaList.length > 0 ? criteriaList : DEFAULT_WISHLIST)
+    .filter(c => c && c.make && c.make.trim() !== '');
   if (activeCriteria.length === 0) return [];
 
   const matchedSet = new Set<string>();
@@ -330,17 +333,23 @@ export function matchVehiclesAgainstWishlist(
     if (matchedSet.has(vKey)) continue;
 
     for (const c of activeCriteria) {
-      const makeMatch = v.make.toLowerCase() === c.make.toLowerCase();
+      const makeMatch = !c.make || v.make.toLowerCase() === c.make.toLowerCase();
       let modelMatch = !c.model || c.model.trim() === '';
       if (c.model && c.model.trim() !== '') {
         const terms = c.model.split('/').map(t => t.trim().toLowerCase().replace(/[-\s]/g, ''));
         const vModel = v.model.toLowerCase().replace(/[-\s]/g, '');
         modelMatch = terms.some(t => t === '' || vModel.includes(t) || t.includes(vModel));
       }
-      const yearMatch = v.year >= c.yearFrom && v.year <= c.yearTo;
-      const kmsMatch = v.kms <= c.maxKms;
+      const yearFrom = typeof c.yearFrom === 'number' && !isNaN(c.yearFrom) ? c.yearFrom : 2012;
+      const yearTo = typeof c.yearTo === 'number' && !isNaN(c.yearTo) && c.yearTo > 0 ? c.yearTo : 2030;
+      const yearMatch = v.year >= yearFrom && v.year <= yearTo;
+
+      const maxKms = typeof c.maxKms === 'number' && !isNaN(c.maxKms) && c.maxKms > 0 ? c.maxKms : 200000;
+      const kmsMatch = v.kms <= maxKms;
+
       const landed = calculateLandedCost(v.priceFob).totalLanded;
-      const budgetMatch = landed <= c.maxBudget;
+      const maxBudget = typeof c.maxBudget === 'number' && !isNaN(c.maxBudget) && c.maxBudget > 0 ? c.maxBudget : 100000;
+      const budgetMatch = landed <= maxBudget;
 
       if (makeMatch && modelMatch && yearMatch && kmsMatch && budgetMatch) {
         matchedSet.add(vKey);

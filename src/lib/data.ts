@@ -30,7 +30,8 @@ export interface Vehicle {
     summary: string;
     highlights: string[];
     confidence: number;
-    arbitrageSpread: number;
+    grossMarginPotential: number;
+    arbitrageSpread?: number;
   };
   nzComparables: {
     source: string;
@@ -93,7 +94,7 @@ export const VEHICLES: Vehicle[] = [
         "High retail velocity: 82% of similar Aqua listings sold in < 25 days"
       ],
       confidence: 96,
-      arbitrageSpread: 4000
+      grossMarginPotential: 4000
     },
     nzComparables: [
       { source: "Trade Me Motors", year: 2019, km: 61000, price: 23990, daysListed: 14 },
@@ -150,7 +151,7 @@ export const VEHICLES: Vehicle[] = [
         "Clean Car rebate eligible profile with 85g/km low emission rating"
       ],
       confidence: 93,
-      arbitrageSpread: 3600
+      grossMarginPotential: 3600
     },
     nzComparables: [
       { source: "Trade Me Motors", year: 2020, km: 48000, price: 22990, daysListed: 12 },
@@ -201,11 +202,11 @@ export const VEHICLES: Vehicle[] = [
       summary: "High-demand compact crossover. Desirable two-tone roof package with genuine LED headlights and leather-trimmed cabin. Highly liquid inventory.",
       highlights: [
         "Estimated retail turnaround under 16 days across North Island yards",
-        "NZ$4,100 gross arbitrage margin above target benchmark",
+        "NZ$4,100 gross margin potential above target benchmark",
         "Grade 4.5 condition sheet with spotless undercarriage report"
       ],
       confidence: 95,
-      arbitrageSpread: 4100
+      grossMarginPotential: 4100
     },
     nzComparables: [
       { source: "Trade Me Motors", year: 2019, km: 65000, price: 27990, daysListed: 15 },
@@ -260,7 +261,7 @@ export const VEHICLES: Vehicle[] = [
         "Minor stone chips noted on bumper, easily groomed prior to yard display"
       ],
       confidence: 88,
-      arbitrageSpread: 3000
+      grossMarginPotential: 3000
     },
     nzComparables: [
       { source: "Trade Me Motors", year: 2019, km: 54000, price: 21990, daysListed: 22 },
@@ -311,10 +312,10 @@ export const VEHICLES: Vehicle[] = [
       highlights: [
         "Entry-level landed cost under NZ$14,000",
         "Requires reconditioning budget of ~$650 NZD for yard readiness",
-        "Margin is compressed to $2,300; bid conservatively below max threshold"
+        "Margin spread is tighter at $2,300 based on historical market trends"
       ],
       confidence: 79,
-      arbitrageSpread: 2300
+      grossMarginPotential: 2300
     },
     nzComparables: [
       { source: "Trade Me Motors", year: 2020, km: 72000, price: 16990, daysListed: 38 },
@@ -368,7 +369,7 @@ export const VEHICLES: Vehicle[] = [
         "Grade 4.5 pristine provenance with official Lexus Tokyo service records"
       ],
       confidence: 97,
-      arbitrageSpread: 5400
+      grossMarginPotential: 5400
     },
     nzComparables: [
       { source: "Trade Me Motors", year: 2019, km: 45000, price: 43990, daysListed: 16 },

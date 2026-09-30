@@ -8,13 +8,19 @@ import {
   Car,
   Trash2,
   Plus,
+  ArrowRight,
 } from "lucide-react";
 import {
   getStoredWatchlist,
   toggleStoredWatchlist,
   getVehiclePhoto,
 } from "@/lib/dealerStore";
-import { HEIWA_VEHICLES, calculateLandedCost, HeiwaVehicle } from "@/lib/heiwaData";
+import {
+  HEIWA_VEHICLES,
+  calculateLandedCost,
+  getEstimatedNZRetailPrice,
+  HeiwaVehicle,
+} from "@/lib/heiwaData";
 
 // Format single clean specs line: e.g. "1.8L Hybrid | Automatic | 72,456 km"
 function formatSpecsLine(v: HeiwaVehicle): string {
@@ -105,12 +111,13 @@ export default function WatchlistPage() {
             {savedVehicles.map((vehicle) => {
               const photoUrl = getVehiclePhoto(vehicle);
               const landed = calculateLandedCost(vehicle.priceFob);
+              const estimatedNz = getEstimatedNZRetailPrice(vehicle);
               const uniqueId = encodeURIComponent(vehicle.chassis);
 
               return (
                 <div
                   key={vehicle.chassis}
-                  className="bg-white rounded-2xl border border-[#E5E7EB] overflow-hidden shadow-2xs hover:shadow-sm transition-all flex flex-col justify-between group"
+                  className="bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden shadow-2xs hover:shadow-md transition-all flex flex-col justify-between group"
                 >
                   {/* Image container */}
                   <div className="relative aspect-[16/10] w-full bg-[#F1F5F9] overflow-hidden">
@@ -124,17 +131,17 @@ export default function WatchlistPage() {
                     {/* Remove button (Heart active) */}
                     <button
                       onClick={(e) => handleRemove(e, vehicle)}
-                      className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-xs shadow-sm flex items-center justify-center text-rose-600 hover:text-[#64748B] transition-colors"
+                      className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-xs shadow-xs flex items-center justify-center text-[#E11D48] hover:text-[#BE123C] transition-colors"
                       title="Remove from Watchlist"
                     >
-                      <Heart size={15} className="fill-rose-600 text-rose-600" />
+                      <Heart size={15} className="fill-[#E11D48] text-[#E11D48]" />
                     </button>
                   </div>
 
                   {/* Clean details */}
                   <div className="p-5 flex-1 flex flex-col justify-between">
                     <div>
-                      <h3 className="text-[16px] font-bold text-[#111827] truncate">
+                      <h3 className="text-[16px] font-bold text-[#111C2D] truncate">
                         {vehicle.year} {vehicle.make} {vehicle.model}
                       </h3>
                       <p className="text-xs text-[#64748B] mt-1.5 font-medium truncate">
@@ -142,17 +149,35 @@ export default function WatchlistPage() {
                       </p>
                     </div>
 
-                    {/* Price & Action Row */}
-                    <div className="flex items-center justify-between gap-3 pt-4 mt-2 border-t border-[#F1F5F9]">
-                      <div className="text-lg font-extrabold text-[#111827] font-mono tracking-tight">
-                        NZ${landed.totalLanded.toLocaleString("en-US")}
+                    {/* Neutral Pricing: Landed Cost & NZ Market Indicator */}
+                    <div className="pt-4 mt-3 border-t border-[#F1F5F9] flex items-center justify-between gap-3">
+                      <div>
+                        <div className="text-[10px] text-[#8899A6] font-semibold uppercase tracking-wider">
+                          Landed Cost
+                        </div>
+                        <div className="text-lg font-extrabold text-[#111C2D] font-mono tracking-tight">
+                          NZ${landed.totalLanded.toLocaleString("en-US")}
+                        </div>
                       </div>
 
+                      <div className="text-right">
+                        <div className="text-[10px] text-[#8899A6] font-semibold uppercase tracking-wider">
+                          NZ Market Indicator
+                        </div>
+                        <div className="text-sm font-bold text-slate-700 font-mono">
+                          NZ${estimatedNz.retailPrice.toLocaleString("en-US")}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Primary Action Button */}
+                    <div className="mt-3.5">
                       <Link
                         href={`/vehicles/${uniqueId}`}
-                        className="px-4 py-2 bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-semibold rounded-xl transition-all shadow-xs hover:shadow-md"
+                        className="w-full py-2.5 bg-[#E11D48] hover:bg-[#BE123C] text-white text-xs font-semibold rounded-xl transition-all shadow-xs hover:shadow-md flex items-center justify-center gap-1.5"
                       >
-                        View Details
+                        <span>View Details</span>
+                        <ArrowRight size={13} />
                       </Link>
                     </div>
                   </div>

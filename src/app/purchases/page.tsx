@@ -148,8 +148,8 @@ export default function PurchasesPage() {
                 <div className="py-2">
                   <div className="grid grid-cols-5 gap-2 relative">
                     {STAGES.map((s) => {
-                      const isComplete = s.step < purchase.currentStep;
-                      const isCurrent = s.step === purchase.currentStep;
+                      const isComplete = s.step < purchase.currentStage;
+                      const isCurrent = s.step === purchase.currentStage;
 
                       return (
                         <div key={s.step} className="flex flex-col items-center text-center">
