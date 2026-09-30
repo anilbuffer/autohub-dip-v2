@@ -36,7 +36,7 @@ export default function MarginCalculator({
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-[#E8ECF0] shadow-subtle p-6 space-y-6">
+    <div className="bg-white rounded-2xl border border-slate-200/90 shadow-soft hover:shadow-soft-md transition-shadow p-6 space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#F1F5F9]">
         <div>

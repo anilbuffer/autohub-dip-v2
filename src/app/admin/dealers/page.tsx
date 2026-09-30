@@ -245,7 +245,7 @@ export default function AdminDealersPage() {
         )}
 
         {/* ─── Filters & Search ─── */}
-        <div className="bg-white p-4 rounded-2xl border border-[#E2E8F0] shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-soft flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="relative w-full sm:max-w-md">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#94A3B8]" />
             <input
@@ -275,10 +275,10 @@ export default function AdminDealersPage() {
             return (
               <div
                 key={d.id}
-                className={`bg-white rounded-2xl border transition-all duration-200 shadow-xs flex flex-col justify-between overflow-hidden ${
+                className={`bg-white rounded-2xl border transition-all duration-200 shadow-soft hover:shadow-soft-md hover:-translate-y-0.5 flex flex-col justify-between overflow-hidden ${
                   isAucklandAuto
-                    ? "border-[#E11D48]/40 ring-2 ring-[#E11D48]/10"
-                    : "border-[#E2E8F0] hover:border-[#1E3A5F]/40"
+                    ? "border-[#E11D48]/50 ring-2 ring-[#E11D48]/15"
+                    : "border-slate-200/90 hover:border-[#1E3A5F]/40"
                 }`}
               >
                 <div>
@@ -464,9 +464,10 @@ export default function AdminDealersPage() {
 
         {/* ─── Add / Invite Dealer Modal ─── */}
         {isInviteModalOpen && (
-          <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto">
-            <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 space-y-6 shadow-2xl animate-in zoom-in-95 my-8 max-h-[90vh] overflow-y-auto">
-              <div className="flex items-start justify-between border-b border-[#F1F5F9] pb-4">
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 sm:p-6 animate-fadeIn">
+            <div className="bg-white rounded-3xl max-w-xl w-full shadow-2xl animate-in zoom-in-95 flex flex-col max-h-[90vh] overflow-hidden">
+              {/* Fixed Header */}
+              <div className="flex items-start justify-between border-b border-[#F1F5F9] p-6 sm:px-8 sm:py-5 shrink-0">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#E11D48] to-[#BE123C] text-white flex items-center justify-center font-bold shadow-md shadow-rose-950/20">
                     <UserPlus size={20} />
@@ -488,7 +489,9 @@ export default function AdminDealersPage() {
                 </button>
               </div>
 
-              <form onSubmit={handleCreateDealer} className="space-y-5">
+              <form onSubmit={handleCreateDealer} className="flex flex-col flex-1 min-h-0">
+                {/* Scrollable Body */}
+                <div className="flex-1 overflow-y-auto p-6 sm:px-8 space-y-5">
                 {/* Dealership Basic Info */}
                 <div className="space-y-4">
                   <div>
@@ -676,12 +679,14 @@ export default function AdminDealersPage() {
                   </div>
                 </div>
 
-                {/* Form Buttons */}
-                <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#F1F5F9]">
+                </div>
+
+                {/* Form Buttons (Fixed Footer) */}
+                <div className="flex items-center justify-end gap-3 p-4 sm:px-8 bg-slate-50 border-t border-slate-100 shrink-0">
                   <button
                     type="button"
                     onClick={() => setIsInviteModalOpen(false)}
-                    className="px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-[#475569] hover:bg-slate-50 transition-colors cursor-pointer"
+                    className="px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-[#475569] hover:bg-slate-100 transition-colors cursor-pointer"
                   >
                     Cancel
                   </button>

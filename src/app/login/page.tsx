@@ -121,7 +121,7 @@ export default function LoginPage() {
               type="button"
               onClick={loginAsDemo}
               disabled={loading}
-              className="w-full flex items-center gap-4 p-4 rounded-2xl border-2 border-[#E2E8F0] hover:border-[#1E3A5F]/30 bg-white hover:bg-[#F0F4F9]/60 transition-all text-left group disabled:opacity-50 shadow-subtle hover:shadow-card"
+              className="w-full flex items-center gap-4 p-4 rounded-2xl border border-slate-200/90 hover:border-[#1E3A5F]/30 bg-white hover:bg-[#F0F4F9]/60 transition-all text-left group disabled:opacity-50 shadow-soft hover:shadow-soft-md"
             >
               <div className="w-11 h-11 rounded-xl bg-emerald-50 flex items-center justify-center flex-shrink-0 border border-emerald-100">
                 <Building2 size={18} className="text-emerald-600" />

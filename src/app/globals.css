@@ -5,7 +5,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
-  --background: #F8FAFC;
+  --background: #F3F5F8;
   --foreground: #111C2D;
   --primary: #E11D48;
   --primary-hover: #BE123C;
@@ -33,7 +33,7 @@
   --accent-blue: #2563EB;
   --accent-blue-bg: #EFF6FF;
   --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
-  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.04), 0 4px 14px -1px rgba(15, 23, 42, 0.05), 0 10px 24px -2px rgba(15, 23, 42, 0.03);
   --shadow-elevated: 0 4px 16px rgba(15, 23, 42, 0.08), 0 2px 4px rgba(15, 23, 42, 0.04);
   --shadow-hover: 0 8px 24px rgba(15, 23, 42, 0.10), 0 2px 8px rgba(15, 23, 42, 0.06);
   --radius-sm: 8px;
@@ -90,6 +90,36 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+/* Enhanced premium card styling and soft layered elevation */
+.shadow-soft {
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.03), 0 4px 14px -1px rgba(15, 23, 42, 0.05), 0 10px 24px -2px rgba(15, 23, 42, 0.03);
+}
+
+.shadow-soft-md {
+  box-shadow: 0 2px 5px 0 rgba(15, 23, 42, 0.04), 0 6px 18px -2px rgba(15, 23, 42, 0.06), 0 14px 30px -4px rgba(15, 23, 42, 0.04);
+}
+
+.shadow-soft-lg {
+  box-shadow: 0 4px 8px 0 rgba(15, 23, 42, 0.04), 0 12px 28px -3px rgba(15, 23, 42, 0.08), 0 20px 40px -5px rgba(15, 23, 42, 0.05);
+}
+
+.card-elevated {
+  background-color: #FFFFFF;
+  border: 1px solid rgba(226, 232, 240, 0.88);
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.03), 0 4px 14px -1px rgba(15, 23, 42, 0.05), 0 10px 24px -2px rgba(15, 23, 42, 0.03);
+}
+
+.card-interactive {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.2s ease;
+}
+.card-interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px -2px rgba(15, 23, 42, 0.08), 0 16px 36px -4px rgba(15, 23, 42, 0.06);
+  border-color: rgba(203, 213, 225, 0.95);
 }
 
 /* Enhanced card hover animation */

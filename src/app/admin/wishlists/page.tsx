@@ -179,7 +179,7 @@ export default function AdminWishlistsPage() {
         </div>
 
         {/* ─── Filter Bar ─── */}
-        <div className="bg-white p-4 rounded-2xl border border-[#E2E8F0] shadow-xs flex flex-col md:flex-row items-center justify-between gap-3">
+        <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-soft flex flex-col md:flex-row items-center justify-between gap-3">
           <div className="relative w-full md:w-96">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#94A3B8]" />
             <input
@@ -218,8 +218,8 @@ export default function AdminWishlistsPage() {
             return (
               <div
                 key={w.id}
-                className={`bg-white rounded-2xl border transition-all duration-200 shadow-xs overflow-hidden ${
-                  isExpanded ? "border-[#1E3A5F] ring-2 ring-[#1E3A5F]/10" : "border-[#E2E8F0] hover:border-[#CBD5E1]"
+                className={`bg-white rounded-2xl border transition-all duration-200 shadow-soft hover:shadow-soft-md overflow-hidden ${
+                  isExpanded ? "border-[#1E3A5F] ring-2 ring-[#1E3A5F]/10" : "border-slate-200/90 hover:border-[#CBD5E1]"
                 }`}
               >
                 {/* Main Summary Header */}
@@ -366,9 +366,10 @@ export default function AdminWishlistsPage() {
 
         {/* ─── Add Wishlist Criteria Modal ─── */}
         {addModalOpen && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 space-y-5 shadow-2xl animate-in zoom-in-95">
-              <div className="flex items-start justify-between">
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 sm:p-6 animate-fadeIn">
+            <div className="bg-white rounded-3xl max-w-lg w-full shadow-2xl animate-in zoom-in-95 flex flex-col max-h-[90vh] overflow-hidden">
+              {/* Fixed Header */}
+              <div className="flex items-start justify-between p-6 sm:px-7 sm:py-5 border-b border-slate-100 shrink-0">
                 <div>
                   <h3 className="text-xl font-extrabold text-[#111827]">
                     Add Sourcing Wishlist Criteria
@@ -379,108 +380,112 @@ export default function AdminWishlistsPage() {
                 </div>
                 <button
                   onClick={() => setAddModalOpen(false)}
-                  className="p-1 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100"
+                  className="p-1 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 cursor-pointer"
                 >
                   ✕
                 </button>
               </div>
 
-              <form onSubmit={handleCreateCriteria} className="space-y-4 text-xs">
-                <div>
-                  <label className="font-bold text-[#111827] block mb-1">Dealership</label>
-                  <select
-                    value={newDealerId}
-                    onChange={(e) => setNewDealerId(Number(e.target.value))}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-semibold outline-none focus:border-[#E11D48]"
-                  >
-                    {DEALERS.map((d) => (
-                      <option key={d.id} value={d.id}>
-                        {d.name} ({d.location})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
+              <form onSubmit={handleCreateCriteria} className="flex flex-col flex-1 min-h-0">
+                {/* Scrollable Body */}
+                <div className="flex-1 overflow-y-auto p-6 sm:p-7 space-y-4 text-xs">
                   <div>
-                    <label className="font-bold text-[#111827] block mb-1">Make</label>
-                    <input
-                      type="text"
-                      value={newMake}
-                      onChange={(e) => setNewMake(e.target.value)}
-                      required
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-medium outline-none focus:border-[#E11D48]"
-                    />
+                    <label className="font-bold text-[#111827] block mb-1">Dealership</label>
+                    <select
+                      value={newDealerId}
+                      onChange={(e) => setNewDealerId(Number(e.target.value))}
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-semibold outline-none focus:border-[#E11D48]"
+                    >
+                      {DEALERS.map((d) => (
+                        <option key={d.id} value={d.id}>
+                          {d.name} ({d.location})
+                        </option>
+                      ))}
+                    </select>
                   </div>
-                  <div>
-                    <label className="font-bold text-[#111827] block mb-1">Model / Terms</label>
-                    <input
-                      type="text"
-                      value={newModel}
-                      onChange={(e) => setNewModel(e.target.value)}
-                      required
-                      placeholder="e.g. Aqua / C-HR"
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-medium outline-none focus:border-[#E11D48]"
-                    />
-                  </div>
-                </div>
 
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="font-bold text-[#111827] block mb-1">Year Range</label>
-                    <div className="flex items-center gap-1.5">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="font-bold text-[#111827] block mb-1">Make</label>
                       <input
-                        type="number"
-                        value={newYearFrom}
-                        onChange={(e) => setNewYearFrom(Number(e.target.value))}
-                        className="w-full px-2 py-2 bg-slate-50 border border-slate-300 rounded-xl text-center font-mono"
+                        type="text"
+                        value={newMake}
+                        onChange={(e) => setNewMake(e.target.value)}
+                        required
+                        className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-medium outline-none focus:border-[#E11D48]"
                       />
-                      <span>to</span>
+                    </div>
+                    <div>
+                      <label className="font-bold text-[#111827] block mb-1">Model / Terms</label>
+                      <input
+                        type="text"
+                        value={newModel}
+                        onChange={(e) => setNewModel(e.target.value)}
+                        required
+                        placeholder="e.g. Aqua / C-HR"
+                        className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-medium outline-none focus:border-[#E11D48]"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="font-bold text-[#111827] block mb-1">Year Range</label>
+                      <div className="flex items-center gap-1.5">
+                        <input
+                          type="number"
+                          value={newYearFrom}
+                          onChange={(e) => setNewYearFrom(Number(e.target.value))}
+                          className="w-full px-2 py-2 bg-slate-50 border border-slate-300 rounded-xl text-center font-mono"
+                        />
+                        <span>to</span>
+                        <input
+                          type="number"
+                          value={newYearTo}
+                          onChange={(e) => setNewYearTo(Number(e.target.value))}
+                          className="w-full px-2 py-2 bg-slate-50 border border-slate-300 rounded-xl text-center font-mono"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="font-bold text-[#111827] block mb-1">Max Odometer (km)</label>
                       <input
                         type="number"
-                        value={newYearTo}
-                        onChange={(e) => setNewYearTo(Number(e.target.value))}
-                        className="w-full px-2 py-2 bg-slate-50 border border-slate-300 rounded-xl text-center font-mono"
+                        step={5000}
+                        value={newMaxKms}
+                        onChange={(e) => setNewMaxKms(Number(e.target.value))}
+                        className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-mono"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="font-bold text-[#111827] block mb-1">Max Odometer (km)</label>
+                    <label className="font-bold text-[#111827] block mb-1">
+                      Max Landed Budget (NZD)
+                    </label>
                     <input
                       type="number"
-                      step={5000}
-                      value={newMaxKms}
-                      onChange={(e) => setNewMaxKms(Number(e.target.value))}
-                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-mono"
+                      step={1000}
+                      value={newMaxBudget}
+                      onChange={(e) => setNewMaxBudget(Number(e.target.value))}
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-mono font-bold"
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label className="font-bold text-[#111827] block mb-1">
-                    Max Landed Budget (NZD)
-                  </label>
-                  <input
-                    type="number"
-                    step={1000}
-                    value={newMaxBudget}
-                    onChange={(e) => setNewMaxBudget(Number(e.target.value))}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-mono font-bold"
-                  />
-                </div>
-
-                <div className="flex justify-end gap-3 pt-3 border-t border-slate-100">
+                {/* Fixed Footer */}
+                <div className="flex justify-end gap-3 p-4 sm:px-7 bg-slate-50 border-t border-slate-100 shrink-0">
                   <button
                     type="button"
                     onClick={() => setAddModalOpen(false)}
-                    className="px-4 py-2 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50"
+                    className="px-4 py-2 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-100 cursor-pointer"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 rounded-xl bg-[#E11D48] text-xs font-bold text-white hover:bg-[#BE123C] shadow-xs"
+                    className="px-4 py-2 rounded-xl bg-[#E11D48] text-xs font-bold text-white hover:bg-[#BE123C] shadow-xs cursor-pointer"
                   >
                     Save Criteria
                   </button>

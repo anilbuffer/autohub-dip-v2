@@ -65,19 +65,19 @@ export default function PurchasesPage() {
 
         {/* ─── Quick Metric Cards ─── */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-white p-4 rounded-2xl border border-[#E5E7EB] shadow-2xs">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-soft hover:shadow-soft-md transition-shadow">
             <span className="text-xs font-semibold text-[#64748B]">Purchased Vehicles</span>
             <div className="text-2xl font-extrabold text-[#111827] mt-1 font-mono">
               {purchases.length}
             </div>
           </div>
-          <div className="bg-white p-4 rounded-2xl border border-[#E5E7EB] shadow-2xs">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-soft hover:shadow-soft-md transition-shadow">
             <span className="text-xs font-semibold text-blue-600">On RoRo Vessel</span>
             <div className="text-2xl font-extrabold text-blue-700 mt-1 font-mono">
               1 In Transit
             </div>
           </div>
-          <div className="bg-white p-4 rounded-2xl border border-[#E5E7EB] shadow-2xs">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-soft hover:shadow-soft-md transition-shadow">
             <span className="text-xs font-semibold text-emerald-600">Port of Auckland</span>
             <div className="text-2xl font-extrabold text-emerald-700 mt-1 font-mono">
               1 In Clearing
@@ -98,7 +98,7 @@ export default function PurchasesPage() {
             return (
               <div
                 key={purchase.id}
-                className="bg-white rounded-2xl border border-[#E5E7EB] shadow-2xs p-6 space-y-6"
+                className="bg-white rounded-2xl border border-slate-200/90 shadow-soft hover:shadow-soft-md transition-shadow p-6 sm:p-7 space-y-6"
               >
                 {/* Vehicle Header */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[#F1F5F9]">

@@ -8,17 +8,19 @@ export interface HeiwaVehicle {
   grade: string;
   chassis: string;
   year: number;
-  march: number | null;
+  march?: number | null;
   kms: number;
   color: string;
-  colorDesc: string;
+  colorDesc?: string;
   cc: number;
   trans: string;
   fuelType: string;
-  condition: string;
-  ac: string;
+  condition?: string;
+  ac?: string;
   equip: string;
   priceFob: number; // JPY FOB price
+  photoUrl?: string;
+  auctionDate?: string;
 }
 
 export const HEIWA_VEHICLES: HeiwaVehicle[] = [

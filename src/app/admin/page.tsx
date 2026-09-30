@@ -23,6 +23,7 @@ import {
   calculateLandedCost,
 } from "@/lib/heiwaData";
 import {
+  getAllVehicles,
   getStoredWishlistCriteria,
   getStoredBids,
   getStoredPurchases,
@@ -30,6 +31,7 @@ import {
   matchVehiclesAgainstWishlist,
   getVehiclePhoto,
   getEstimatedNZRetailPrice,
+  isCarVehicle,
   DealerBid,
   DealerPurchase,
   WishListCriteria,
@@ -44,6 +46,7 @@ export default function AdminOverviewPage() {
   const [matchedLots, setMatchedLots] = useState<HeiwaVehicle[]>([]);
   const [dealersCount, setDealersCount] = useState<number>(DEALERS.length);
   const [notifiedLots, setNotifiedLots] = useState<string[]>([]);
+  const [allVehiclesCount, setAllVehiclesCount] = useState<number>(() => getAllVehicles().filter(isCarVehicle).length);
 
   useEffect(() => {
     const wl = getStoredWishlistCriteria();
@@ -54,8 +57,11 @@ export default function AdminOverviewPage() {
     setPurchases(p);
     setDealersCount(getStoredDealers().length);
 
+    const vehicles = getAllVehicles().filter(isCarVehicle);
+    setAllVehiclesCount(vehicles.length);
+
     // Calculate live matches against active criteria
-    const matches = matchVehiclesAgainstWishlist(HEIWA_VEHICLES, wl);
+    const matches = matchVehiclesAgainstWishlist(vehicles, wl);
     setMatchedLots(matches);
 
     const handleStoreChange = () => {
@@ -64,7 +70,9 @@ export default function AdminOverviewPage() {
       setBids(getStoredBids());
       setPurchases(getStoredPurchases());
       setDealersCount(getStoredDealers().length);
-      setMatchedLots(matchVehiclesAgainstWishlist(HEIWA_VEHICLES, updatedWl));
+      const updatedVehicles = getAllVehicles().filter(isCarVehicle);
+      setAllVehiclesCount(updatedVehicles.length);
+      setMatchedLots(matchVehiclesAgainstWishlist(updatedVehicles, updatedWl));
     };
 
     window.addEventListener("autohub_dealer_store_change", handleStoreChange);
@@ -72,7 +80,7 @@ export default function AdminOverviewPage() {
   }, []);
 
   const totalDealers = dealersCount;
-  const totalVehicles = HEIWA_VEHICLES.length;
+  const totalVehicles = allVehiclesCount;
   const totalMatchedCount = matchedLots.length;
 
   // Calculate total gross margin opportunity across matched inventory
@@ -122,7 +130,7 @@ export default function AdminOverviewPage() {
           {/* Card 1: Active Dealers */}
           <Link
             href="/admin/dealers"
-            className="group bg-white p-5 rounded-2xl border border-[#E2E8F0] shadow-xs hover:border-[#1E3A5F]/40 hover:shadow-md transition-all relative overflow-hidden"
+            className="group bg-white p-5 rounded-2xl border border-slate-200/90 shadow-soft hover:border-[#1E3A5F]/40 hover:shadow-soft-md transition-all relative overflow-hidden"
           >
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-[#64748B] uppercase tracking-wider">
@@ -142,7 +150,7 @@ export default function AdminOverviewPage() {
           {/* Card 2: Live Wish Lists */}
           <Link
             href="/admin/wishlists"
-            className="group bg-white p-5 rounded-2xl border border-[#E2E8F0] shadow-xs hover:border-[#E11D48]/40 hover:shadow-md transition-all relative overflow-hidden"
+            className="group bg-white p-5 rounded-2xl border border-slate-200/90 shadow-soft hover:border-[#E11D48]/40 hover:shadow-soft-md transition-all relative overflow-hidden"
           >
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-[#64748B] uppercase tracking-wider">
@@ -162,7 +170,7 @@ export default function AdminOverviewPage() {
           {/* Card 3: Heiwa Auction Supply */}
           <Link
             href="/admin/vehicles"
-            className="group bg-white p-5 rounded-2xl border border-[#E2E8F0] shadow-xs hover:border-[#1E3A5F]/40 hover:shadow-md transition-all relative overflow-hidden"
+            className="group bg-white p-5 rounded-2xl border border-slate-200/90 shadow-soft hover:border-[#1E3A5F]/40 hover:shadow-soft-md transition-all relative overflow-hidden"
           >
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-[#64748B] uppercase tracking-wider">
@@ -180,7 +188,7 @@ export default function AdminOverviewPage() {
           </Link>
 
           {/* Card 4: Matched Gross Margin Opportunity */}
-          <div className="bg-gradient-to-br from-emerald-600 to-teal-700 p-5 rounded-2xl text-white shadow-md relative overflow-hidden">
+          <div className="bg-gradient-to-br from-emerald-600 to-teal-700 p-5 rounded-2xl text-white shadow-soft hover:shadow-soft-md transition-all relative overflow-hidden">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-emerald-100 uppercase tracking-wider">
                 Matched Spread
@@ -200,7 +208,7 @@ export default function AdminOverviewPage() {
         {/* ─── Demand vs Supply Matches & Live Dealer Activity ─── */}
         <div className="space-y-6">
           {/* Top Matched Opportunities */}
-          <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-xs overflow-hidden">
+          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-soft overflow-hidden">
             <div className="p-5 border-b border-[#F1F5F9] flex items-center justify-between">
               <div>
                 <h2 className="text-base font-extrabold text-[#111827] flex items-center gap-2">
@@ -305,7 +313,7 @@ export default function AdminOverviewPage() {
           </div>
 
           {/* Live Dealer Activity Feeds (Bids & Purchases) */}
-          <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-xs p-5 space-y-4">
+          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-soft p-5 space-y-4">
             <div className="flex items-center justify-between border-b border-[#F1F5F9] pb-3">
               <h3 className="text-sm font-bold text-[#111827] flex items-center gap-2">
                 <Activity size={16} className="text-blue-600" />

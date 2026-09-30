@@ -22,6 +22,7 @@ import {
   calculateLandedCost,
 } from "@/lib/heiwaData";
 import {
+  getAllVehicles,
   getVehiclePhoto,
   isCarVehicle,
   getStoredWatchlist,
@@ -89,12 +90,20 @@ function BrowseVehiclesContent() {
     }
   };
 
+  const [allCars, setAllCars] = useState<HeiwaVehicle[]>(() => getAllVehicles().filter(isCarVehicle));
+
+  const refreshVehicles = () => {
+    setAllCars(getAllVehicles().filter(isCarVehicle));
+  };
+
   useEffect(() => {
     refreshWishlistCriteria();
     refreshWatchlist();
+    refreshVehicles();
     const handler = () => {
       refreshWishlistCriteria();
       refreshWatchlist();
+      refreshVehicles();
     };
     window.addEventListener("autohub_dealer_store_change", handler);
     return () => window.removeEventListener("autohub_dealer_store_change", handler);
@@ -118,11 +127,6 @@ function BrowseVehiclesContent() {
     toggleStoredWatchlist(vehicle.chassis);
     setWatchlistIds(getStoredWatchlist());
   };
-
-  // Base Vehicles (excluding motorbikes, pure clean cars)
-  const allCars = useMemo(() => {
-    return HEIWA_VEHICLES.filter(isCarVehicle);
-  }, []);
 
   // Vehicles matching active Wishlist criteria
   const matchedWishlistVehicles = useMemo(() => {
@@ -371,7 +375,7 @@ function BrowseVehiclesContent() {
         </div>
       ) : (
         /* Standard Filter Bar when in All Auction Stock mode */
-        <form onSubmit={handleSearchSubmit} className="bg-white rounded-2xl p-5 border border-[#E2E8F0] shadow-2xs">
+        <form onSubmit={handleSearchSubmit} className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/90 shadow-soft hover:shadow-soft-md transition-shadow">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5 items-end">
             {/* Make */}
             <div>
@@ -603,7 +607,7 @@ function BrowseVehiclesContent() {
             return (
               <div
                 key={vehicle.chassis + vehicle.stockId + index}
-                className="bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden shadow-2xs hover:shadow-md transition-all flex flex-col justify-between group"
+                className="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-soft hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between group"
               >
                 {/* ─── Clean Image Container ─── */}
                 <div className="relative aspect-[16/10] w-full bg-[#F1F5F9] overflow-hidden">
@@ -679,7 +683,7 @@ function BrowseVehiclesContent() {
         </div>
       ) : (
         /* List View — Simplified */
-        <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-sm overflow-hidden divide-y divide-[#F1F5F9]">
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-soft overflow-hidden divide-y divide-[#F1F5F9]">
           {currentVehicles.map((vehicle, index) => {
             const photoUrl = getVehiclePhoto(vehicle);
             const landed = calculateLandedCost(vehicle.priceFob);

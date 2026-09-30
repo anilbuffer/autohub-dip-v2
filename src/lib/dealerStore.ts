@@ -218,7 +218,10 @@ export const MODEL_IMAGE_MAP: Record<string, string> = {
 
 // Return a clean photo URL for any vehicle
 export function getVehiclePhoto(vehicle: HeiwaVehicle): string {
-  const modelKey = vehicle.model.toLowerCase().trim();
+  if (vehicle && vehicle.photoUrl && vehicle.photoUrl.trim().length > 0) {
+    return vehicle.photoUrl.trim();
+  }
+  const modelKey = (vehicle?.model || '').toLowerCase().trim();
   if (MODEL_IMAGE_MAP[modelKey]) {
     return MODEL_IMAGE_MAP[modelKey];
   }
@@ -243,11 +246,70 @@ export function isCarVehicle(v: HeiwaVehicle): boolean {
   return !['CBR650R', 'CBR250R', 'REBEL 250', 'STREETFIGHTER', 'NINE T SCRAMBLER UNKNOWN'].includes(v.model);
 }
 
+// LocalStorage keys
+const STORAGE_KEYS = {
+  WISHLIST: 'autohub_wishlist_criteria_v2',
+  WATCHLIST: 'autohub_dealer_watchlist_v2',
+  BIDS: 'autohub_dealer_bids_v2',
+  PURCHASES: 'autohub_dealer_purchases_v2',
+  DEALERS: 'autohub_dealers_directory_v2',
+  CUSTOM_VEHICLES: 'autohub_custom_vehicles_v2',
+};
+
+// Retrieve combined list of base Heiwa vehicles and custom Admin-added vehicles
+export function getAllVehicles(): HeiwaVehicle[] {
+  if (typeof window === 'undefined') return HEIWA_VEHICLES;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.CUSTOM_VEHICLES);
+    if (!raw) return HEIWA_VEHICLES;
+    const custom: HeiwaVehicle[] = JSON.parse(raw);
+    if (!Array.isArray(custom) || custom.length === 0) return HEIWA_VEHICLES;
+    // Combine custom added vehicles at the top with base stock
+    const customIds = new Set(custom.map(c => `${c.stockId}-${c.chassis}`));
+    const remainingBase = HEIWA_VEHICLES.filter(v => !customIds.has(`${v.stockId}-${v.chassis}`));
+    return [...custom, ...remainingBase];
+  } catch {
+    return HEIWA_VEHICLES;
+  }
+}
+
+// Add or update a vehicle lot as an Admin
+export function addAdminVehicle(vehicle: HeiwaVehicle) {
+  if (typeof window === 'undefined') return;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.CUSTOM_VEHICLES);
+    const custom: HeiwaVehicle[] = raw ? JSON.parse(raw) : [];
+    // Remove if already exists, then prepend to top
+    const filtered = custom.filter(v => v.stockId !== vehicle.stockId && v.chassis !== vehicle.chassis);
+    const updated = [vehicle, ...filtered];
+    localStorage.setItem(STORAGE_KEYS.CUSTOM_VEHICLES, JSON.stringify(updated));
+    notifyStoreChange();
+  } catch (err) {
+    console.error('Failed to add admin vehicle:', err);
+  }
+}
+
+// Delete a custom vehicle lot as an Admin
+export function deleteAdminVehicle(stockId: string, chassis: string) {
+  if (typeof window === 'undefined') return;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.CUSTOM_VEHICLES);
+    if (!raw) return;
+    const custom: HeiwaVehicle[] = JSON.parse(raw);
+    const updated = custom.filter(v => v.stockId !== stockId && v.chassis !== chassis);
+    localStorage.setItem(STORAGE_KEYS.CUSTOM_VEHICLES, JSON.stringify(updated));
+    notifyStoreChange();
+  } catch (err) {
+    console.error('Failed to delete admin vehicle:', err);
+  }
+}
+
 // Find vehicle by chassis, stockId or combination
 export function findHeiwaVehicle(id: string): HeiwaVehicle | undefined {
   if (!id) return undefined;
   const decodedId = decodeURIComponent(id).trim().toLowerCase();
-  return HEIWA_VEHICLES.find(v => {
+  const allVehicles = getAllVehicles();
+  return allVehicles.find(v => {
     const chassis = v.chassis.toLowerCase();
     const stockId = v.stockId.toLowerCase();
     const combo = `${stockId}-${chassis}`;
@@ -263,26 +325,17 @@ export function getEstimatedNZRetailPrice(v: HeiwaVehicle): {
   marketRangeMin: number;
   marketRangeMax: number;
 } {
-  const landed = calculateLandedCost(v.priceFob).totalLanded;
+  const landed = calculateLandedCost(v.priceFob || 500000).totalLanded;
   // NZ retail averages 20% to 35% above landed cost
   // Better margins on cheaper cars or high demand hybrids
-  const markupFactor = v.kms < 60000 ? 1.28 : 1.22;
+  const markupFactor = (v.kms || 0) < 60000 ? 1.28 : 1.22;
   const retailPrice = Math.round((landed * markupFactor) / 100) * 100;
   const grossMargin = retailPrice - landed;
-  const marginPercent = Math.round((grossMargin / retailPrice) * 100);
+  const marginPercent = Math.round((grossMargin / (retailPrice || 1)) * 100);
   const marketRangeMin = Math.round((retailPrice * 0.94) / 100) * 100;
   const marketRangeMax = Math.round((retailPrice * 1.08) / 100) * 100;
   return { retailPrice, grossMargin, marginPercent, marketRangeMin, marketRangeMax };
 }
-
-// LocalStorage keys
-const STORAGE_KEYS = {
-  WISHLIST: 'autohub_wishlist_criteria_v2',
-  WATCHLIST: 'autohub_dealer_watchlist_v2',
-  BIDS: 'autohub_dealer_bids_v2',
-  PURCHASES: 'autohub_dealer_purchases_v2',
-  DEALERS: 'autohub_dealers_directory_v2',
-};
 
 // Dispatch global event so all components react immediately
 export function notifyStoreChange() {
@@ -508,4 +561,52 @@ export function addStoredDealer(newDealerData: Partial<Dealer>): Dealer {
   const updated = [newDealer, ...current];
   saveStoredDealers(updated);
   return newDealer;
+}
+
+// DEALERSHIP PROFILE & SECURITY SETTINGS
+export interface DealerProfileSettings {
+  dealerName: string;
+  principalName: string;
+  email: string;
+  phone: string;
+  yardAddress: string;
+  registeredTraderNo: string;
+  nzbn: string;
+  role: string;
+  lastPasswordChange?: string;
+  twoFactorEnabled?: boolean;
+  adminSyncEnabled?: boolean;
+}
+
+export const DEFAULT_DEALER_PROFILE: DealerProfileSettings = {
+  dealerName: "Auckland Auto Group",
+  principalName: "David Miller",
+  email: "david.miller@aucklandautogroup.co.nz",
+  phone: "+64 9 525 8899",
+  yardAddress: "458 Great South Road, Penrose, Auckland 1061",
+  registeredTraderNo: "M189402",
+  nzbn: "9429041234567",
+  role: "Dealer Principal (Admin Role)",
+  lastPasswordChange: "30 Sep 2026, 17:00 NZST",
+  twoFactorEnabled: true,
+  adminSyncEnabled: true,
+};
+
+export function getStoredDealerProfile(): DealerProfileSettings {
+  if (typeof window === 'undefined') return DEFAULT_DEALER_PROFILE;
+  try {
+    const raw = localStorage.getItem('autohub_dealer_profile_v2');
+    if (!raw) return DEFAULT_DEALER_PROFILE;
+    return { ...DEFAULT_DEALER_PROFILE, ...JSON.parse(raw) };
+  } catch {
+    return DEFAULT_DEALER_PROFILE;
+  }
+}
+
+export function saveStoredDealerProfile(profile: Partial<DealerProfileSettings>) {
+  if (typeof window === 'undefined') return;
+  const current = getStoredDealerProfile();
+  const updated = { ...current, ...profile };
+  localStorage.setItem('autohub_dealer_profile_v2', JSON.stringify(updated));
+  notifyStoreChange();
 }

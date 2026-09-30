@@ -101,19 +101,19 @@ export default function MyBidsPage() {
 
         {/* ─── Metric Summary Cards ─── */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-white p-4 rounded-2xl border border-[#E5E7EB] shadow-2xs">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-soft hover:shadow-soft-md transition-shadow">
             <span className="text-xs font-semibold text-[#64748B]">Active Bids</span>
             <div className="text-2xl font-extrabold text-[#111827] mt-1 font-mono">
               {activeBids.length}
             </div>
           </div>
-          <div className="bg-white p-4 rounded-2xl border border-[#E5E7EB] shadow-2xs">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-soft hover:shadow-soft-md transition-shadow">
             <span className="text-xs font-semibold text-emerald-600">Won Lots</span>
             <div className="text-2xl font-extrabold text-emerald-700 mt-1 font-mono">
               {wonBids.length}
             </div>
           </div>
-          <div className="bg-white p-4 rounded-2xl border border-[#E5E7EB] shadow-2xs">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-soft hover:shadow-soft-md transition-shadow">
             <span className="text-xs font-semibold text-amber-600">Under Reserve / Outbid</span>
             <div className="text-2xl font-extrabold text-amber-600 mt-1 font-mono">
               {bids.filter((b) => b.status === "under_reserve" || b.status === "outbid").length}
@@ -122,7 +122,7 @@ export default function MyBidsPage() {
         </div>
 
         {/* ─── Filter Tabs ─── */}
-        <div className="flex items-center gap-2 p-1 bg-white border border-[#E5E7EB] rounded-xl w-fit shadow-2xs">
+        <div className="flex items-center gap-2 p-1 bg-white border border-slate-200/90 rounded-xl w-fit shadow-soft">
           <button
             onClick={() => setActiveFilter("all")}
             className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${activeFilter === "all"
@@ -154,7 +154,7 @@ export default function MyBidsPage() {
 
         {/* ─── Bids Grid ─── */}
         {displayedBids.length === 0 ? (
-          <div className="bg-white rounded-2xl p-12 text-center border border-[#E5E7EB] shadow-2xs">
+          <div className="bg-white rounded-2xl p-12 text-center border border-slate-200/90 shadow-soft">
             <Gavel size={44} className="mx-auto text-[#94A3B8] mb-3" />
             <h3 className="text-base font-bold text-[#111827]">No Bids Found</h3>
             <p className="text-xs text-[#64748B] max-w-sm mx-auto mt-1 mb-5">
@@ -181,7 +181,7 @@ export default function MyBidsPage() {
               return (
                 <div
                   key={bid.id}
-                  className="bg-white rounded-2xl border border-[#E5E7EB] shadow-2xs overflow-hidden flex flex-col justify-between hover:shadow-sm transition-all"
+                  className="bg-white rounded-2xl border border-slate-200/90 shadow-soft overflow-hidden flex flex-col justify-between hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-200"
                 >
                   <div>
                     {/* Header Image */}

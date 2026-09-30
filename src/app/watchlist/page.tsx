@@ -92,7 +92,7 @@ export default function WatchlistPage() {
 
         {/* ─── Clean Listing Grid ─── */}
         {savedVehicles.length === 0 ? (
-          <div className="bg-white rounded-2xl p-12 text-center border border-[#E5E7EB] shadow-2xs">
+          <div className="bg-white rounded-2xl p-12 text-center border border-slate-200/90 shadow-soft">
             <Heart size={44} className="mx-auto text-[#94A3B8] mb-3" />
             <h3 className="text-base font-bold text-[#111827]">Your Watchlist is Empty</h3>
             <p className="text-xs text-[#64748B] max-w-sm mx-auto mt-1 mb-5">
@@ -117,7 +117,7 @@ export default function WatchlistPage() {
               return (
                 <div
                   key={vehicle.chassis}
-                  className="bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden shadow-2xs hover:shadow-md transition-all flex flex-col justify-between group"
+                  className="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-soft hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between group"
                 >
                   {/* Image container */}
                   <div className="relative aspect-[16/10] w-full bg-[#F1F5F9] overflow-hidden">

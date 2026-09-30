@@ -196,7 +196,7 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
         </div>
 
         {/* ─── INTELLIGENCE LAYER 1: HEIWA VEHICLE HERO ─── */}
-        <div className="bg-white rounded-2xl border border-[#E8ECF0] shadow-subtle p-6 overflow-hidden">
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-soft hover:shadow-soft-md transition-shadow p-6 overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-7">
             {/* Vehicle Image & Verified Badges */}
             <div className="lg:col-span-5 space-y-3">
@@ -410,7 +410,7 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
 
         {/* ─── INTELLIGENCE LAYER 2: ESTIMATED LANDED COST ─── */}
         {(activeLayer === "all" || activeLayer === "landed_cost") && (
-          <div className="bg-white rounded-2xl border border-[#E8ECF0] shadow-subtle p-6 space-y-6">
+          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-soft hover:shadow-soft-md transition-shadow p-6 space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#F1F5F9]">
               <div>
                 <h3 className="text-sm font-bold text-[#111C2D] flex items-center gap-2">
@@ -534,7 +534,7 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
         {(activeLayer === "all" || activeLayer === "nz_market") && (
           <div className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-white p-5 rounded-2xl border border-[#E8ECF0] shadow-subtle">
+              <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-soft hover:shadow-soft-md transition-shadow">
                 <div className="text-[11px] font-bold text-[#8899A6] uppercase tracking-wider">
                   NZ Market Range
                 </div>
@@ -546,7 +546,7 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
                 </div>
               </div>
 
-              <div className="bg-white p-5 rounded-2xl border border-[#E8ECF0] shadow-subtle">
+              <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-soft hover:shadow-soft-md transition-shadow">
                 <div className="text-[11px] font-bold text-[#8899A6] uppercase tracking-wider">
                   Gross Profit Margin
                 </div>
@@ -558,7 +558,7 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
                 </div>
               </div>
 
-              <div className="bg-white p-5 rounded-2xl border border-[#E8ECF0] shadow-subtle">
+              <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-soft hover:shadow-soft-md transition-shadow">
                 <div className="text-[11px] font-bold text-[#8899A6] uppercase tracking-wider">
                   Market Liquidity
                 </div>
@@ -570,7 +570,7 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
                 </div>
               </div>
 
-              <div className="bg-white p-5 rounded-2xl border border-[#E8ECF0] shadow-subtle">
+              <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-soft hover:shadow-soft-md transition-shadow">
                 <div className="text-[11px] font-bold text-[#8899A6] uppercase tracking-wider">
                   Margin Health Rating
                 </div>
@@ -587,7 +587,7 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
 
         {/* ─── INTELLIGENCE LAYER 4: COMPARABLE LISTINGS ─── */}
         {(activeLayer === "all" || activeLayer === "comparables") && (
-          <div className="bg-white rounded-2xl border border-[#E8ECF0] shadow-subtle overflow-hidden">
+          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-soft hover:shadow-soft-md transition-shadow overflow-hidden">
             <div className="p-5 border-b border-[#E8ECF0] flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#F8FAFC]">
               <div>
                 <h3 className="text-sm font-bold text-[#111C2D]">
@@ -670,7 +670,7 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
 
         {/* ─── INTELLIGENCE LAYER 5: JAPANESE INSPECTION & SPECS (INVESTIGATE) ─── */}
         {(activeLayer === "all" || activeLayer === "specs") && (
-          <div className="bg-white rounded-2xl border border-[#E8ECF0] shadow-subtle p-6 space-y-6">
+          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-soft hover:shadow-soft-md transition-shadow p-6 space-y-6">
             <div className="flex items-center justify-between pb-3 border-b border-[#F1F5F9]">
               <h3 className="text-base font-bold text-[#111C2D]">
                 Heiwa Japan Vehicle Inspection Data

@@ -126,17 +126,17 @@ function MarketContent() {
 
         {/* ─── Key Metrics Grid ─── */}
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-          <div className="bg-white rounded-2xl border border-[#E8ECF0] p-5 shadow-card">
+          <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-soft hover:shadow-soft-md transition-shadow">
             <div className="text-[10px] font-bold text-[#AAB8C2] uppercase tracking-wider mb-3">Heiwa Landed Cost</div>
             <div className="text-2xl font-extrabold text-[#111C2D]">NZ${landedParam.toLocaleString("en-US")}</div>
             <div className="text-[12px] text-[#8899A6] mt-1.5 font-medium">Inc. FOB, freight, compliance, GST</div>
           </div>
-          <div className="bg-white rounded-2xl border border-[#E8ECF0] p-5 shadow-card">
+          <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-soft hover:shadow-soft-md transition-shadow">
             <div className="text-[10px] font-bold text-[#AAB8C2] uppercase tracking-wider mb-3">Avg NZ Retail</div>
             <div className="text-2xl font-extrabold text-[#111C2D]">NZ${avgNzPrice.toLocaleString("en-US")}</div>
             <div className="text-[12px] text-[#8899A6] mt-1.5 font-medium">Based on {comparables.length} similar listings</div>
           </div>
-          <div className={`rounded-2xl border-2 p-5 shadow-card ${margin > 0 ? 'bg-emerald-50/50 border-emerald-200' : 'bg-red-50/50 border-red-200'}`}>
+          <div className={`rounded-2xl border-2 p-5 shadow-soft hover:shadow-soft-md transition-shadow ${margin > 0 ? 'bg-emerald-50/50 border-emerald-200' : 'bg-red-50/50 border-red-200'}`}>
             <div className="text-[10px] font-bold text-[#AAB8C2] uppercase tracking-wider mb-3">Estimated Margin</div>
             <div className={`text-2xl font-extrabold flex items-center gap-2 ${margin > 0 ? 'text-emerald-700' : 'text-red-600'}`}>
               {margin > 0 ? <TrendingUp size={20} /> : <TrendingDown size={20} />}
@@ -146,7 +146,7 @@ function MarketContent() {
               {marginPercent}% {margin > 0 ? 'potential upside' : 'below retail'}
             </div>
           </div>
-          <div className="bg-white rounded-2xl border border-[#E8ECF0] p-5 shadow-card">
+          <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-soft hover:shadow-soft-md transition-shadow">
             <div className="text-[10px] font-bold text-[#AAB8C2] uppercase tracking-wider mb-3">Avg Days Listed</div>
             <div className="text-2xl font-extrabold text-[#111C2D] flex items-center gap-2">
               <Clock size={20} className="text-[#AAB8C2]" />
@@ -157,7 +157,7 @@ function MarketContent() {
         </div>
 
         {/* ─── Visual Comparison Bar ─── */}
-        <div className="bg-white rounded-2xl border border-[#E8ECF0] p-6 shadow-card">
+        <div className="bg-white rounded-2xl border border-slate-200/90 p-6 shadow-soft hover:shadow-soft-md transition-shadow">
           <h3 className="text-[15px] font-bold text-[#111C2D] mb-5">Price Positioning</h3>
           <div className="relative">
             {/* Price range bar */}
@@ -212,7 +212,7 @@ function MarketContent() {
         </div>
 
         {/* ─── NZ Comparable Listings Table ─── */}
-        <div className="bg-white rounded-2xl border border-[#E8ECF0] shadow-card overflow-hidden">
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-soft overflow-hidden">
           <div className="px-6 py-5 border-b border-[#E8ECF0]">
             <h3 className="text-[16px] font-bold text-[#111C2D]">
               Similar Vehicles in NZ Market
@@ -317,7 +317,7 @@ function MarketContent() {
       </div>
 
       {allVehicles.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-[#E8ECF0] p-16 text-center shadow-card">
+        <div className="bg-white rounded-2xl border border-slate-200/90 p-16 text-center shadow-soft">
           <div className="w-16 h-16 rounded-2xl bg-[#F0F2F5] flex items-center justify-center mx-auto mb-5">
             <BarChart3 size={28} className="text-[#AAB8C2]" />
           </div>
@@ -347,7 +347,7 @@ function MarketContent() {
             return (
               <div
                 key={vehicle.stockId + vehicle.chassis}
-                className="bg-white rounded-2xl border border-[#E8ECF0] overflow-hidden shadow-card card-hover animate-fade-in-up"
+                className="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-soft hover:shadow-soft-md transition-all animate-fade-in-up"
                 style={{ animationDelay: `${idx * 0.03}s` }}
               >
                 <div
