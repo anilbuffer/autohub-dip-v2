@@ -49,9 +49,6 @@ export default function PurchasesPage() {
             <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111827] tracking-tight">
               Purchases
             </h1>
-            <p className="text-sm text-[#64748B] mt-1">
-              Track acquired auction inventory from Japan yard clearing to Ports of Auckland delivery.
-            </p>
           </div>
 
           <Link
@@ -154,24 +151,22 @@ export default function PurchasesPage() {
                       return (
                         <div key={s.step} className="flex flex-col items-center text-center">
                           <div
-                            className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs transition-all z-10 ${
-                              isComplete
+                            className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs transition-all z-10 ${isComplete
                                 ? "bg-emerald-600 text-white"
                                 : isCurrent
-                                ? "bg-[#E11D48] text-white ring-4 ring-[#E11D48]/15"
-                                : "bg-slate-100 text-[#94A3B8] border border-slate-200"
-                            }`}
+                                  ? "bg-[#E11D48] text-white ring-4 ring-[#E11D48]/15"
+                                  : "bg-slate-100 text-[#94A3B8] border border-slate-200"
+                              }`}
                           >
                             {isComplete ? <CheckCircle2 size={16} /> : s.step}
                           </div>
                           <span
-                            className={`text-xs font-bold mt-2 ${
-                              isCurrent
+                            className={`text-xs font-bold mt-2 ${isCurrent
                                 ? "text-[#E11D48]"
                                 : isComplete
-                                ? "text-[#111827]"
-                                : "text-[#94A3B8]"
-                            }`}
+                                  ? "text-[#111827]"
+                                  : "text-[#94A3B8]"
+                              }`}
                           >
                             {s.title}
                           </span>

@@ -343,7 +343,7 @@ export default function DealerChatAssistant({
       return {
         id: `bot-${Date.now()}`,
         sender: "bot",
-        text: `### 🚢 Heiwa Japan ⇄ New Zealand Vessel Schedule\nHeiwa Auto reserves guaranteed vehicle space on dedicated RoRo car carriers from **Yokohama, Nagoya, and Kobe** to **Ports of Auckland, Tauranga, and Lyttelton**:`,
+        text: `### 🚢 Heiwa Japan ⇄ New Zealand Vessel Schedule\nHeiwa Auto reserves dedicated vehicle space on dedicated RoRo car carriers from **Yokohama, Nagoya, and Kobe** to **Ports of Auckland, Tauranga, and Lyttelton**:`,
         timestamp: "Just now",
         type: "shipping",
         suggestedPrompts: [
@@ -359,7 +359,7 @@ export default function DealerChatAssistant({
       return {
         id: `bot-${Date.now()}`,
         sender: "bot",
-        text: `### ⚡ NZ Clean Car Standard & Battery Intelligence\n\n**Current Regulatory Benchmark:**\n- **Target Threshold:** 112 g CO2/km (WLTP3).\n- **Toyota Aqua (1NZ-FXE):** Approx 82 g/km → **Neutral (Zero Clean Car Fee)**.\n- **Honda Fit e:HEV:** Approx 85 g/km → **Neutral (Zero Clean Car Fee)**.\n- **Toyota C-HR Hybrid:** Approx 95 g/km → **Neutral (Zero Clean Car Fee)**.\n- **Pure Petrol 2.0L+ SUVs:** May incur modest NZ$300 – $800 importer penalties at entry compliance.\n\n**Battery SOH (State of Health) Protocol:**\nHeiwa Tokyo technicians perform OBD-II battery cell impedance tests on all Grade 4+ hybrids prior to export documentation. Guaranteed SOH > 85% on all shortlisted vehicles.`,
+        text: `### ⚡ NZ Clean Car Standard & Battery Intelligence\n\n**Current Regulatory Benchmark:**\n- **Target Threshold:** 112 g CO2/km (WLTP3).\n- **Toyota Aqua (1NZ-FXE):** Approx 82 g/km → **Neutral (Zero Clean Car Fee)**.\n- **Honda Fit e:HEV:** Approx 85 g/km → **Neutral (Zero Clean Car Fee)**.\n- **Toyota C-HR Hybrid:** Approx 95 g/km → **Neutral (Zero Clean Car Fee)**.\n- **Pure Petrol 2.0L+ SUVs:** May incur modest NZ$300 – $800 importer penalties at entry compliance.\n\n**Battery SOH (State of Health) Protocol:**\nHeiwa Tokyo technicians perform OBD-II battery cell impedance tests on all Grade 4+ hybrids prior to export documentation. Verified SOH > 85% on all shortlisted vehicles.`,
         timestamp: "Just now",
         suggestedPrompts: [
           "Calculate Landed Cost for Aqua",
@@ -758,7 +758,6 @@ function InteractiveCalcWidget({
   const gst = Math.round(landedBeforeGst * 0.15);
   const totalLandedCost = landedBeforeGst + gst;
   const estMargin = targetRetail - totalLandedCost;
-  const maxRecommendedBid = targetRetail - 3500;
 
   return (
     <div className="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
@@ -978,7 +977,7 @@ function ShippingScheduleWidget() {
           <Ship size={13} className="text-blue-600" /> Confirmed Heiwa RoRo Sailings
         </span>
         <span className="text-[10px] text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
-          Guaranteed Space
+          Reserved Space
         </span>
       </div>
 

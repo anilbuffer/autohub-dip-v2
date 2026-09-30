@@ -305,11 +305,6 @@ function BrowseVehiclesContent() {
               </span>
             )}
           </h1>
-          <p className="text-sm text-[#64748B] mt-1">
-            {activeScope === "wishlist"
-              ? `${matchedWishlistVehicles.length} vehicles currently match your requirements.`
-              : "AutoHub Dealer Intelligence Platform · Quality used vehicles from Japan auction inventory."}
-          </p>
         </div>
 
         {/* Top Scope Tabs */}
@@ -569,8 +564,8 @@ function BrowseVehiclesContent() {
               <div
                 key={vehicle.chassis + vehicle.stockId + index}
                 className={`bg-white rounded-2xl overflow-hidden shadow-soft hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between group border relative ${isSelected
-                    ? "border-[#E11D48] ring-2 ring-[#E11D48]/30 shadow-md shadow-rose-950/10"
-                    : "border-slate-200/90"
+                  ? "border-[#E11D48] ring-2 ring-[#E11D48]/30 shadow-md shadow-rose-950/10"
+                  : "border-slate-200/90"
                   }`}
               >
                 {/* ─── Clean Image Container ─── */}
@@ -589,8 +584,8 @@ function BrowseVehiclesContent() {
                     type="button"
                     onClick={(e) => handleToggleSelectVehicle(e, vehicle.chassis)}
                     className={`absolute top-3 left-3 z-10 h-8 px-2.5 rounded-xl flex items-center gap-1.5 transition-all cursor-pointer shadow-md backdrop-blur-md ${isSelected
-                        ? "bg-[#E11D48] text-white ring-2 ring-white scale-102"
-                        : "bg-black/50 text-white/90 hover:text-white hover:bg-black/70 border border-white/20"
+                      ? "bg-[#E11D48] text-white ring-2 ring-white scale-102"
+                      : "bg-black/50 text-white/90 hover:text-white hover:bg-black/70 border border-white/20"
                       }`}
                     title={
                       isSelected
@@ -717,8 +712,8 @@ function BrowseVehiclesContent() {
                     type="button"
                     onClick={(e) => handleToggleSelectVehicle(e, vehicle.chassis)}
                     className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all cursor-pointer shrink-0 border ${isSelected
-                        ? "bg-[#E11D48] text-white border-[#E11D48] shadow-xs"
-                        : "bg-slate-100 text-slate-400 hover:text-slate-700 hover:bg-slate-200 border-slate-200"
+                      ? "bg-[#E11D48] text-white border-[#E11D48] shadow-xs"
+                      : "bg-slate-100 text-slate-400 hover:text-slate-700 hover:bg-slate-200 border-slate-200"
                       }`}
                     title={
                       isSelected
@@ -1043,8 +1038,8 @@ function BrowseVehiclesContent() {
                         type="button"
                         onClick={() => setEnquiryType("reserve")}
                         className={`p-2.5 rounded-xl border text-xs font-bold transition-all flex flex-col items-center gap-1 cursor-pointer ${enquiryType === "reserve"
-                            ? "bg-rose-50 text-[#E11D48] border-rose-300 ring-2 ring-rose-200"
-                            : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
+                          ? "bg-rose-50 text-[#E11D48] border-rose-300 ring-2 ring-rose-200"
+                          : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
                           }`}
                       >
                         <Clock size={15} />
@@ -1054,8 +1049,8 @@ function BrowseVehiclesContent() {
                         type="button"
                         onClick={() => setEnquiryType("inspection")}
                         className={`p-2.5 rounded-xl border text-xs font-bold transition-all flex flex-col items-center gap-1 cursor-pointer ${enquiryType === "inspection"
-                            ? "bg-rose-50 text-[#E11D48] border-rose-300 ring-2 ring-rose-200"
-                            : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
+                          ? "bg-rose-50 text-[#E11D48] border-rose-300 ring-2 ring-rose-200"
+                          : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
                           }`}
                       >
                         <ShieldCheck size={15} />
@@ -1065,8 +1060,8 @@ function BrowseVehiclesContent() {
                         type="button"
                         onClick={() => setEnquiryType("quote")}
                         className={`p-2.5 rounded-xl border text-xs font-bold transition-all flex flex-col items-center gap-1 cursor-pointer ${enquiryType === "quote"
-                            ? "bg-rose-50 text-[#E11D48] border-rose-300 ring-2 ring-rose-200"
-                            : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
+                          ? "bg-rose-50 text-[#E11D48] border-rose-300 ring-2 ring-rose-200"
+                          : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
                           }`}
                       >
                         <Car size={15} />

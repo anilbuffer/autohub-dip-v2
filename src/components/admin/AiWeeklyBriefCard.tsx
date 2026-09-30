@@ -139,7 +139,7 @@ export default function AiWeeklyBriefCard({ onNotifyToast }: AiWeeklyBriefCardPr
         </div>
       </div>
 
-      {/* Recommended Sourcing Targets breakdown pills */}
+      {/* Sourcing Targets breakdown pills */}
       <div className="relative z-10 pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-xs">
         <div className="flex flex-wrap items-center gap-2.5">
           <span className="text-slate-400 font-bold uppercase tracking-wider text-[11px]">

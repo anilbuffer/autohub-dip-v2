@@ -154,11 +154,8 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
   const landed = calculateLandedCost(vehicle.priceFob);
   const nzRetail = getEstimatedNZRetailPrice(vehicle);
 
-  // Market stats from comparables
-  const avgNzPrice =
-    comparables.length > 0
-      ? Math.round(comparables.reduce((acc, c) => acc + c.price, 0) / comparables.length)
-      : nzRetail.retailPrice;
+  // Exact NZ Market Retail Indicator matching the card
+  const avgNzPrice = nzRetail.retailPrice;
 
   const lowestNzPrice =
     comparables.length > 0
@@ -213,10 +210,10 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
 
             <button
               onClick={() => setBidModalOpen(true)}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-[#E11D48] hover:bg-[#BE123C] text-white shadow-sm shadow-rose-950/20 transition-all hover:shadow-md"
+              className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-[#E11D48] hover:bg-[#BE123C] text-white shadow-sm shadow-rose-950/20 transition-all hover:shadow-md cursor-pointer"
             >
-              <Gavel size={14} />
-              <span>Place Auction Bid</span>
+              <Clock size={14} />
+              <span>Enquire / Reserve</span>
             </button>
           </div>
         </div>
@@ -404,11 +401,11 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <button
                   onClick={() => setBidModalOpen(true)}
-                  className="flex-1 py-3 px-4 bg-[#E11D48] hover:bg-[#BE123C] text-white rounded-xl text-xs sm:text-sm font-bold shadow-sm shadow-rose-900/20 transition-all flex items-center justify-center gap-2"
+                  className="flex-1 py-3 px-4 bg-[#E11D48] hover:bg-[#BE123C] text-white rounded-xl text-xs sm:text-sm font-bold shadow-sm shadow-rose-900/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <Gavel size={16} />
+                  <Clock size={16} />
                   <span>
-                    Place Bid for Auction (JPY ¥{vehicle.priceFob.toLocaleString("en-US")})
+                    Enquire / Reserve (FOB ¥{vehicle.priceFob.toLocaleString("en-US")})
                   </span>
                 </button>
 
@@ -586,7 +583,7 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
                           Total Estimated Landed Cost (Yard Ready)
                         </td>
                         <td className="py-3.5 px-4 font-medium text-rose-900 text-xs">
-                          All-inclusive guaranteed landed benchmark
+                          All-inclusive calculated landed benchmark
                         </td>
                         <td className="py-3.5 px-4 text-right font-mono font-bold text-[#536471]">
                           ¥{vehicle.priceFob.toLocaleString("en-US")}
@@ -901,14 +898,14 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
           </div>
         </div>
 
-        {/* ─── AUCTION BIDDING MODAL ─── */}
+        {/* ─── ENQUIRE / RESERVE MODAL ─── */}
         {bidModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-sm animate-fadeIn">
             <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl border border-[#E8ECF0] p-6 space-y-5">
               <div className="flex items-start justify-between">
                 <div>
                   <span className="text-[10px] font-bold uppercase tracking-wider text-[#8899A6]">
-                    Direct Japan Auction Bidding
+                    Direct Japan Auction Allocation
                   </span>
                   <h3 className="text-lg font-bold text-[#111C2D]">
                     {vehicle.year} {vehicle.make} {vehicle.model}
@@ -919,7 +916,7 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
                 </div>
                 <button
                   onClick={() => setBidModalOpen(false)}
-                  className="text-[#8899A6] hover:text-[#111C2D] p-1 rounded-lg hover:bg-gray-100"
+                  className="text-[#8899A6] hover:text-[#111C2D] p-1 rounded-lg hover:bg-gray-100 cursor-pointer"
                 >
                   ✕
                 </button>
@@ -931,16 +928,16 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
                     <CheckCircle2 size={24} />
                   </div>
                   <h4 className="text-base font-bold text-emerald-900">
-                    Auction Bid Dispatched!
+                    Enquiry & Reservation Dispatched!
                   </h4>
                   <p className="text-xs text-emerald-700 max-w-xs mx-auto">
-                    Your bid of ¥{bidAmountJpy.toLocaleString("en-US")} has been queued with Heiwa
+                    Your reservation request for ¥{bidAmountJpy.toLocaleString("en-US")} has been queued with Heiwa
                     Japan. You can monitor its status under &quot;My Bids&quot;.
                   </p>
                 </div>
               ) : (
                 <>
-                  {/* Real-time Bid Impact */}
+                  {/* Real-time Impact */}
                   <div className="p-4 bg-[#F8FAFC] rounded-xl border border-[#E8ECF0] space-y-2 text-xs">
                     <div className="flex justify-between">
                       <span className="text-[#536471]">Auction Guide FOB:</span>
@@ -949,7 +946,7 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-[#536471]">Calculated Landed Cost (at this bid):</span>
+                      <span className="text-[#536471]">Calculated Landed Cost (at this offer):</span>
                       <span className="font-bold text-[#E11D48] font-mono">
                         NZ${customLanded.totalLanded.toLocaleString("en-US")}
                       </span>
@@ -964,7 +961,7 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
 
                   <div>
                     <label className="block text-xs font-semibold text-[#536471] mb-1.5">
-                      Your Maximum FOB Bid (JPY)
+                      Target FOB Price (JPY)
                     </label>
                     <div className="relative">
                       <span className="absolute left-3.5 top-1/2 -translate-y-1/2 font-bold text-sm text-[#8899A6]">
@@ -980,29 +977,29 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
                     </div>
                   </div>
 
-                  {/* Quick Bid Increment Buttons */}
+                  {/* Quick Increment Buttons */}
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => setBidAmountJpy((prev) => Math.max(100000, prev - 20000))}
-                      className="flex-1 py-1.5 bg-[#F8FAFC] hover:bg-[#F0F2F5] border border-[#E8ECF0] rounded-lg text-xs font-semibold text-[#536471]"
+                      className="flex-1 py-1.5 bg-[#F8FAFC] hover:bg-[#F0F2F5] border border-[#E8ECF0] rounded-lg text-xs font-semibold text-[#536471] cursor-pointer"
                     >
                       -¥20,000
                     </button>
                     <button
                       onClick={() => setBidAmountJpy(vehicle.priceFob)}
-                      className="flex-1 py-1.5 bg-[#F8FAFC] hover:bg-[#F0F2F5] border border-[#E8ECF0] rounded-lg text-xs font-semibold text-[#536471]"
+                      className="flex-1 py-1.5 bg-[#F8FAFC] hover:bg-[#F0F2F5] border border-[#E8ECF0] rounded-lg text-xs font-semibold text-[#536471] cursor-pointer"
                     >
                       Reset
                     </button>
                     <button
                       onClick={() => setBidAmountJpy((prev) => prev + 20000)}
-                      className="flex-1 py-1.5 bg-[#F8FAFC] hover:bg-[#F0F2F5] border border-[#E8ECF0] rounded-lg text-xs font-semibold text-[#536471]"
+                      className="flex-1 py-1.5 bg-[#F8FAFC] hover:bg-[#F0F2F5] border border-[#E8ECF0] rounded-lg text-xs font-semibold text-[#536471] cursor-pointer"
                     >
                       +¥20,000
                     </button>
                     <button
                       onClick={() => setBidAmountJpy((prev) => prev + 50000)}
-                      className="flex-1 py-1.5 bg-[#F8FAFC] hover:bg-[#F0F2F5] border border-[#E8ECF0] rounded-lg text-xs font-semibold text-[#536471]"
+                      className="flex-1 py-1.5 bg-[#F8FAFC] hover:bg-[#F0F2F5] border border-[#E8ECF0] rounded-lg text-xs font-semibold text-[#536471] cursor-pointer"
                     >
                       +¥50,000
                     </button>
@@ -1011,15 +1008,15 @@ export default function VehicleDetailPage({ params }: { params?: { id?: string }
                   <div className="flex items-center gap-3 pt-3">
                     <button
                       onClick={() => setBidModalOpen(false)}
-                      className="flex-1 py-2.5 border border-[#E8ECF0] rounded-xl text-xs font-semibold text-[#536471] hover:bg-[#F0F2F5]"
+                      className="flex-1 py-2.5 border border-[#E8ECF0] rounded-xl text-xs font-semibold text-[#536471] hover:bg-[#F0F2F5] cursor-pointer"
                     >
                       Cancel
                     </button>
                     <button
                       onClick={handlePlaceBid}
-                      className="flex-1 py-2.5 bg-[#E11D48] hover:bg-[#BE123C] text-white rounded-xl text-xs font-bold shadow-md shadow-rose-900/20 transition-all"
+                      className="flex-1 py-2.5 bg-[#E11D48] hover:bg-[#BE123C] text-white rounded-xl text-xs font-bold shadow-md shadow-rose-900/20 transition-all cursor-pointer"
                     >
-                      Submit Official Bid
+                      Submit Reservation / Enquiry
                     </button>
                   </div>
                 </>

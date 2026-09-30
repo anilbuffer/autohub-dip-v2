@@ -69,9 +69,6 @@ export default function WatchlistPage() {
             <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111827] tracking-tight">
               Watchlist
             </h1>
-            <p className="text-sm text-[#64748B] mt-1">
-              Shortlisted vehicles bookmarked for upcoming Japan auction bidding.
-            </p>
           </div>
 
           <Link

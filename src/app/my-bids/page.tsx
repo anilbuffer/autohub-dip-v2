@@ -107,9 +107,6 @@ export default function MyBidsPage() {
             <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111827] tracking-tight">
               My Auction Bids
             </h1>
-            <p className="text-sm text-[#64748B] mt-1">
-              Active and historical proxy bids placed on Japan auction stock.
-            </p>
           </div>
 
           <Link

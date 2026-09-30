@@ -45,7 +45,7 @@ export default function MarginCalculator({
             <span>Optional Margin Calculator</span>
           </h3>
           <p className="text-xs text-[#536471] mt-0.5">
-            Test target retail price scenarios and prep allowances against your guaranteed AutoHub landed cost.
+            Test target retail price scenarios and prep allowances against your calculated AutoHub landed cost.
           </p>
         </div>
 

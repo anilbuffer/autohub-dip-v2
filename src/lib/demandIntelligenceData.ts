@@ -840,7 +840,7 @@ export const AI_WEEKLY_BRIEF = {
     badge: 'Heiwa Autonomous Sourcing Intelligence',
     confidenceText: '96% Recommendation Confidence',
     timestamp: 'Today at 07:00 JST / 11:00 NZST (Pre-Auction USS Tokyo Dispatch)',
-    body: 'Demand for hybrid SUVs is rising sharply among NZ dealers. Vezel searches are up 40% this month and C-HR remains the most-requested model. Current Heiwa stock covers only 35% of C-HR demand. Sourcing an additional 60–80 C-HR and Vezel units for the next two auctions is recommended.',
+    body: 'Demand for hybrid SUVs is rising sharply among NZ dealers. Vezel searches are up 40% this month and C-HR remains the most-requested model. Current Heiwa stock covers only 35% of C-HR demand. Sourcing an additional 60–80 C-HR and Vezel units for the next two auctions is prioritized.',
     targets: [
       { model: 'Toyota C-HR', recommendation: '+40–50 units', priority: 'Critical', house: 'USS Tokyo / Yokohama' },
       { model: 'Honda Vezel', recommendation: '+25–35 units', priority: 'High', house: 'USS Tokyo / Nagoya' },
