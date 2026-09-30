@@ -7,38 +7,28 @@ import {
   Mail, 
   ArrowRight, 
   Building2, 
-  ShieldCheck, 
+  Heart,
+  Search,
   BarChart3,
-  Globe,
-  DollarSign,
 } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loadingRole, setLoadingRole] = useState<'dealer' | 'admin' | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email.toLowerCase().includes("admin")) {
-      router.push("/admin");
-    } else {
-      router.push("/");
-    }
+    setLoading(true);
+    setTimeout(() => router.push("/"), 400);
   };
 
-  const loginAsDemo = (role: 'dealer' | 'admin') => {
-    setLoadingRole(role);
-    if (role === 'admin') {
-      setEmail("admin@autohub.co.nz");
-      setPassword("adminSecure2026");
-      setTimeout(() => router.push("/admin"), 400);
-    } else {
-      setEmail("dealer@autohub.co.nz");
-      setPassword("dealerSecure2026");
-      setTimeout(() => router.push("/"), 400);
-    }
+  const loginAsDemo = () => {
+    setEmail("dealer@autohub.co.nz");
+    setPassword("••••••••");
+    setLoading(true);
+    setTimeout(() => router.push("/"), 400);
   };
 
   return (
@@ -48,8 +38,8 @@ export default function LoginPage() {
       <div className="hidden lg:flex lg:w-[480px] xl:w-[520px] flex-col justify-between bg-[#10100E] text-white p-10 relative overflow-hidden">
         
         {/* Subtle decorative element */}
-        <div className="absolute -right-24 -top-24 w-80 h-80 rounded-full bg-[#DF2B44]/8" />
-        <div className="absolute -left-16 -bottom-16 w-64 h-64 rounded-full bg-[#DF2B44]/5" />
+        <div className="absolute -right-24 -top-24 w-80 h-80 rounded-full bg-[#DF2B44]/[0.06]" />
+        <div className="absolute -left-16 -bottom-16 w-64 h-64 rounded-full bg-[#DF2B44]/[0.04]" />
 
         {/* Logo & brand */}
         <div className="relative z-10">
@@ -73,26 +63,29 @@ export default function LoginPage() {
         {/* Headline */}
         <div className="relative z-10 space-y-6 my-auto">
           <h1 className="text-3xl font-bold leading-snug tracking-tight text-white">
-            Market data and landed costs,<br />
-            <span className="text-neutral-400">all in one place.</span>
+            Source smarter from<br />
+            <span className="text-neutral-400">Japan to New Zealand.</span>
           </h1>
           <p className="text-sm text-neutral-400 leading-relaxed max-w-sm">
-            Access NZ market indicators, real-time exchange rates, shipping estimates, 
-            and compliance data — so you can make informed sourcing decisions.
+            Create your wish list, match against live Heiwa auction inventory, 
+            and compare landed costs with NZ retail pricing — all in one place.
           </p>
 
-          {/* Feature highlights */}
+          {/* 3-step journey preview */}
           <div className="space-y-3 pt-2">
             {[
-              { icon: BarChart3, label: "NZ market trends & pricing data" },
-              { icon: DollarSign, label: "Live landed cost calculations" },
-              { icon: Globe, label: "JPY/NZD rates & shipping estimates" },
+              { icon: Heart, step: "1", label: "Set your wish list criteria" },
+              { icon: Search, step: "2", label: "View matched Heiwa vehicles" },
+              { icon: BarChart3, step: "3", label: "Compare against NZ market" },
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-lg bg-white/[0.06] flex items-center justify-center flex-shrink-0">
                   <item.icon size={16} className="text-[#DF2B44]" />
                 </div>
-                <span className="text-sm text-neutral-300">{item.label}</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-bold bg-[#DF2B44]/20 text-[#DF2B44] px-1.5 py-0.5 rounded">{item.step}</span>
+                  <span className="text-sm text-neutral-300">{item.label}</span>
+                </div>
               </div>
             ))}
           </div>
@@ -129,52 +122,33 @@ export default function LoginPage() {
               Sign in
             </h2>
             <p className="text-sm text-neutral-500 mt-1">
-              Enter your credentials or select a demo account.
+              Enter your credentials or use the demo account.
             </p>
           </div>
 
-          {/* Demo access buttons */}
-          <div className="space-y-2 mb-6">
-            <span className="text-[11px] font-medium text-neutral-400 uppercase tracking-wider block">
-              Demo Access
+          {/* Demo access */}
+          <div className="mb-6">
+            <span className="text-[11px] font-medium text-neutral-400 uppercase tracking-wider block mb-2">
+              Quick Access
             </span>
-            <div className="grid grid-cols-2 gap-3">
-              <button
-                id="demo-dealer-login"
-                type="button"
-                onClick={() => loginAsDemo('dealer')}
-                disabled={loadingRole !== null}
-                className="flex items-center gap-2.5 p-3 rounded-xl border border-neutral-200 hover:border-[#DF2B44]/40 bg-white hover:bg-[#DF2B44]/[0.03] transition-all text-left group disabled:opacity-50"
-              >
-                <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0">
-                  <Building2 size={15} className="text-emerald-600" />
+            <button
+              id="demo-dealer-login"
+              type="button"
+              onClick={loginAsDemo}
+              disabled={loading}
+              className="w-full flex items-center gap-3 p-3.5 rounded-xl border border-neutral-200 hover:border-[#DF2B44]/30 bg-white hover:bg-[#DF2B44]/[0.02] transition-all text-left group disabled:opacity-50"
+            >
+              <div className="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0">
+                <Building2 size={16} className="text-emerald-600" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="text-[13px] font-semibold text-[#10100E]">Demo Dealer Account</div>
+                <div className="text-[11px] text-neutral-400">
+                  {loading ? 'Signing in…' : 'Auckland Auto Group · David Miller'}
                 </div>
-                <div className="min-w-0">
-                  <div className="text-xs font-semibold text-[#10100E]">Dealer</div>
-                  <div className="text-[10px] text-neutral-400 truncate">
-                    {loadingRole === 'dealer' ? 'Signing in…' : 'View dealer portal'}
-                  </div>
-                </div>
-              </button>
-
-              <button
-                id="demo-admin-login"
-                type="button"
-                onClick={() => loginAsDemo('admin')}
-                disabled={loadingRole !== null}
-                className="flex items-center gap-2.5 p-3 rounded-xl border border-neutral-200 hover:border-[#DF2B44]/40 bg-white hover:bg-[#DF2B44]/[0.03] transition-all text-left group disabled:opacity-50"
-              >
-                <div className="w-8 h-8 rounded-lg bg-[#DF2B44]/10 flex items-center justify-center flex-shrink-0">
-                  <ShieldCheck size={15} className="text-[#DF2B44]" />
-                </div>
-                <div className="min-w-0">
-                  <div className="text-xs font-semibold text-[#10100E]">Admin</div>
-                  <div className="text-[10px] text-neutral-400 truncate">
-                    {loadingRole === 'admin' ? 'Signing in…' : 'Platform management'}
-                  </div>
-                </div>
-              </button>
-            </div>
+              </div>
+              <ArrowRight size={14} className="text-neutral-300 group-hover:text-[#DF2B44] transition-colors" />
+            </button>
           </div>
 
           {/* Divider */}
@@ -235,10 +209,20 @@ export default function LoginPage() {
             <button
               id="sign-in-button"
               type="submit"
-              className="w-full py-2.5 bg-[#DF2B44] hover:bg-[#d01c36] text-white font-medium text-sm rounded-lg transition-colors flex items-center justify-center gap-2 mt-2"
+              disabled={loading}
+              className="w-full py-2.5 bg-[#DF2B44] hover:bg-[#c91f38] text-white font-medium text-sm rounded-lg transition-colors flex items-center justify-center gap-2 mt-2 disabled:opacity-60"
             >
-              Sign in
-              <ArrowRight size={15} />
+              {loading ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Signing in…
+                </>
+              ) : (
+                <>
+                  Sign in
+                  <ArrowRight size={15} />
+                </>
+              )}
             </button>
           </form>
 
